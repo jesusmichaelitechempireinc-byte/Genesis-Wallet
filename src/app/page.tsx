@@ -7,8 +7,6 @@ import { GenesisVaultLogo } from '@/components/icons';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { CreditCard, ShieldCheck, Zap, Bot, Globe, KeyRound, UserPlus, DownloadCloud, Rocket } from 'lucide-react';
 import Image from 'next/image';
-import { BitcoinIcon, EthereumIcon, CardanoIcon } from '@/components/icons';
-import { Atom, Dog, Unplug, Waves, Wind, Orbit, Sun, Gem } from 'lucide-react';
 
 const FeatureCard = ({ icon: Icon, title, description, delay = 0 }: { icon: React.ElementType, title: string, description: string, delay?: number }) => (
   <div className="flex flex-col items-center text-center p-4 fade-in opacity-0" style={{ animationDelay: `${delay}ms` }}>
@@ -43,18 +41,18 @@ const faqItems = [
 ];
 
 const tokenAssets = [
-    { name: 'Bitcoin', icon: BitcoinIcon },
-    { name: 'Ethereum', icon: EthereumIcon },
-    { name: 'Cardano', icon: CardanoIcon },
-    { name: 'Cosmos', icon: Atom },
-    { name: 'Dogecoin', icon: Dog },
-    { name: 'Solana', icon: Sun },
-    { name: 'Ripple', icon: Waves },
-    { name: 'Polkadot', icon: Orbit },
-    { name: 'Litecoin', icon: Gem },
-    { name: 'Chainlink', icon: Unplug },
-    { name: 'Stellar', icon: Wind },
-    { name: 'Tether', icon: Globe },
+  { name: 'Bitcoin', imageUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675521/bitcoin-btc-logo_fchtil.png' },
+  { name: 'Ethereum', imageUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675606/ethereum-eth-logo_gkt5dg.png' },
+  { name: 'Solana', imageUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675609/solana-sol-logo_bcifcy.png' },
+  { name: 'Dogecoin', imageUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675627/dogecoin-doge-logo_vhntvk.png' },
+  { name: 'Cardano', imageUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675738/cardano-ada-logo_pbavn1.png' },
+  { name: 'XRP', imageUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675751/xrp-xrp-logo_smpmq7.png' },
+  { name: 'Avalanche', imageUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675757/avalanche-avax-logo_yt45tu.png' },
+  { name: 'Sui', imageUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675771/sui-sui-logo_blqmgl.png' },
+  { name: 'BNB', imageUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675782/bnb-bnb-logo_matwsx.png' },
+  { name: 'Tron', imageUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675804/tron-trx-logo_amapma.png' },
+  { name: 'ASI', imageUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675816/artificial-superintelligence-alliance-fet-logo_rhrvie.png' },
+  { name: 'Pepe', imageUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675900/pepe-pepe-logo_ey1qka.png' },
 ];
 
 const GetStartedStep = ({ icon: Icon, title, description, delay = 0 }: { icon: React.ElementType, title: string, description: string, delay?: number }) => (
@@ -102,7 +100,7 @@ export default function LandingPage() {
       
       <main className="relative z-10 flex flex-col items-center p-4 overflow-hidden">
         
-      <div className="w-full max-w-7xl mx-auto grid md:grid-cols-2 items-center my-16 md:my-24 gap-8">
+        <div className="w-full max-w-7xl mx-auto grid md:grid-cols-2 items-center my-16 md:my-24 gap-8">
             <div className="text-center md:text-left flex flex-col items-center md:items-start">
                 <h1 className="text-5xl md:text-7xl font-bold font-headline tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground/90 to-muted-foreground fade-in opacity-0">
                     Your Gateway to the <span className="text-primary primary-glow">Digital Economy.</span>
@@ -142,13 +140,19 @@ export default function LandingPage() {
                 </p>
             </div>
             <div className="flex justify-center items-center flex-wrap gap-x-8 gap-y-12 px-4">
-                {tokenAssets.slice(0, 10).map((token, i) => (
+                {tokenAssets.slice(0, 12).map((token, i) => (
                     <div
                         key={token.name}
                         className="group flex items-center justify-center h-20 w-20 rounded-full bg-background shadow-neo-in transition-all duration-300 ease-in-out hover:shadow-neo-out hover:-translate-y-2 fade-in opacity-0"
                         style={{ animationDelay: `${200 + i * 80}ms` }}
                     >
-                        <token.icon className="h-9 w-9 text-muted-foreground transition-all duration-300 group-hover:text-primary group-hover:[filter:drop-shadow(0_0_8px_hsl(var(--primary)/0.8))]" />
+                        <Image
+                            src={token.imageUrl}
+                            alt={`${token.name} logo`}
+                            width={40}
+                            height={40}
+                            className="transition-all duration-300 group-hover:scale-110 group-hover:[filter:drop-shadow(0_0_8px_hsl(var(--primary)/0.8))]"
+                        />
                     </div>
                 ))}
             </div>
@@ -316,5 +320,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
-    
