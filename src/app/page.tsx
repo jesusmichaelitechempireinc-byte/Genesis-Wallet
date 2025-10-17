@@ -11,9 +11,12 @@ import { BitcoinIcon, EthereumIcon, CardanoIcon } from '@/components/icons';
 import { Atom, Dog, Unplug, Waves, Wind, Orbit, Sun, Gem } from 'lucide-react';
 
 const FeatureCard = ({ icon: Icon, title, description, delay = 0 }: { icon: React.ElementType, title: string, description: string, delay?: number }) => (
-  <div className="p-8 rounded-2xl shadow-neo-out-lg bg-background flex flex-col items-center text-center fade-in opacity-0" style={{ animationDelay: `${delay}ms` }}>
-    <div className="p-5 rounded-full shadow-neo-in-lg bg-background mb-6">
-      <Icon className="h-10 w-10 text-primary [filter:drop-shadow(0_0_5px_hsl(var(--primary)/0.7))]" />
+  <div className="flex flex-col items-center text-center p-4 fade-in opacity-0" style={{ animationDelay: `${delay}ms` }}>
+    <div className="relative mb-6">
+      <div className="w-24 h-24 rounded-full bg-background shadow-neo-in-lg flex items-center justify-center">
+        <Icon className="h-10 w-10 text-primary" />
+      </div>
+      <div className="absolute inset-0 rounded-full primary-glow opacity-50 blur-lg -z-10 animate-pulse" style={{ animationDelay: `${delay + 200}ms` }}></div>
     </div>
     <h3 className="text-xl font-bold font-headline mb-2">{title}</h3>
     <p className="text-muted-foreground">{description}</p>
@@ -99,7 +102,7 @@ export default function LandingPage() {
       
       <main className="relative z-10 flex flex-col items-center p-4 overflow-hidden">
         
-        <div className="w-full max-w-7xl mx-auto grid md:grid-cols-2 items-center my-24 gap-8">
+        <div className="w-full max-w-7xl mx-auto grid md:grid-cols-2 items-center my-16 md:my-24 gap-8">
             <div className="text-center md:text-left flex flex-col items-center md:items-start">
                 <h1 className="text-5xl md:text-7xl font-bold font-headline tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground/90 to-muted-foreground fade-in opacity-0">
                     Your Gateway to the <span className="text-primary primary-glow">Digital Economy.</span>
@@ -120,9 +123,14 @@ export default function LandingPage() {
                   </Link>
                 </div>
             </div>
-            <div className="relative flex justify-center items-center fade-in opacity-0 animate-delay-200">
-                <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551163/06_zbj1sx.png" width={180} height={360} alt="Genesis Vault Interface" className="rounded-3xl shadow-neo-out-xl transition-transform duration-500" data-ai-hint="app interface dark" />
-                 <div className="absolute inset-0 rounded-3xl primary-glow opacity-50 -z-10 blur-2xl"></div>
+            <div className="relative flex justify-center items-center h-full fade-in opacity-0 animate-delay-200">
+                <Image 
+                  src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551163/06_zbj1sx.png" 
+                  width={200} 
+                  height={400} 
+                  alt="Genesis Vault Interface" 
+                  className="transition-transform duration-500 shadow-2xl shadow-primary/10 [filter:drop-shadow(0_0_30px_hsl(var(--primary)/0.3))]" 
+                  data-ai-hint="app interface dark" />
             </div>
         </div>
 
@@ -133,7 +141,7 @@ export default function LandingPage() {
                     Genesis supports a vast and growing ecosystem of cryptocurrencies and digital tokens.
                 </p>
             </div>
-            <div className="flex justify-center items-center flex-wrap gap-4 px-4">
+            <div className="flex justify-center items-center flex-wrap gap-x-8 gap-y-12 px-4">
                 {tokenAssets.slice(0, 10).map((token, i) => (
                     <div
                         key={token.name}
@@ -154,7 +162,7 @@ export default function LandingPage() {
                 <h2 className="text-5xl font-bold font-headline">Unparalleled Features</h2>
                 <p className="text-xl text-muted-foreground mt-4">Everything you need for a secure crypto experience.</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12">
             <FeatureCard 
                 icon={ShieldCheck}
                 title="Total Security"
