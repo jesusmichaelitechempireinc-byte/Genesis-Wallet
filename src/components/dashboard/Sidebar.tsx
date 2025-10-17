@@ -6,6 +6,7 @@ import {
   History,
   Settings,
   HelpCircle,
+  BrainCircuit,
 } from 'lucide-react';
 import { GenesisVaultLogo } from '@/components/icons';
 import { Badge } from '@/components/ui/badge';
@@ -14,6 +15,7 @@ import { Card, CardContent } from '@/components/ui/card';
 
 const navItems = [
   { href: '/dashboard', icon: Home, label: 'Dashboard' },
+  { href: '/dashboard/genesis-ai', icon: BrainCircuit, label: 'Genesis AI' },
   { href: '#', icon: Wallet, label: 'My Wallet' },
   { href: '#', icon: ArrowRightLeft, label: 'Swap' },
   { href: '#', icon: History, label: 'History' },
