@@ -207,7 +207,7 @@ export default function LandingPage() {
         
         <section className="w-full max-w-6xl mx-auto py-24 fade-in opacity-0">
              <div className="relative p-8 rounded-3xl shadow-neo-out-xl">
-                <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551018/4IRE_Crypto_Wallet_Development_Company_jbqaud.png" width={1200} height={500} alt="Digital wallet interface" className="rounded-2xl" data-ai-hint="digital wallet security" />
+                <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760740369/kerfin7_nea_2783_f8syjz.jpg" width={1200} height={500} alt="Digital wallet interface" className="rounded-2xl" data-ai-hint="digital wallet security" />
                 <div className="absolute inset-0 flex items-center justify-start p-16">
                     <div className="max-w-md text-left bg-background/50 backdrop-blur-md p-8 rounded-2xl shadow-neo-out-lg">
                         <h3 className="text-4xl font-bold font-headline mb-4">Your Digital Fortress</h3>
@@ -341,5 +341,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
-    
