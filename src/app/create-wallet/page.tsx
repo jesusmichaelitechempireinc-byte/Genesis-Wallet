@@ -3,21 +3,21 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Fingerprint, Loader2, Eye, EyeOff, Delete } from 'lucide-react';
+import { Fingerprint, Loader2, Eye, EyeOff, Delete, Copy, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { toast } from '@/hooks/use-toast';
 
 const PIN_LENGTH = 6;
+const generatedPhrase = 'orbit scatter marry cause vessel summer obvious basket cannon pattern stereo shield';
 
-const ImportWalletPage = () => {
+const CreateWalletPage = () => {
   const router = useRouter();
-  const [secretPhrase, setSecretPhrase] = useState('');
-  const [isChecking, setIsChecking] = useState(false);
-  const [isIncorrect, setIsIncorrect] = useState(false);
-  const [showPin, setShowPin] = useState(false);
+  const [step, setStep] = useState<'generate' | 'confirm' | 'secure'>('generate');
+  const [hasBackedUp, setHasBackedUp] = useState(false);
 
-  // New state for the security check page
+  // Security check state
   const [pin, setPin] = useState('');
   const [confirmPin, setConfirmPin] = useState('');
   const [activePinField, setActivePinField] = useState<'pin' | 'confirm'>('pin');
@@ -25,31 +25,31 @@ const ImportWalletPage = () => {
   const [useBiometrics, setUseBiometrics] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [pinError, setPinError] = useState('');
+  
+  const words = useMemo(() => generatedPhrase.split(' '), []);
 
-  const correctPhrase = 'fine steak ozone congress large love hood floor spring riot clown mind';
-
-  const handlePhraseChange = (value: string) => {
-    setSecretPhrase(value);
-    if (isIncorrect) {
-      setIsIncorrect(false);
-    }
+  const handleCopyToClipboard = () => {
+    navigator.clipboard.writeText(generatedPhrase);
+    toast({
+      title: "Phrase Copied!",
+      description: "Your secret recovery phrase has been copied to the clipboard.",
+    });
   };
 
-  const words = useMemo(() => secretPhrase.trim().toLowerCase().split(/\s+/).filter(Boolean), [secretPhrase]);
-  const wordCount = words.length;
-
-  const handleImport = () => {
-    setIsChecking(true);
-    setPinError('');
-    setTimeout(() => {
-      const isCorrect = secretPhrase.trim().toLowerCase() === correctPhrase;
-      if (wordCount >= 12 && isCorrect) {
-        setShowPin(true);
+  const handleNextStep = () => {
+    if (step === 'generate') {
+      setStep('confirm');
+    } else if (step === 'confirm') {
+      if(hasBackedUp) {
+        setStep('secure');
       } else {
-        setIsIncorrect(true);
+        toast({
+            variant: "destructive",
+            title: "Confirmation Required",
+            description: "Please confirm you have backed up your phrase.",
+        });
       }
-      setIsChecking(false);
-    }, 2000);
+    }
   };
   
   const handlePinInput = (value: string) => {
@@ -108,37 +108,68 @@ const ImportWalletPage = () => {
 
   const numpadKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', 'delete'];
 
-  return (
-    <div className="min-h-screen w-full bg-background font-body text-foreground flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="p-8 rounded-2xl shadow-neo-out-lg bg-background">
-          {!showPin ? (
+  const renderStep = () => {
+    switch (step) {
+      case 'generate':
+        return (
+          <>
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold font-headline">Recovery Phrase</h1>
+              <p className="text-muted-foreground mt-2">Write down and store this phrase in a secure, offline location. This is the only way to recover your wallet.</p>
+            </div>
+            <div className="relative p-6 rounded-2xl shadow-neo-in-lg bg-background/50 mb-8">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-4">
+                {words.map((word, index) => (
+                  <div key={index} className="flex items-center gap-2 font-mono text-lg">
+                    <span className="text-muted-foreground w-6 text-right">{index + 1}.</span>
+                    <span className="font-bold text-foreground">{word}</span>
+                  </div>
+                ))}
+              </div>
+              <Button variant="ghost" size="icon" className="absolute top-4 right-4 rounded-full shadow-neo-out-sm" onClick={handleCopyToClipboard}>
+                <Copy size={18} />
+              </Button>
+            </div>
+            <div className='bg-yellow-500/10 border border-yellow-500/30 text-yellow-300 p-4 rounded-lg flex gap-4 items-center mb-8 shadow-neo-out-sm'>
+              <AlertTriangle className="h-10 w-10 shrink-0" />
+              <div>
+                <h3 className='font-bold'>Never share this phrase.</h3>
+                <p className='text-sm text-yellow-400/80'>Anyone with this phrase can take your assets. Store it securely.</p>
+              </div>
+            </div>
+            <Button onClick={handleNextStep} className="w-full h-14 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
+              I've Backed It Up
+            </Button>
+          </>
+        );
+      case 'confirm':
+        return (
             <>
               <div className="text-center mb-8">
-                <h1 className="text-4xl font-bold font-headline">Import Wallet</h1>
-                <p className="text-muted-foreground mt-2">Enter your secret recovery phrase.</p>
+                <ShieldCheck className="h-20 w-20 text-primary mx-auto mb-4 primary-glow" />
+                <h1 className="text-4xl font-bold font-headline">Confirm Backup</h1>
+                <p className="text-muted-foreground mt-2">To ensure you've saved your phrase correctly, please acknowledge the following.</p>
               </div>
-              <div className="relative mb-4">
-                <Textarea
-                  value={secretPhrase}
-                  onChange={(e) => handlePhraseChange(e.target.value)}
-                  className={`text-left shadow-neo-in-sm rounded-md border-transparent focus:shadow-neo-out-sm transition-shadow resize-none ${isIncorrect ? 'border-destructive ring-2 ring-destructive' : ''}`}
-                  placeholder="Paste your secret phrase here..."
-                  rows={4}
-                />
-                <div className="absolute bottom-2 right-3 text-xs text-muted-foreground font-mono">
-                  {wordCount} {wordCount === 1 ? 'word' : 'words'}
+
+              <div className="space-y-6 text-left my-10 p-6 rounded-2xl shadow-neo-in-lg bg-background/50">
+                <div className="flex items-start space-x-3">
+                    <Checkbox id="confirm-backup" checked={hasBackedUp} onCheckedChange={(checked) => setHasBackedUp(checked as boolean)} className='mt-1 h-5 w-5' />
+                    <Label htmlFor="confirm-backup" className="text-base text-foreground leading-relaxed">
+                        I understand that if I lose my secret recovery phrase, I will lose access to my wallet and funds forever. Genesis Vault cannot recover it for me.
+                    </Label>
                 </div>
               </div>
-              {isIncorrect && <p className="text-destructive text-center mb-4 font-bold text-base opacity-90">Incorrect secret phrase. Please try again.</p>}
-              <Button onClick={handleImport} disabled={isChecking} className="w-full h-14 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
-                {isChecking ? <Loader2 className="animate-spin" /> : 'Import Wallet'}
+              
+              <Button onClick={handleNextStep} className="w-full h-14 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
+                Continue
               </Button>
             </>
-          ) : (
+        )
+      case 'secure':
+        return (
             <div className="text-center">
               <h1 className="text-4xl font-bold font-headline mb-4">Security Check</h1>
-              <p className="text-muted-foreground mb-8">Secure your wallet with a PIN and optional biometrics.</p>
+              <p className="text-muted-foreground mb-8">Secure your new wallet with a PIN and optional biometrics.</p>
               
               <div className="flex items-center justify-between p-4 rounded-lg shadow-neo-in-sm mb-8">
                 <div className='flex items-center gap-3'>
@@ -193,10 +224,20 @@ const ImportWalletPage = () => {
               </div>
 
               <Button onClick={handlePinSubmit} disabled={isProcessing} className={`w-full h-14 text-lg rounded-full bg-primary text-primary-foreground shadow-neo-out-lg active:shadow-neo-in-lg transition-all duration-300 ${isProcessing ? 'processing-glow animate-pulse' : 'btn-glow'}`}>
-                {isProcessing ? <Loader2 className="animate-spin" /> : 'Create PIN'}
+                {isProcessing ? <Loader2 className="animate-spin" /> : 'Create PIN & Finish'}
               </Button>
             </div>
-          )}
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="min-h-screen w-full bg-background font-body text-foreground flex items-center justify-center p-4">
+       <div className="w-full max-w-md">
+        <div className="p-8 rounded-2xl shadow-neo-out-lg bg-background">
+          {renderStep()}
         </div>
       </div>
       <style jsx>{`
@@ -208,4 +249,4 @@ const ImportWalletPage = () => {
   );
 };
 
-export default ImportWalletPage;
+export default CreateWalletPage;
