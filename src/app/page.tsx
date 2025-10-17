@@ -94,11 +94,18 @@ export default function LandingPage() {
                 <p className="max-w-xl text-lg text-muted-foreground mb-12 fade-in opacity-0 animate-delay-200">
                     Genesis Vault combines a sleek, intuitive design with powerful, secure features for an unparalleled self-custody crypto experience.
                 </p>
-                <Link href="/wallet-setup" className='fade-in opacity-0 animate-delay-400'>
-                    <Button size="lg" className="h-14 px-10 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
-                     Launch Web Wallet
-                    </Button>
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-4 fade-in opacity-0 animate-delay-400">
+                  <Link href="/wallet-setup">
+                      <Button size="lg" className="h-14 px-10 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
+                       Launch Web Wallet
+                      </Button>
+                  </Link>
+                  <Link href="#features">
+                      <Button size="lg" variant="outline" className="h-14 px-10 text-lg rounded-full shadow-neo-out-sm active:shadow-neo-in-sm border-border bg-background/50 hover:bg-muted/50 hover:text-foreground">
+                        Discover Features
+                      </Button>
+                  </Link>
+                </div>
             </div>
             <div className="relative fade-in opacity-0 animate-delay-200">
                 <Image src="https://picsum.photos/seed/33/600/800" width={600} height={800} alt="Genesis Vault Interface" className="rounded-3xl shadow-neo-out-xl rotate-3 hover:rotate-0 transition-transform duration-500" data-ai-hint="app interface dark" />
