@@ -1,34 +1,38 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Fingerprint, Loader2 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
 const ImportWalletPage = () => {
   const router = useRouter();
-  const [secretPhrase, setSecretPhrase] = useState(Array(12).fill(''));
+  const [secretPhrase, setSecretPhrase] = useState('');
   const [isChecking, setIsChecking] = useState(false);
   const [isIncorrect, setIsIncorrect] = useState(false);
   const [showPin, setShowPin] = useState(false);
 
-  const correctPhrase = 'fine steak ozone congress large love hood floor spring riot clown mind'.split(' ');
+  const correctPhrase = 'fine steak ozone congress large love hood floor spring riot clown mind';
 
-  const handlePhraseChange = (index: number, value: string) => {
-    const newPhrase = [...secretPhrase];
-    newPhrase[index] = value.trim().toLowerCase();
-    setSecretPhrase(newPhrase);
+  const handlePhraseChange = (value: string) => {
+    setSecretPhrase(value);
     if (isIncorrect) {
         setIsIncorrect(false);
     }
   };
+  
+  const words = useMemo(() => secretPhrase.trim().toLowerCase().split(/\s+/).filter(Boolean), [secretPhrase]);
+  const wordCount = words.length;
+
 
   const handleImport = () => {
     setIsChecking(true);
     setTimeout(() => {
-      const isCorrect = secretPhrase.every((word, index) => word === correctPhrase[index]);
-      if (isCorrect) {
+      // Simple validation for word count and content
+      const isCorrect = secretPhrase.trim().toLowerCase() === correctPhrase;
+      if (wordCount >= 12 && isCorrect) {
         setShowPin(true);
       } else {
         setIsIncorrect(true);
@@ -51,18 +55,19 @@ const ImportWalletPage = () => {
                 <h1 className="text-4xl font-bold font-headline">Import Wallet</h1>
                 <p className="text-muted-foreground mt-2">Enter your secret recovery phrase.</p>
               </div>
-              <div className="grid grid-cols-3 gap-4 mb-8">
-                {secretPhrase.map((word, index) => (
-                  <Input
-                    key={index}
-                    type="text"
-                    value={word}
-                    onChange={(e) => handlePhraseChange(index, e.target.value)}
-                    className={`text-center shadow-neo-in-sm rounded-md border-transparent focus:shadow-neo-out-sm transition-shadow ${isIncorrect ? 'border-destructive ring-2 ring-destructive' : ''}`}
-                    placeholder=""
-                  />
-                ))}
+              <div className="relative mb-4">
+                <Textarea
+                    value={secretPhrase}
+                    onChange={(e) => handlePhraseChange(e.target.value)}
+                    className={`text-left shadow-neo-in-sm rounded-md border-transparent focus:shadow-neo-out-sm transition-shadow resize-none ${isIncorrect ? 'border-destructive ring-2 ring-destructive' : ''}`}
+                    placeholder="Paste your secret phrase here..."
+                    rows={4}
+                />
+                <div className="absolute bottom-2 right-3 text-xs text-muted-foreground font-mono">
+                    {wordCount} {wordCount === 1 ? 'word' : 'words'}
+                </div>
               </div>
+
               {isIncorrect && <p className="text-destructive text-center mb-4">Incorrect secret phrase. Please try again.</p>}
               <Button onClick={handleImport} disabled={isChecking} className="w-full h-14 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
                 {isChecking ? <Loader2 className="animate-spin" /> : 'Import Wallet'}
