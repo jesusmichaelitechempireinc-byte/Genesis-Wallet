@@ -28,16 +28,32 @@ const faqItems = [
     },
     {
       question: "Is Genesis Vault secure?",
-      answer: "Yes, security is our top priority. Your private keys are encrypted and stored only on your device. We utilize state-of-the-art security measures to protect your assets.",
-    },
-    {
-      question: "Which cryptocurrencies do you support?",
-      answer: "We support a wide range of cryptocurrencies including Bitcoin (BTC), Ethereum (ETH), Cardano (ADA), and many more. We are constantly working to add support for new assets.",
+      answer: "Yes, security is our top priority. Your private keys are encrypted and stored only on your device. We utilize state-of-the-art security measures, including biometric authentication and multi-factor options, to protect your assets.",
     },
     {
         question: "Can I import an existing wallet?",
         answer: "Absolutely. You can easily import any existing wallet using your 12 or 24-word secret recovery phrase. Your assets will appear in Genesis Vault once the import is complete."
-    }
+    },
+    {
+      question: "Which cryptocurrencies do you support?",
+      answer: "We support a wide range of cryptocurrencies including Bitcoin (BTC), Ethereum (ETH), Solana (SOL), and many more. We are constantly working to add support for new assets and tokens across various blockchains.",
+    },
+    {
+        question: "What are 'gas fees'?",
+        answer: "Gas fees are transaction fees paid to network validators to process your transaction on the blockchain. Genesis Vault provides real-time gas fee estimates to help you choose the most optimal time to transact."
+    },
+    {
+        question: "How do I backup my wallet?",
+        answer: "Your wallet is backed up by your secret recovery phrase. It is crucial to write this phrase down and store it in a secure, offline location. This is the only way to recover your wallet if you lose access to your device."
+    },
+    {
+        question: "Can I use Genesis Vault on multiple devices?",
+        answer: "Yes, you can import your wallet on multiple devices using your secret recovery phrase. This allows you to access and manage your funds seamlessly across your phone, desktop, or tablet."
+    },
+    {
+        question: "What happens if I lose my secret recovery phrase?",
+        answer: "Because Genesis Vault is a non-custodial wallet, we do not have access to your funds or your secret phrase. If you lose your phrase, your funds will be irrecoverable. Please store it securely."
+    },
 ];
 
 const tokenAssets = [
@@ -207,7 +223,7 @@ export default function LandingPage() {
         
         <section className="w-full max-w-6xl mx-auto py-24 fade-in opacity-0">
              <div className="relative p-8 rounded-3xl shadow-neo-out-xl">
-                <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760740595/kerfin7_nea_2783_gjrktr.png" width={1200} height={500} alt="Digital wallet interface" className="rounded-2xl" data-ai-hint="digital wallet security" />
+                <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760740595/kerfin7_nea_2783_gjrktr.png" width={1000} height={417} alt="Digital wallet interface" className="rounded-2xl" data-ai-hint="digital wallet security" />
                 <div className="absolute inset-0 flex items-center justify-start p-16">
                     <div className="max-w-md text-left bg-background/50 backdrop-blur-md p-8 rounded-2xl shadow-neo-out-lg">
                         <h3 className="text-4xl font-bold font-headline mb-4">Your Digital Fortress</h3>
@@ -341,3 +357,5 @@ export default function LandingPage() {
     </div>
   );
 }
+
+    
