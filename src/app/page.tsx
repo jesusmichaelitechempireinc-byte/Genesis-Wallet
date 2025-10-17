@@ -107,8 +107,8 @@ export default function LandingPage() {
                   </Link>
                 </div>
             </div>
-            <div className="relative fade-in opacity-0 animate-delay-200">
-                <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551163/06_zbj1sx.png" width={600} height={800} alt="Genesis Vault Interface" className="rounded-3xl shadow-neo-out-xl rotate-3 hover:rotate-0 transition-transform duration-500" data-ai-hint="app interface dark" />
+            <div className="relative flex justify-center items-center fade-in opacity-0 animate-delay-200">
+                <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551163/06_zbj1sx.png" width={400} height={533} alt="Genesis Vault Interface" className="rounded-3xl shadow-neo-out-xl rotate-3 hover:rotate-0 transition-transform duration-500" data-ai-hint="app interface dark" />
                  <div className="absolute inset-0 rounded-3xl primary-glow opacity-30 -z-10 blur-2xl"></div>
             </div>
         </div>
