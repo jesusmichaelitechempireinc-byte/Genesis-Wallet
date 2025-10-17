@@ -71,19 +71,19 @@ body {
   }
 
   .shadow-neo-out {
-    box-shadow: 8px 8px 16px hsl(210 30% 20%), -8px -8px 16px hsl(210 25% 30%);
+    box-shadow: 12px 12px 24px hsl(210 30% 18%), -12px -12px 24px hsl(210 25% 32%);
   }
 
   .shadow-neo-in {
-    box-shadow: inset 8px 8px 16px hsl(210 30% 20%), inset -8px -8px 16px hsl(210 25% 30%);
+    box-shadow: inset 12px 12px 24px hsl(210 30% 18%), inset -12px -12px 24px hsl(210 25% 32%);
   }
 
   .shadow-neo-out-sm {
-    box-shadow: 4px 4px 8px hsl(210 30% 20%), -4px -4px 8px hsl(210 25% 30%);
+    box-shadow: 6px 6px 12px hsl(210 30% 18%), -6px -6px 12px hsl(210 25% 32%);
   }
 
   .shadow-neo-in-sm {
-    box-shadow: inset 4px 4px 8px hsl(210 30% 20%), inset -4px -4px 8px hsl(210 25% 30%);
+    box-shadow: inset 6px 6px 12px hsl(210 30% 18%), inset -6px -6px 12px hsl(210 25% 32%);
   }
 
   .btn-glow {
