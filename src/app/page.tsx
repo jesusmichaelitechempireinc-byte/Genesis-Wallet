@@ -7,6 +7,8 @@ import { GenesisVaultLogo } from '@/components/icons';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { CreditCard, ShieldCheck, Zap, Bot, Globe, KeyRound } from 'lucide-react';
 import Image from 'next/image';
+import { BitcoinIcon, EthereumIcon, CardanoIcon } from '@/components/icons';
+import { Atom, Dog, Unplug, Waves, Wind, Orbit, Sun, Gem } from 'lucide-react';
 
 const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementType, title: string, description: string }) => (
   <div className="p-8 rounded-2xl shadow-neo-out-lg bg-background flex flex-col items-center text-center">
@@ -35,7 +37,22 @@ const faqItems = [
         question: "Can I import an existing wallet?",
         answer: "Absolutely. You can easily import any existing wallet using your 12 or 24-word secret recovery phrase. Your assets will appear in Genesis Vault once the import is complete."
     }
-]
+];
+
+const tokenAssets = [
+    { name: 'Bitcoin', icon: BitcoinIcon },
+    { name: 'Ethereum', icon: EthereumIcon },
+    { name: 'Cardano', icon: CardanoIcon },
+    { name: 'Cosmos', icon: Atom },
+    { name: 'Dogecoin', icon: Dog },
+    { name: 'Solana', icon: Sun },
+    { name: 'Ripple', icon: Waves },
+    { name: 'Polkadot', icon: Orbit },
+    { name: 'Litecoin', icon: Gem },
+    { name: 'Chainlink', icon: Unplug },
+    { name: 'Stellar', icon: Wind },
+    { name: 'Tether', icon: Globe },
+];
 
 export default function LandingPage() {
   const [year, setYear] = React.useState(new Date().getFullYear());
@@ -51,7 +68,12 @@ export default function LandingPage() {
       <main className="relative z-10 flex flex-col items-center p-4 overflow-hidden">
         
         <div className="text-center my-24 flex flex-col items-center">
-          <div className="inline-block p-8 rounded-full shadow-neo-out-xl mb-8">
+            <div className="relative w-full max-w-6xl mx-auto mb-16">
+                <div className="absolute inset-0 rounded-3xl shadow-neo-out-xl bg-background -z-10"></div>
+                <Image src="https://picsum.photos/seed/99/1200/600" width={1200} height={600} alt="Crypto vault hero image" className="rounded-3xl p-4 shadow-neo-in-xl" data-ai-hint="crypto vault abstract" />
+            </div>
+
+          <div className="inline-block p-8 rounded-full shadow-neo-out-xl mb-8 -mt-24 bg-background relative">
             <div className="p-8 rounded-full shadow-neo-in-xl">
               <GenesisVaultLogo />
             </div>
@@ -68,6 +90,23 @@ export default function LandingPage() {
             </Button>
           </Link>
         </div>
+
+        <section id="assets" className="w-full max-w-6xl mx-auto py-24">
+            <div className="text-center mb-16">
+                <h2 className="text-5xl font-bold font-headline">All Your Favorite Assets</h2>
+                <p className="text-xl text-muted-foreground mt-4 max-w-3xl mx-auto">Genesis offers a unified home for your entire portfolio, supporting thousands of tokens across multiple blockchains. From the cornerstones of crypto to the latest DeFi gems, manage it all with unparalleled security and ease.</p>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
+                {tokenAssets.map((token) => (
+                    <div key={token.name} className="flex flex-col items-center text-center p-4 rounded-2xl shadow-neo-out-sm transition-all duration-300 hover:shadow-neo-in-sm hover:-translate-y-1">
+                        <div className="p-4 rounded-full shadow-neo-in-sm bg-background mb-4">
+                            <token.icon className="h-8 w-8 text-primary" />
+                        </div>
+                        <p className="font-semibold text-sm">{token.name}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
 
         <section id="features" className="w-full max-w-6xl mx-auto py-24">
             <div className="text-center mb-16">
@@ -90,6 +129,18 @@ export default function LandingPage() {
                 title="Lightning Fast"
                 description="Experience blazing-fast transactions and portfolio updates in real-time."
             />
+            </div>
+        </section>
+        
+        <section className="w-full max-w-6xl mx-auto py-24">
+             <div className="relative p-8 rounded-3xl shadow-neo-out-xl">
+                <Image src="https://picsum.photos/seed/45/1200/500" width={1200} height={500} alt="Digital wallet interface" className="rounded-2xl" data-ai-hint="digital wallet security" />
+                <div className="absolute inset-0 flex items-center justify-start p-16">
+                    <div className="max-w-md text-left bg-background/50 backdrop-blur-md p-8 rounded-2xl shadow-neo-out-lg">
+                        <h3 className="text-4xl font-bold font-headline mb-4">Your Digital Fortress</h3>
+                        <p className="text-lg text-muted-foreground">Built on a foundation of cryptographic excellence, Genesis Vault employs multi-layered security protocols to ensure your assets are impenetrable.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
