@@ -88,25 +88,20 @@ export default function LandingPage() {
         
         <div className="w-full max-w-7xl mx-auto grid md:grid-cols-2 items-center my-24 gap-8">
             <div className="text-center md:text-left flex flex-col items-center md:items-start">
-                <div className="inline-block p-4 rounded-full shadow-neo-out-xl mb-8 bg-background relative fade-in opacity-0">
-                    <div className="p-4 rounded-full shadow-neo-in-xl">
-                    <GenesisVaultLogo />
-                    </div>
-                </div>
-                <h1 className="text-5xl md:text-7xl font-bold font-headline tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground/90 to-muted-foreground fade-in opacity-0 animate-delay-200">
-                    The Evolution of <span className="text-primary primary-glow">Digital Finance</span>
+                <h1 className="text-5xl md:text-7xl font-bold font-headline tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground/90 to-muted-foreground fade-in opacity-0">
+                    Your Gateway to the <span className="text-primary primary-glow">Digital Economy.</span>
                 </h1>
-                <p className="max-w-xl text-lg text-muted-foreground mb-12 fade-in opacity-0 animate-delay-400">
-                    Genesis Vault is the ultimate non-custodial crypto wallet, giving you complete control over your digital assets. Secure, seamless, and powerful.
+                <p className="max-w-xl text-lg text-muted-foreground mb-12 fade-in opacity-0 animate-delay-200">
+                    Genesis Vault combines a sleek, intuitive design with powerful, secure features for an unparalleled self-custody crypto experience.
                 </p>
-                <Link href="/wallet-setup" className='fade-in opacity-0 animate-delay-600'>
-                    <Button size="lg" className="h-16 px-12 text-xl rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
-                    Access Your Wallet
+                <Link href="/wallet-setup" className='fade-in opacity-0 animate-delay-400'>
+                    <Button size="lg" className="h-14 px-10 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
+                     Launch Web Wallet
                     </Button>
                 </Link>
             </div>
             <div className="relative fade-in opacity-0 animate-delay-200">
-                <Image src="https://picsum.photos/seed/33/600/800" width={600} height={800} alt="Genesis Vault Interface" className="rounded-3xl shadow-neo-out-xl -rotate-3 hover:rotate-0 transition-transform duration-500" data-ai-hint="app interface dark" />
+                <Image src="https://picsum.photos/seed/33/600/800" width={600} height={800} alt="Genesis Vault Interface" className="rounded-3xl shadow-neo-out-xl rotate-3 hover:rotate-0 transition-transform duration-500" data-ai-hint="app interface dark" />
                  <div className="absolute inset-0 rounded-3xl primary-glow opacity-30 -z-10 blur-2xl"></div>
             </div>
         </div>
@@ -119,7 +114,7 @@ export default function LandingPage() {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
                 {tokenAssets.map((token, i) => (
-                    <div key={token.name} className="flex flex-col items-center text-center p-4 rounded-2xl shadow-neo-out-sm transition-all duration-300 hover:shadow-neo-in-sm hover:-translate-y-1 fade-in opacity-0" style={{ animationDelay: `${i * 50}ms`}}>
+                    <div key={token.name} className="flex flex-col items-center text-center p-4 rounded-2xl shadow-neo-out-sm transition-all duration-300 hover:shadow-neo-in-sm hover:-translate-y-1 fade-in opacity-0 group" style={{ animationDelay: `${i * 50}ms`}}>
                         <div className="p-4 rounded-full shadow-neo-in-sm bg-background mb-4 transition-all duration-300 group-hover:shadow-neo-out-sm">
                             <token.icon className="h-8 w-8 text-primary transition-all duration-300 group-hover:primary-glow" />
                         </div>
