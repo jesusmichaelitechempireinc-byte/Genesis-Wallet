@@ -38,7 +38,7 @@ export default function Header() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-10 w-10 rounded-full shadow-neo-out-sm p-0">
               <Avatar className="h-10 w-10">
-                <Image src="https://picsum.photos/seed/1/100/100" alt="User Avatar" layout="fill" data-ai-hint="avatar user" />
+                <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722677/wallet-2_z7psdg.png" alt="User Avatar" layout="fill" data-ai-hint="avatar user" />
                 <AvatarFallback>GV</AvatarFallback>
               </Avatar>
             </Button>
