@@ -1,5 +1,6 @@
+
 import { BitcoinIcon, EthereumIcon, CardanoIcon } from "@/components/icons";
-import { coins as coinIcons } from 'lucide-react';
+import { CircleDot, CircleDollarSign, Box } from 'lucide-react';
 import type { ComponentType } from "react";
 
 export interface Coin {
@@ -33,7 +34,7 @@ export const coins: Coin[] = [
   {
     name: "Matic",
     ticker: "MATIC",
-    icon: coinIcons.CircleDot,
+    icon: CircleDot,
     balance: 183622.12,
     usdValue: 303187.05,
     change: -0.21,
@@ -42,7 +43,7 @@ export const coins: Coin[] = [
     name: "Tether",
     ticker: "USDT",
     network: "TRC20",
-    icon: coinIcons.CircleDollarSign,
+    icon: CircleDollarSign,
     balance: 65922.82,
     usdValue: 65922.82,
     change: -0.01,
@@ -51,7 +52,7 @@ export const coins: Coin[] = [
     name: "USD Coin",
     ticker: "USDC",
     network: "ERC20",
-    icon: coinIcons.CircleDollarSign,
+    icon: CircleDollarSign,
     balance: 56230.23,
     usdValue: 56230.23,
     change: 1.66,
@@ -59,12 +60,22 @@ export const coins: Coin[] = [
    {
     name: "BNB",
     ticker: "BNB",
-    icon: coinIcons.Box,
+    icon: Box,
     balance: 20,
     usdValue: 11560.00,
     change: -0.22,
   },
 ];
+
+export const portfolioData = [
+    { date: 'Jan', balance: 850000 },
+    { date: 'Feb', balance: 920000 },
+    { date: 'Mar', balance: 900000 },
+    { date: 'Apr', balance: 980000 },
+    { date: 'May', balance: 1100000 },
+    { date: 'Jun', balance: 1250000 },
+    { date: 'Jul', balance: 1371667.21 },
+]
 
 export interface Transaction {
   id: string;
