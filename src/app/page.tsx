@@ -234,7 +234,7 @@ export default function LandingPage() {
               <div/>
             </div>
             <div className="mt-8 relative h-[400px] flex justify-center items-center group">
-                <div className="absolute z-0 group-hover:z-0 transition-all duration-500 ease-in-out transform group-hover:translate-x-[-25%]">
+                <div className="absolute z-0 group-hover:z-0 transition-all duration-500 ease-in-out transform group-hover:translate-x-[-35%]">
                     <Image 
                         src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722693/2_tf2hjp.png" 
                         width={250} 
@@ -254,7 +254,7 @@ export default function LandingPage() {
                         data-ai-hint="app interface dark"
                     />
                 </div>
-                <div className="absolute z-0 group-hover:z-0 transition-all duration-500 ease-in-out transform group-hover:translate-x-[25%]">
+                <div className="absolute z-0 group-hover:z-0 transition-all duration-500 ease-in-out transform group-hover:translate-x-[35%]">
                     <Image 
                         src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722692/1_qhxhvr.png" 
                         width={250} 
