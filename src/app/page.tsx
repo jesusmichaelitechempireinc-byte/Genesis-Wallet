@@ -129,7 +129,7 @@ export default function LandingPage() {
                   width={200}
                   height={400}
                   alt="Genesis Vault Interface" 
-                  className="transition-transform duration-500 shadow-2xl shadow-primary/20 [filter:drop-shadow(0_0_20px_hsl(var(--primary)/0.2))]" 
+                  className="transition-transform duration-500 [filter:drop-shadow(0_0_20px_hsl(var(--primary)/0.2))]" 
                   data-ai-hint="app interface dark" />
             </div>
         </div>
@@ -232,7 +232,7 @@ export default function LandingPage() {
             </div>
             <div className="mt-8">
               <Image 
-                src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722338/case-img19-1-830x717_1_hvmgcu.png" 
+                src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551236/case-img19-1-830x717_ngv5px.png" 
                 width={1200} 
                 height={500} 
                 alt="Multi-Wallet Management Interface"
@@ -316,3 +316,5 @@ export default function LandingPage() {
     </div>
   );
 }
+
+    
