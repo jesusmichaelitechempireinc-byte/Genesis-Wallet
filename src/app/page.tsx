@@ -106,22 +106,27 @@ export default function LandingPage() {
             </div>
         </div>
 
-
-        <section id="assets" className="w-full max-w-6xl mx-auto py-24">
-            <div className="text-center mb-16 fade-in opacity-0">
+        <section id="assets" className="w-full max-w-6xl mx-auto py-24 text-center">
+            <div className="mb-16 fade-in opacity-0">
                 <h2 className="text-5xl font-bold font-headline">All Your Favorite Assets</h2>
-                <p className="text-xl text-muted-foreground mt-4 max-w-3xl mx-auto">Genesis offers a unified home for your entire portfolio, supporting thousands of tokens across multiple blockchains. From the cornerstones of crypto to the latest DeFi gems, manage it all with unparalleled security and ease.</p>
+                <p className="text-xl text-muted-foreground mt-4 max-w-3xl mx-auto">
+                    Genesis supports a vast and growing ecosystem of cryptocurrencies and digital tokens.
+                </p>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
-                {tokenAssets.map((token, i) => (
-                    <div key={token.name} className="flex flex-col items-center text-center p-4 rounded-2xl shadow-neo-out-sm transition-all duration-300 hover:shadow-neo-in-sm hover:-translate-y-1 fade-in opacity-0 group" style={{ animationDelay: `${i * 50}ms`}}>
-                        <div className="p-4 rounded-full shadow-neo-in-sm bg-background mb-4 transition-all duration-300 group-hover:shadow-neo-out-sm">
-                            <token.icon className="h-8 w-8 text-primary transition-all duration-300 group-hover:primary-glow" />
-                        </div>
-                        <p className="font-semibold text-sm">{token.name}</p>
+            <div className="flex justify-center items-center flex-wrap gap-4 px-4">
+                {tokenAssets.slice(0, 10).map((token, i) => (
+                    <div
+                        key={token.name}
+                        className="group flex items-center justify-center h-20 w-20 rounded-full bg-background shadow-neo-in transition-all duration-300 ease-in-out hover:shadow-neo-out hover:-translate-y-2 fade-in opacity-0"
+                        style={{ animationDelay: `${200 + i * 80}ms` }}
+                    >
+                        <token.icon className="h-9 w-9 text-muted-foreground transition-all duration-300 group-hover:text-primary group-hover:[filter:drop-shadow(0_0_8px_hsl(var(--primary)/0.8))]" />
                     </div>
                 ))}
             </div>
+            <p className="mt-8 text-muted-foreground fade-in opacity-0" style={{ animationDelay: `${200 + tokenAssets.length * 80}ms` }}>
+                ...and hundreds more.
+            </p>
         </section>
 
         <section id="features" className="w-full max-w-6xl mx-auto py-24">
