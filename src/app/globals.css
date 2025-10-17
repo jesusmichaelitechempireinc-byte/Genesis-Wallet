@@ -32,7 +32,7 @@ body {
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
+    --radius: 0.8rem;
   }
   .dark {
     --background: 210 29% 25%;
@@ -84,6 +84,22 @@ body {
 
   .shadow-neo-in-sm {
     box-shadow: inset 8px 8px 16px hsl(210 30% 16%), inset -8px -8px 16px hsl(210 25% 34%);
+  }
+
+  .shadow-neo-out-lg {
+    box-shadow: 35px 35px 70px hsl(210 30% 14%), -35px -35px 70px hsl(210 25% 36%);
+  }
+  
+  .shadow-neo-in-lg {
+    box-shadow: inset 35px 35px 70px hsl(210 30% 14%), inset -35px -35px 70px hsl(210 25% 36%);
+  }
+  
+  .shadow-neo-out-xl {
+    box-shadow: 50px 50px 100px hsl(210 30% 12%), -50px -50px 100px hsl(210 25% 38%);
+  }
+
+  .shadow-neo-in-xl {
+    box-shadow: inset 50px 50px 100px hsl(210 30% 12%), inset -50px -50px 100px hsl(210 25% 38%);
   }
 
   .btn-glow {
