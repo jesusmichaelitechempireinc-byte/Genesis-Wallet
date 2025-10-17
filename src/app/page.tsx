@@ -234,33 +234,33 @@ export default function LandingPage() {
               <div/>
             </div>
             <div className="mt-8 relative h-[400px] flex justify-center items-center group">
-                <div className="absolute z-0 group-hover:z-0 transition-all duration-500 ease-in-out" style={{ transform: 'translateX(-60%)' }}>
+                <div className="absolute z-0 group-hover:z-0 transition-all duration-500 ease-in-out transform group-hover:translate-x-[-25%]">
                     <Image 
                         src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722693/2_tf2hjp.png" 
                         width={250} 
                         height={500} 
                         alt="Manage Wallets Mockup"
-                        className="rounded-xl transition-all duration-500 ease-in-out group-hover:scale-110 [filter:drop-shadow(0_10px_25px_hsl(var(--primary)/0.25))] group-hover:[filter:drop-shadow(0_15px_30px_hsl(var(--primary)/0.4))]"
+                        className="rounded-xl transition-all duration-500 ease-in-out group-hover:scale-110 [filter:drop-shadow(0_10px_25px_hsl(var(--primary)/0.25))] group-hover:[filter:drop-shadow(0_15px_30px_hsl(var(--primary)/0.5))]"
                         data-ai-hint="app interface dark"
                     />
                 </div>
-                <div className="absolute z-10 group-hover:z-20 transition-all duration-500 ease-in-out" style={{ transform: 'scale(1.1)' }}>
+                <div className="absolute z-10 group-hover:z-20 transition-all duration-500 ease-in-out transform scale-110 group-hover:scale-125">
                     <Image 
                         src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722692/3_yydlje.png" 
                         width={250} 
                         height={500} 
                         alt="Investments Mockup"
-                        className="rounded-xl transition-all duration-500 ease-in-out group-hover:scale-125 [filter:drop-shadow(0_20px_30px_hsl(var(--primary)/0.35))] group-hover:[filter:drop-shadow(0_25px_45px_hsl(var(--primary)/0.5))]"
+                        className="rounded-xl transition-all duration-500 ease-in-out [filter:drop-shadow(0_20px_30px_hsl(var(--primary)/0.35))] group-hover:[filter:drop-shadow(0_25px_45px_hsl(var(--primary)/0.6))]"
                         data-ai-hint="app interface dark"
                     />
                 </div>
-                <div className="absolute z-0 group-hover:z-0 transition-all duration-500 ease-in-out" style={{ transform: 'translateX(60%)' }}>
+                <div className="absolute z-0 group-hover:z-0 transition-all duration-500 ease-in-out transform group-hover:translate-x-[25%]">
                     <Image 
                         src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722692/1_qhxhvr.png" 
                         width={250} 
                         height={500} 
                         alt="Exchange Wallet Mockup"
-                        className="rounded-xl transition-all duration-500 ease-in-out group-hover:scale-110 [filter:drop-shadow(0_10px_25px_hsl(var(--primary)/0.25))] group-hover:[filter:drop-shadow(0_15px_30px_hsl(var(--primary)/0.4))]"
+                        className="rounded-xl transition-all duration-500 ease-in-out group-hover:scale-110 [filter:drop-shadow(0_10px_25px_hsl(var(--primary)/0.25))] group-hover:[filter:drop-shadow(0_15px_30px_hsl(var(--primary)/0.5))]"
                         data-ai-hint="app interface dark"
                     />
                 </div>
