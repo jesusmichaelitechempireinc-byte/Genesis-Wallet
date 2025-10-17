@@ -25,7 +25,7 @@ const navItems = [
 
 export default function Sidebar() {
   return (
-    <aside className="hidden md:flex w-64 flex-col border-r p-4 shadow-neo-out z-20 bg-background">
+    <aside className="hidden w-64 flex-col border-r p-4 shadow-neo-out z-20 bg-background">
       <Link href="/" className="flex items-center gap-3 px-2 py-4">
         <GenesisVaultLogo />
         <h1 className="text-xl font-bold font-headline">Genesis Vault</h1>

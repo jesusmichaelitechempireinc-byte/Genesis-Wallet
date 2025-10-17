@@ -34,8 +34,8 @@ const NavItem = ({ href, icon: Icon, label }: typeof navItems[0]) => {
 
 export default function BottomNav() {
   return (
-    <footer className="md:hidden fixed bottom-0 left-0 right-0 h-28 bg-background/80 backdrop-blur-sm z-50 border-t">
-        <nav className="h-full w-full flex items-center justify-around px-2">
+    <footer className="fixed bottom-0 left-0 right-0 h-28 bg-background/80 backdrop-blur-sm z-50 border-t">
+        <nav className="h-full w-full flex items-center justify-around px-2 max-w-2xl mx-auto">
             {navItems.map(item => <NavItem key={item.href} {...item} />)}
         </nav>
     </footer>
