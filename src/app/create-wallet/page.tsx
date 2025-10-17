@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
@@ -5,9 +6,9 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Fingerprint, Loader2, Eye, EyeOff, Delete, Copy, AlertTriangle, ShieldCheck } from 'lucide-react';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Fingerprint, Loader2, Eye, EyeOff, Delete, Copy, AlertTriangle, ShieldCheck, Shuffle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 const PIN_LENGTH = 6;
 const generatedPhrase = 'orbit scatter marry cause vessel summer obvious basket cannon pattern stereo shield';
@@ -15,7 +16,14 @@ const generatedPhrase = 'orbit scatter marry cause vessel summer obvious basket 
 const CreateWalletPage = () => {
   const router = useRouter();
   const [step, setStep] = useState<'generate' | 'confirm' | 'secure'>('generate');
-  const [hasBackedUp, setHasBackedUp] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  
+  // Phrase generation & confirmation state
+  const words = useMemo(() => generatedPhrase.split(' '), []);
+  const [shuffledWords, setShuffledWords] = useState<string[]>([]);
+  const [selectedWords, setSelectedWords] = useState<string[]>([]);
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [confirmError, setConfirmError] = useState(false);
 
   // Security check state
   const [pin, setPin] = useState('');
@@ -23,11 +31,8 @@ const CreateWalletPage = () => {
   const [activePinField, setActivePinField] = useState<'pin' | 'confirm'>('pin');
   const [isPinVisible, setIsPinVisible] = useState(false);
   const [useBiometrics, setUseBiometrics] = useState(true);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [pinError, setPinError] = useState('');
   
-  const words = useMemo(() => generatedPhrase.split(' '), []);
-
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(generatedPhrase);
     toast({
@@ -36,22 +41,46 @@ const CreateWalletPage = () => {
     });
   };
 
-  const handleNextStep = () => {
-    if (step === 'generate') {
-      setStep('confirm');
-    } else if (step === 'confirm') {
-      if(hasBackedUp) {
-        setStep('secure');
-      } else {
-        toast({
-            variant: "destructive",
-            title: "Confirmation Required",
-            description: "Please confirm you have backed up your phrase.",
-        });
-      }
+  useEffect(() => {
+    if (step === 'confirm') {
+      const shuffled = [...words].sort(() => Math.random() - 0.5);
+      setShuffledWords(shuffled);
+      setSelectedWords([]);
+      setConfirmError(false);
+    }
+  }, [step, words]);
+
+
+  const handleWordSelect = (word: string) => {
+    if (selectedWords.length < words.length) {
+      setSelectedWords([...selectedWords, word]);
+      setConfirmError(false);
     }
   };
+
+  const handleWordDeselect = (index: number) => {
+    setSelectedWords(selectedWords.filter((_, i) => i !== index));
+    setConfirmError(false);
+  };
   
+  const handleConfirmPhrase = () => {
+    setIsConfirming(true);
+    setTimeout(() => {
+      const isCorrect = selectedWords.join(' ') === generatedPhrase;
+      if (isCorrect) {
+        setStep('secure');
+      } else {
+        setConfirmError(true);
+        toast({
+          variant: "destructive",
+          title: "Incorrect Phrase",
+          description: "The phrase you entered does not match. Please try again.",
+        });
+      }
+      setIsConfirming(false);
+    }, 1500);
+  };
+
   const handlePinInput = (value: string) => {
     if (isProcessing) return;
     setPinError('');
@@ -137,7 +166,7 @@ const CreateWalletPage = () => {
                 <p className='text-sm text-yellow-400/80'>Anyone with this phrase can take your assets. Store it securely.</p>
               </div>
             </div>
-            <Button onClick={handleNextStep} className="w-full h-14 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
+            <Button onClick={() => setStep('confirm')} className="w-full h-14 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
               I've Backed It Up
             </Button>
           </>
@@ -146,22 +175,38 @@ const CreateWalletPage = () => {
         return (
             <>
               <div className="text-center mb-8">
-                <ShieldCheck className="h-20 w-20 text-primary mx-auto mb-4 primary-glow" />
-                <h1 className="text-4xl font-bold font-headline">Confirm Backup</h1>
-                <p className="text-muted-foreground mt-2">To ensure you've saved your phrase correctly, please acknowledge the following.</p>
+                <ShieldCheck className="h-16 w-16 text-primary mx-auto mb-4 primary-glow" />
+                <h1 className="text-4xl font-bold font-headline">Confirm Phrase</h1>
+                <p className="text-muted-foreground mt-2">Tap the words in the correct order to confirm your backup.</p>
               </div>
 
-              <div className="space-y-6 text-left my-10 p-6 rounded-2xl shadow-neo-in-lg bg-background/50">
-                <div className="flex items-start space-x-3">
-                    <Checkbox id="confirm-backup" checked={hasBackedUp} onCheckedChange={(checked) => setHasBackedUp(checked as boolean)} className='mt-1 h-5 w-5' />
-                    <Label htmlFor="confirm-backup" className="text-base text-foreground leading-relaxed">
-                        I understand that if I lose my secret recovery phrase, I will lose access to my wallet and funds forever. Genesis Vault cannot recover it for me.
-                    </Label>
-                </div>
+              <div className={cn("min-h-[144px] p-4 rounded-2xl shadow-neo-in-lg bg-background/50 mb-6 flex flex-wrap gap-2 items-center justify-center transition-all", confirmError && "ring-2 ring-destructive")}>
+                  {selectedWords.map((word, index) => (
+                      <Button key={index} variant="secondary" onClick={() => handleWordDeselect(index)} className="font-mono shadow-neo-out-sm rounded-full">
+                          {word}
+                      </Button>
+                  ))}
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 mb-8">
+                {shuffledWords.map((word, index) => {
+                  const isSelected = selectedWords.includes(word);
+                  return (
+                    <Button 
+                      key={index} 
+                      variant="outline" 
+                      onClick={() => handleWordSelect(word)} 
+                      disabled={isSelected}
+                      className={cn("font-mono shadow-neo-out-sm rounded-full bg-background/50 hover:bg-muted/50", isSelected && "opacity-20 shadow-neo-in-sm")}
+                    >
+                      {word}
+                    </Button>
+                  )
+                })}
               </div>
               
-              <Button onClick={handleNextStep} className="w-full h-14 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
-                Continue
+              <Button onClick={handleConfirmPhrase} disabled={isConfirming || selectedWords.length !== words.length} className={`w-full h-14 text-lg rounded-full bg-primary text-primary-foreground shadow-neo-out-lg active:shadow-neo-in-lg transition-all duration-300 ${isConfirming ? 'processing-glow animate-pulse' : 'btn-glow'}`}>
+                {isConfirming ? <Loader2 className="animate-spin" /> : 'Confirm & Finish'}
               </Button>
             </>
         )
