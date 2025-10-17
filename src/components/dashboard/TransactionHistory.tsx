@@ -24,13 +24,13 @@ export default function TransactionHistory() {
   const [history] = useState<Transaction[]>(transactions);
 
   return (
-    <Card className="shadow-neo-out border-none">
+    <Card className="shadow-neo-out-lg border-none">
       <CardHeader>
-        <CardTitle className="font-headline">Transaction History</CardTitle>
+        <CardTitle className="font-headline text-3xl">Transaction History</CardTitle>
         <CardDescription>Your most recent transactions.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="rounded-lg shadow-neo-in bg-background overflow-hidden">
+        <div className="rounded-lg shadow-neo-in-lg bg-background overflow-hidden">
           <Table>
             <TableHeader>
               <TableRow className="border-b-0">

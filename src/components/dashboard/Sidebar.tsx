@@ -7,19 +7,20 @@ import {
   Settings,
   HelpCircle,
   BrainCircuit,
+  ArrowUp,
+  ArrowDown,
 } from 'lucide-react';
 import { GenesisVaultLogo } from '@/components/icons';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 const navItems = [
-  { href: '/dashboard', icon: Home, label: 'Dashboard' },
+  { href: '/dashboard', icon: Wallet, label: 'Wallet' },
+  { href: '/dashboard/swap', icon: ArrowRightLeft, label: 'Swap' },
+  { href: '/dashboard/send', icon: ArrowUp, label: 'Send' },
+  { href: '/dashboard/receive', icon: ArrowDown, label: 'Receive' },
+  { href: '/dashboard/history', icon: History, label: 'History' },
   { href: '/dashboard/genesis-ai', icon: BrainCircuit, label: 'Genesis AI' },
-  { href: '#', icon: Wallet, label: 'My Wallet' },
-  { href: '#', icon: ArrowRightLeft, label: 'Swap' },
-  { href: '#', icon: History, label: 'History' },
-  { href: '#', icon: Settings, label: 'Settings' },
 ];
 
 export default function Sidebar() {
@@ -43,7 +44,14 @@ export default function Sidebar() {
           </Link>
         ))}
       </nav>
-      <div className="mt-auto">
+       <div className="mt-auto space-y-2">
+         <Link
+            href={'/dashboard/settings'}
+            className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted/50`}
+          >
+            <Settings className="h-5 w-5" />
+            Settings
+          </Link>
         <Card className="shadow-neo-in border-none">
             <CardContent className="p-4 flex flex-col items-center text-center">
                 <HelpCircle className="h-8 w-8 text-primary mb-2 [filter:drop-shadow(0_0_3px_hsl(var(--primary)/0.6))]"/>

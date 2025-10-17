@@ -28,14 +28,14 @@ export default function TokenSwap() {
   const toAmount = parseFloat(fromAmount) * exchangeRate;
 
   return (
-    <Card className="shadow-neo-out border-none h-full">
+    <Card className="shadow-neo-out-lg border-none h-full w-full">
       <CardHeader>
-        <CardTitle className="font-headline">Token Swap</CardTitle>
+        <CardTitle className="font-headline text-3xl">Token Swap</CardTitle>
         <CardDescription>Instantly swap between assets.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col h-[calc(100%-88px)]">
         <div className="space-y-4 flex-grow">
-          <div className="p-4 rounded-lg shadow-neo-in bg-background">
+          <div className="p-4 rounded-lg shadow-neo-in-sm bg-background">
             <Label htmlFor="from-amount">You Pay</Label>
             <div className="flex items-center gap-2 mt-1">
               <Input
@@ -77,7 +77,7 @@ export default function TokenSwap() {
             </Button>
           </div>
 
-          <div className="p-4 rounded-lg shadow-neo-in bg-background">
+          <div className="p-4 rounded-lg shadow-neo-in-sm bg-background">
             <Label htmlFor="to-amount">You Get</Label>
             <div className="flex items-center gap-2 mt-1">
               <Input
@@ -115,7 +115,7 @@ export default function TokenSwap() {
         <div className="text-center text-sm text-muted-foreground font-mono mt-6">
           1 {fromCoin.ticker} ≈ {exchangeRate.toFixed(4)} {toCoin.ticker}
         </div>
-        <Button size="lg" className="w-full mt-2 rounded-full bg-primary text-primary-foreground btn-glow">
+        <Button size="lg" className="w-full mt-2 rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg">
           Swap Tokens
         </Button>
       </CardContent>

@@ -8,6 +8,8 @@ import { BrainCircuit, MessageSquare, Plus, Send, Settings2, Trash2 } from 'luci
 import { GenesisAILogo } from '@/components/icons/GenesisAILogo';
 import Link from 'next/link';
 import Image from 'next/image';
+import BottomNav from '@/components/dashboard/BottomNav';
+import Sidebar from '@/components/dashboard/Sidebar';
 
 const recentChats = [
     { id: '1', title: 'Market analysis for Q3' },
@@ -25,38 +27,14 @@ const chatMessages = [
 export default function GenesisAIPage() {
   return (
     <div className="flex h-screen w-full bg-background font-body text-foreground">
-      {/* Sidebar */}
-      <aside className="hidden md:flex w-72 flex-col border-r p-4 shadow-neo-out-lg z-20 bg-background">
-        <Link href="/dashboard" className="flex items-center gap-3 px-2 py-4 mb-4">
-            <GenesisAILogo />
-            <h1 className="text-2xl font-bold font-headline">Genesis AI</h1>
-        </Link>
-        <div className="flex-1 space-y-2 py-4 overflow-y-auto">
-            <h2 className="px-3 text-sm font-semibold text-muted-foreground mb-2">Recent Chats</h2>
-            {recentChats.map(chat => (
-                <Button key={chat.id} variant="ghost" className="w-full justify-start gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted/50">
-                    <MessageSquare className="h-5 w-5" />
-                    <span className="truncate">{chat.title}</span>
-                </Button>
-            ))}
-        </div>
-        <div className="mt-auto space-y-2">
-            <Button variant="outline" className="w-full justify-start gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted/50 shadow-neo-out-sm">
-                <Trash2 className="h-5 w-5" />
-                Clear Conversations
-            </Button>
-             <Button variant="outline" className="w-full justify-start gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted/50 shadow-neo-out-sm">
-                <Settings2 className="h-5 w-5" />
-                AI Settings
-            </Button>
-        </div>
-      </aside>
+      <Sidebar />
 
       {/* Main Chat Panel */}
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col relative">
         <header className="sticky top-0 z-10 flex h-20 items-center justify-between border-b bg-background/80 px-8 backdrop-blur-sm">
             <div className="flex items-center gap-4">
-                <h1 className="text-2xl font-semibold font-headline">New Conversation</h1>
+                 <GenesisAILogo />
+                <h1 className="text-2xl font-semibold font-headline">Genesis AI</h1>
             </div>
             <Button className="rounded-full shadow-neo-out-sm bg-background hover:bg-muted/50 text-foreground hover:text-primary">
                 <Plus className="mr-2 h-5 w-5" />
@@ -64,7 +42,7 @@ export default function GenesisAIPage() {
             </Button>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-8">
+        <main className="flex-1 overflow-y-auto p-8 mb-28 md:mb-0">
             <div className="space-y-8 max-w-4xl mx-auto">
                 {chatMessages.map((message, index) => (
                     <div key={index} className={`flex items-start gap-4 ${message.from === 'user' ? 'justify-end' : ''}`}>
@@ -87,7 +65,7 @@ export default function GenesisAIPage() {
             </div>
         </main>
 
-        <footer className="sticky bottom-0 z-10 border-t bg-background/80 p-4 backdrop-blur-sm">
+        <footer className="absolute bottom-0 md:sticky w-full z-10 border-t bg-background/80 p-4 backdrop-blur-sm mb-28 md:mb-0">
             <div className="relative max-w-4xl mx-auto">
                 <Input
                     placeholder="Ask Genesis anything about your portfolio, market trends, or security..."
@@ -98,6 +76,7 @@ export default function GenesisAIPage() {
                 </Button>
             </div>
         </footer>
+        <BottomNav />
       </div>
     </div>
   );
