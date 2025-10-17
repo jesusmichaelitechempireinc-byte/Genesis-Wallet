@@ -1,35 +1,68 @@
 import { BitcoinIcon, EthereumIcon, CardanoIcon } from "@/components/icons";
+import { coins as coinIcons } from 'lucide-react';
 import type { ComponentType } from "react";
 
 export interface Coin {
   name: string;
   ticker: string;
+  network?: string;
   icon: ComponentType<{ className?: string }>;
   balance: number;
   usdValue: number;
+  change: number;
 }
 
 export const coins: Coin[] = [
   {
     name: "Bitcoin",
     ticker: "BTC",
+    network: "BIP84",
     icon: BitcoinIcon,
-    balance: 1.25,
-    usdValue: 81250.75,
+    balance: 10.2510,
+    usdValue: 582554.00,
+    change: 1.91,
   },
   {
     name: "Ethereum",
     ticker: "ETH",
     icon: EthereumIcon,
-    balance: 20.8,
-    usdValue: 70720.0,
+    balance: 152.94,
+    usdValue: 351763.11,
+    change: 4.21,
   },
   {
-    name: "Cardano",
-    ticker: "ADA",
-    icon: CardanoIcon,
-    balance: 15300,
-    usdValue: 7200.5,
+    name: "Matic",
+    ticker: "MATIC",
+    icon: coinIcons.CircleDot,
+    balance: 183622.12,
+    usdValue: 303187.05,
+    change: -0.21,
+  },
+  {
+    name: "Tether",
+    ticker: "USDT",
+    network: "TRC20",
+    icon: coinIcons.CircleDollarSign,
+    balance: 65922.82,
+    usdValue: 65922.82,
+    change: -0.01,
+  },
+    {
+    name: "USD Coin",
+    ticker: "USDC",
+    network: "ERC20",
+    icon: coinIcons.CircleDollarSign,
+    balance: 56230.23,
+    usdValue: 56230.23,
+    change: 1.66,
+  },
+   {
+    name: "BNB",
+    ticker: "BNB",
+    icon: coinIcons.Box,
+    balance: 20,
+    usdValue: 11560.00,
+    change: -0.22,
   },
 ];
 
@@ -95,16 +128,6 @@ export const transactions: Transaction[] = [
     date: "2024-07-16",
     address: "bc1...w5x6",
   },
-];
-
-export const portfolioData = [
-  { date: "Jan", balance: 80000 },
-  { date: "Feb", balance: 92000 },
-  { date: "Mar", balance: 85000 },
-  { date: "Apr", balance: 110000 },
-  { date: "May", balance: 130000 },
-  { date: "Jun", balance: 145000 },
-  { date: "Jul", balance: 159171 },
 ];
 
 export const totalBalance = coins.reduce((acc, coin) => acc + coin.usdValue, 0);
