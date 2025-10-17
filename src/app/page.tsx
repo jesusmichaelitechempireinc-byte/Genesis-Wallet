@@ -9,16 +9,16 @@ import { CreditCard, ShieldCheck, Zap, Bot, Globe, KeyRound, UserPlus, DownloadC
 import Image from 'next/image';
 
 const FeatureCard = ({ icon: Icon, title, description, delay = 0 }: { icon: React.ElementType, title: string, description: string, delay?: number }) => (
-  <div className="flex flex-col items-center text-center p-4 fade-in opacity-0" style={{ animationDelay: `${delay}ms` }}>
-    <div className="relative mb-6">
-      <div className="w-24 h-24 rounded-full bg-background shadow-neo-in-lg flex items-center justify-center">
-        <Icon className="h-10 w-10 text-primary" />
-      </div>
-      <div className="absolute inset-0 rounded-full primary-glow opacity-50 blur-lg -z-10 animate-pulse" style={{ animationDelay: `${delay + 200}ms` }}></div>
+    <div className="flex flex-col items-center text-center p-4 fade-in opacity-0" style={{ animationDelay: `${delay}ms` }}>
+        <div className="relative mb-6 group">
+            <div className="w-24 h-24 rounded-full bg-background shadow-neo-in-lg flex items-center justify-center transition-all duration-300 ease-in-out group-hover:shadow-neo-out-lg">
+                <Icon className="h-10 w-10 text-primary transition-all duration-300 ease-in-out group-hover:scale-110 group-hover:text-[hsl(var(--primary)/0.8)]" />
+            </div>
+            <div className="absolute inset-0 rounded-full primary-glow opacity-50 blur-lg -z-10 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:blur-xl"></div>
+        </div>
+        <h3 className="text-xl font-bold font-headline mb-2">{title}</h3>
+        <p className="text-muted-foreground">{description}</p>
     </div>
-    <h3 className="text-xl font-bold font-headline mb-2">{title}</h3>
-    <p className="text-muted-foreground">{description}</p>
-  </div>
 );
 
 const faqItems = [
@@ -121,13 +121,13 @@ export default function LandingPage() {
                   </Link>
                 </div>
             </div>
-            <div className="relative flex justify-center items-center h-full fade-in opacity-0 animate-delay-200">
+            <div className="relative group flex justify-center items-center h-full fade-in opacity-0 animate-delay-200">
                 <Image 
                   src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722677/wallet-2_z7psdg.png" 
                   width={150}
                   height={75}
                   alt="Genesis Vault Wallet" 
-                  className="transition-transform duration-500 [filter:drop-shadow(0_15px_30px_hsl(var(--primary)/0.35))]" 
+                  className="transition-all duration-500 ease-in-out group-hover:scale-110 [filter:drop-shadow(0_15px_30px_hsl(var(--primary)/0.25))] group-hover:[filter:drop-shadow(0_20px_40px_hsl(var(--primary)/0.5))]"
                   data-ai-hint="app interface dark" />
             </div>
         </div>
@@ -233,34 +233,34 @@ export default function LandingPage() {
               </div>
               <div/>
             </div>
-            <div className="mt-8 relative h-[400px] flex justify-center items-center">
-                <div className="absolute z-0" style={{ transform: 'translateX(-45%)' }}>
+            <div className="mt-8 relative h-[400px] flex justify-center items-center group">
+                <div className="absolute z-0 group-hover:z-0 transition-all duration-500 ease-in-out" style={{ transform: 'translateX(-60%)' }}>
                     <Image 
                         src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722693/2_tf2hjp.png" 
                         width={250} 
                         height={500} 
                         alt="Manage Wallets Mockup"
-                        className="rounded-xl [filter:drop-shadow(0_10px_25px_hsl(var(--primary)/0.25))]"
+                        className="rounded-xl transition-all duration-500 ease-in-out group-hover:scale-110 [filter:drop-shadow(0_10px_25px_hsl(var(--primary)/0.25))] group-hover:[filter:drop-shadow(0_15px_30px_hsl(var(--primary)/0.4))]"
                         data-ai-hint="app interface dark"
                     />
                 </div>
-                <div className="absolute z-10" style={{ transform: 'scale(1.1)' }}>
+                <div className="absolute z-10 group-hover:z-20 transition-all duration-500 ease-in-out" style={{ transform: 'scale(1.1)' }}>
                     <Image 
                         src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722692/3_yydlje.png" 
                         width={250} 
                         height={500} 
                         alt="Investments Mockup"
-                        className="rounded-xl [filter:drop-shadow(0_20px_30px_hsl(var(--primary)/0.35))]"
+                        className="rounded-xl transition-all duration-500 ease-in-out group-hover:scale-125 [filter:drop-shadow(0_20px_30px_hsl(var(--primary)/0.35))] group-hover:[filter:drop-shadow(0_25px_45px_hsl(var(--primary)/0.5))]"
                         data-ai-hint="app interface dark"
                     />
                 </div>
-                <div className="absolute z-0" style={{ transform: 'translateX(45%)' }}>
+                <div className="absolute z-0 group-hover:z-0 transition-all duration-500 ease-in-out" style={{ transform: 'translateX(60%)' }}>
                     <Image 
                         src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722692/1_qhxhvr.png" 
                         width={250} 
                         height={500} 
                         alt="Exchange Wallet Mockup"
-                        className="rounded-xl [filter:drop-shadow(0_10px_25px_hsl(var(--primary)/0.25))]"
+                        className="rounded-xl transition-all duration-500 ease-in-out group-hover:scale-110 [filter:drop-shadow(0_10px_25px_hsl(var(--primary)/0.25))] group-hover:[filter:drop-shadow(0_15px_30px_hsl(var(--primary)/0.4))]"
                         data-ai-hint="app interface dark"
                     />
                 </div>
