@@ -10,8 +10,8 @@ import Image from 'next/image';
 import { BitcoinIcon, EthereumIcon, CardanoIcon } from '@/components/icons';
 import { Atom, Dog, Unplug, Waves, Wind, Orbit, Sun, Gem } from 'lucide-react';
 
-const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementType, title: string, description: string }) => (
-  <div className="p-8 rounded-2xl shadow-neo-out-lg bg-background flex flex-col items-center text-center">
+const FeatureCard = ({ icon: Icon, title, description, delay = 0 }: { icon: React.ElementType, title: string, description: string, delay?: number }) => (
+  <div className="p-8 rounded-2xl shadow-neo-out-lg bg-background flex flex-col items-center text-center fade-in opacity-0" style={{ animationDelay: `${delay}ms` }}>
     <div className="p-5 rounded-full shadow-neo-in-lg bg-background mb-6">
       <Icon className="h-10 w-10 text-primary [filter:drop-shadow(0_0_5px_hsl(var(--primary)/0.7))]" />
     </div>
@@ -64,43 +64,64 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen w-full bg-background font-body text-foreground">
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]"></div>
+      <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-primary/10 via-background to-background -z-10"></div>
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 via-background to-background -z-10"></div>
+
+      <header className="relative z-20 flex justify-between items-center p-6 max-w-7xl mx-auto w-full">
+        <Link href="/" className="flex items-center gap-3">
+          <GenesisVaultLogo />
+          <h2 className="text-xl font-bold">Genesis Vault</h2>
+        </Link>
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+          <Link href="#features" className="hover:text-primary transition-colors">Features</Link>
+          <Link href="#assets" className="hover:text-primary transition-colors">Assets</Link>
+          <Link href="#faq" className="hover:text-primary transition-colors">FAQ</Link>
+        </nav>
+        <Link href="/wallet-setup">
+            <Button size="default" className="rounded-full bg-primary/10 border border-primary/50 text-primary-foreground hover:bg-primary/20 shadow-neo-out-sm active:shadow-neo-in-sm transition-all duration-300">
+              Launch App
+            </Button>
+          </Link>
+      </header>
       
       <main className="relative z-10 flex flex-col items-center p-4 overflow-hidden">
         
-        <div className="text-center my-24 flex flex-col items-center">
-            <div className="relative w-full max-w-6xl mx-auto mb-16">
-                <div className="absolute inset-0 rounded-3xl shadow-neo-out-xl bg-background -z-10"></div>
-                <Image src="https://picsum.photos/seed/99/1200/600" width={1200} height={600} alt="Crypto vault hero image" className="rounded-3xl p-4 shadow-neo-in-xl" data-ai-hint="crypto vault abstract" />
+        <div className="w-full max-w-7xl mx-auto grid md:grid-cols-2 items-center my-24 gap-8">
+            <div className="text-center md:text-left flex flex-col items-center md:items-start">
+                <div className="inline-block p-4 rounded-full shadow-neo-out-xl mb-8 bg-background relative fade-in opacity-0">
+                    <div className="p-4 rounded-full shadow-neo-in-xl">
+                    <GenesisVaultLogo />
+                    </div>
+                </div>
+                <h1 className="text-5xl md:text-7xl font-bold font-headline tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground/90 to-muted-foreground fade-in opacity-0 animate-delay-200">
+                    The Evolution of <span className="text-primary primary-glow">Digital Finance</span>
+                </h1>
+                <p className="max-w-xl text-lg text-muted-foreground mb-12 fade-in opacity-0 animate-delay-400">
+                    Genesis Vault is the ultimate non-custodial crypto wallet, giving you complete control over your digital assets. Secure, seamless, and powerful.
+                </p>
+                <Link href="/wallet-setup" className='fade-in opacity-0 animate-delay-600'>
+                    <Button size="lg" className="h-16 px-12 text-xl rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
+                    Access Your Wallet
+                    </Button>
+                </Link>
             </div>
-
-          <div className="inline-block p-8 rounded-full shadow-neo-out-xl mb-8 -mt-24 bg-background relative">
-            <div className="p-8 rounded-full shadow-neo-in-xl">
-              <GenesisVaultLogo />
+            <div className="relative fade-in opacity-0 animate-delay-200">
+                <Image src="https://picsum.photos/seed/33/600/800" width={600} height={800} alt="Genesis Vault Interface" className="rounded-3xl shadow-neo-out-xl -rotate-3 hover:rotate-0 transition-transform duration-500" data-ai-hint="app interface dark" />
+                 <div className="absolute inset-0 rounded-3xl primary-glow opacity-30 -z-10 blur-2xl"></div>
             </div>
-          </div>
-          <h1 className="text-6xl md:text-8xl font-bold font-headline tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground/90 to-muted-foreground">
-            Genesis Vault
-          </h1>
-          <p className="max-w-2xl mx-auto text-xl text-muted-foreground mb-12">
-            The ultimate non-custodial crypto wallet, giving you complete control over your digital assets. Secure, seamless, and powerful.
-          </p>
-          <Link href="/wallet-setup">
-            <Button size="lg" className="h-16 px-12 text-xl rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out active:shadow-neo-in">
-              Access Your Wallet
-            </Button>
-          </Link>
         </div>
 
+
         <section id="assets" className="w-full max-w-6xl mx-auto py-24">
-            <div className="text-center mb-16">
+            <div className="text-center mb-16 fade-in opacity-0">
                 <h2 className="text-5xl font-bold font-headline">All Your Favorite Assets</h2>
                 <p className="text-xl text-muted-foreground mt-4 max-w-3xl mx-auto">Genesis offers a unified home for your entire portfolio, supporting thousands of tokens across multiple blockchains. From the cornerstones of crypto to the latest DeFi gems, manage it all with unparalleled security and ease.</p>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
-                {tokenAssets.map((token) => (
-                    <div key={token.name} className="flex flex-col items-center text-center p-4 rounded-2xl shadow-neo-out-sm transition-all duration-300 hover:shadow-neo-in-sm hover:-translate-y-1">
-                        <div className="p-4 rounded-full shadow-neo-in-sm bg-background mb-4">
-                            <token.icon className="h-8 w-8 text-primary" />
+                {tokenAssets.map((token, i) => (
+                    <div key={token.name} className="flex flex-col items-center text-center p-4 rounded-2xl shadow-neo-out-sm transition-all duration-300 hover:shadow-neo-in-sm hover:-translate-y-1 fade-in opacity-0" style={{ animationDelay: `${i * 50}ms`}}>
+                        <div className="p-4 rounded-full shadow-neo-in-sm bg-background mb-4 transition-all duration-300 group-hover:shadow-neo-out-sm">
+                            <token.icon className="h-8 w-8 text-primary transition-all duration-300 group-hover:primary-glow" />
                         </div>
                         <p className="font-semibold text-sm">{token.name}</p>
                     </div>
@@ -109,7 +130,7 @@ export default function LandingPage() {
         </section>
 
         <section id="features" className="w-full max-w-6xl mx-auto py-24">
-            <div className="text-center mb-16">
+            <div className="text-center mb-16 fade-in opacity-0">
                 <h2 className="text-5xl font-bold font-headline">Unparalleled Features</h2>
                 <p className="text-xl text-muted-foreground mt-4">Everything you need for a secure crypto experience.</p>
             </div>
@@ -118,21 +139,24 @@ export default function LandingPage() {
                 icon={ShieldCheck}
                 title="Total Security"
                 description="Your private keys never leave your device. State-of-the-art encryption for your peace of mind."
+                delay={0}
             />
             <FeatureCard 
                 icon={CreditCard}
                 title="Seamless Swaps"
                 description="Instantly exchange between a vast array of cryptocurrencies with a single click."
+                delay={200}
             />
             <FeatureCard 
                 icon={Zap}
                 title="Lightning Fast"
                 description="Experience blazing-fast transactions and portfolio updates in real-time."
+                delay={400}
             />
             </div>
         </section>
         
-        <section className="w-full max-w-6xl mx-auto py-24">
+        <section className="w-full max-w-6xl mx-auto py-24 fade-in opacity-0">
              <div className="relative p-8 rounded-3xl shadow-neo-out-xl">
                 <Image src="https://picsum.photos/seed/45/1200/500" width={1200} height={500} alt="Digital wallet interface" className="rounded-2xl" data-ai-hint="digital wallet security" />
                 <div className="absolute inset-0 flex items-center justify-start p-16">
@@ -144,7 +168,7 @@ export default function LandingPage() {
             </div>
         </section>
 
-        <section id="why-choose-us" className="w-full max-w-6xl mx-auto py-24">
+        <section id="why-choose-us" className="w-full max-w-6xl mx-auto py-24 fade-in opacity-0">
             <div className="grid md:grid-cols-2 gap-16 items-center">
                 <div className="space-y-6">
                     <h2 className="text-5xl font-bold font-headline">Why Choose Genesis Vault?</h2>
@@ -180,12 +204,12 @@ export default function LandingPage() {
                     </ul>
                 </div>
                 <div className="p-8 rounded-3xl shadow-neo-out-xl">
-                    <Image src="https://picsum.photos/seed/33/600/600" width={600} height={600} alt="Genesis Vault Interface" className="rounded-2xl" data-ai-hint="app interface" />
+                    <Image src="https://picsum.photos/seed/99/600/600" width={600} height={600} alt="Crypto vault hero image" className="rounded-2xl" data-ai-hint="crypto vault abstract" />
                 </div>
             </div>
         </section>
 
-        <section id="faq" className="w-full max-w-3xl mx-auto py-24">
+        <section id="faq" className="w-full max-w-3xl mx-auto py-24 fade-in opacity-0">
             <div className="text-center mb-16">
                 <h2 className="text-5xl font-bold font-headline">Frequently Asked Questions</h2>
             </div>
