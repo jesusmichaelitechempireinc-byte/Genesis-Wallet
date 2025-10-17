@@ -1,11 +1,14 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Fingerprint, Loader2 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Fingerprint, Loader2, Eye, EyeOff, Delete } from 'lucide-react';
+
+const PIN_LENGTH = 6;
 
 const ImportWalletPage = () => {
   const router = useRouter();
@@ -14,23 +17,31 @@ const ImportWalletPage = () => {
   const [isIncorrect, setIsIncorrect] = useState(false);
   const [showPin, setShowPin] = useState(false);
 
+  // New state for the security check page
+  const [pin, setPin] = useState('');
+  const [confirmPin, setConfirmPin] = useState('');
+  const [activePinField, setActivePinField] = useState<'pin' | 'confirm'>('pin');
+  const [isPinVisible, setIsPinVisible] = useState(false);
+  const [useBiometrics, setUseBiometrics] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [pinError, setPinError] = useState('');
+
   const correctPhrase = 'fine steak ozone congress large love hood floor spring riot clown mind';
 
   const handlePhraseChange = (value: string) => {
     setSecretPhrase(value);
     if (isIncorrect) {
-        setIsIncorrect(false);
+      setIsIncorrect(false);
     }
   };
-  
+
   const words = useMemo(() => secretPhrase.trim().toLowerCase().split(/\s+/).filter(Boolean), [secretPhrase]);
   const wordCount = words.length;
 
-
   const handleImport = () => {
     setIsChecking(true);
+    setPinError('');
     setTimeout(() => {
-      // Simple validation for word count and content
       const isCorrect = secretPhrase.trim().toLowerCase() === correctPhrase;
       if (wordCount >= 12 && isCorrect) {
         setShowPin(true);
@@ -40,10 +51,62 @@ const ImportWalletPage = () => {
       setIsChecking(false);
     }, 2000);
   };
+  
+  const handlePinInput = (value: string) => {
+    if (isProcessing) return;
+    setPinError('');
+    if (activePinField === 'pin') {
+      if (pin.length < PIN_LENGTH) setPin(pin + value);
+    } else {
+      if (confirmPin.length < PIN_LENGTH) setConfirmPin(confirmPin + value);
+    }
+  };
+
+  const handleDelete = () => {
+    if (isProcessing) return;
+    setPinError('');
+    if (activePinField === 'pin') {
+      setPin(pin.slice(0, -1));
+    } else {
+      setConfirmPin(confirmPin.slice(0, -1));
+    }
+  };
 
   const handlePinSubmit = () => {
-    router.push('/dashboard');
+    if (pin.length !== PIN_LENGTH || confirmPin.length !== PIN_LENGTH) {
+      setPinError('PIN must be 6 digits.');
+      return;
+    }
+    if (pin !== confirmPin) {
+      setPinError("PINs do not match. Please try again.");
+      setPin('');
+      setConfirmPin('');
+      setActivePinField('pin');
+      return;
+    }
+    setIsProcessing(true);
+    setTimeout(() => {
+      router.push('/dashboard');
+    }, 2500);
   };
+
+  useEffect(() => {
+    if(pin.length === PIN_LENGTH) {
+        setActivePinField('confirm');
+    }
+  }, [pin]);
+
+  const PinDisplay = ({ value }: { value: string }) => (
+    <div className="flex justify-center gap-3">
+        {Array.from({ length: PIN_LENGTH }).map((_, index) => (
+            <div key={index} className={`h-4 w-4 rounded-full transition-all duration-300 ${index < value.length ? 'bg-primary primary-glow' : 'bg-input shadow-neo-in-sm'}`}>
+                {isPinVisible && index < value.length && <span className="flex items-center justify-center h-full text-xs font-bold text-primary-foreground">{value[index]}</span>}
+            </div>
+        ))}
+    </div>
+  );
+
+  const numpadKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', 'delete'];
 
   return (
     <div className="min-h-screen w-full bg-background font-body text-foreground flex items-center justify-center p-4">
@@ -57,18 +120,17 @@ const ImportWalletPage = () => {
               </div>
               <div className="relative mb-4">
                 <Textarea
-                    value={secretPhrase}
-                    onChange={(e) => handlePhraseChange(e.target.value)}
-                    className={`text-left shadow-neo-in-sm rounded-md border-transparent focus:shadow-neo-out-sm transition-shadow resize-none ${isIncorrect ? 'border-destructive ring-2 ring-destructive' : ''}`}
-                    placeholder="Paste your secret phrase here..."
-                    rows={4}
+                  value={secretPhrase}
+                  onChange={(e) => handlePhraseChange(e.target.value)}
+                  className={`text-left shadow-neo-in-sm rounded-md border-transparent focus:shadow-neo-out-sm transition-shadow resize-none ${isIncorrect ? 'border-destructive ring-2 ring-destructive' : ''}`}
+                  placeholder="Paste your secret phrase here..."
+                  rows={4}
                 />
                 <div className="absolute bottom-2 right-3 text-xs text-muted-foreground font-mono">
-                    {wordCount} {wordCount === 1 ? 'word' : 'words'}
+                  {wordCount} {wordCount === 1 ? 'word' : 'words'}
                 </div>
               </div>
-
-              {isIncorrect && <p className="text-destructive text-center mb-4">Incorrect secret phrase. Please try again.</p>}
+              {isIncorrect && <p className="text-destructive text-center mb-4 font-bold text-base opacity-90">Incorrect secret phrase. Please try again.</p>}
               <Button onClick={handleImport} disabled={isChecking} className="w-full h-14 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
                 {isChecking ? <Loader2 className="animate-spin" /> : 'Import Wallet'}
               </Button>
@@ -76,17 +138,63 @@ const ImportWalletPage = () => {
           ) : (
             <div className="text-center">
               <h1 className="text-4xl font-bold font-headline mb-4">Security Check</h1>
-              <p className="text-muted-foreground mb-8">Set up your PIN or use biometrics to secure your wallet.</p>
-              <div className="flex flex-col items-center gap-6">
-                <Fingerprint size={64} className="text-primary primary-glow" />
-                <p className="text-muted-foreground">Use Biometrics or Enter PIN</p>
-                <div className="w-full max-w-xs">
-                  <Input type="password" placeholder="Enter your 6-digit PIN" className="text-center shadow-neo-in-sm rounded-md border-transparent focus:shadow-neo-out-sm transition-shadow" maxLength={6} />
-                  <Button onClick={handlePinSubmit} className="w-full h-14 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg mt-4">
-                    Continue
-                  </Button>
+              <p className="text-muted-foreground mb-8">Secure your wallet with a PIN and optional biometrics.</p>
+              
+              <div className="flex items-center justify-between p-4 rounded-lg shadow-neo-in-sm mb-8">
+                <div className='flex items-center gap-3'>
+                    <Fingerprint size={24} className="text-primary" />
+                    <Label htmlFor="biometrics-switch" className="font-bold">Use Biometrics</Label>
+                </div>
+                <Switch
+                  id="biometrics-switch"
+                  checked={useBiometrics}
+                  onCheckedChange={setUseBiometrics}
+                  disabled={isProcessing}
+                />
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <Label htmlFor="pin-input" className={`font-bold transition-colors ${activePinField === 'pin' ? 'text-primary' : 'text-muted-foreground'}`}>Set PIN</Label>
+                    <button onClick={() => setIsPinVisible(!isPinVisible)} className="text-muted-foreground hover:text-primary">
+                        {isPinVisible ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
+                  <div onClick={() => setActivePinField('pin')} className={`p-4 rounded-lg cursor-text transition-all ${activePinField === 'pin' ? 'shadow-neo-out-sm' : 'shadow-neo-in-sm'}`}>
+                      <PinDisplay value={pin} />
+                  </div>
+                </div>
+
+                <div>
+                   <Label htmlFor="confirm-pin-input" className={`font-bold transition-colors ${activePinField === 'confirm' ? 'text-primary' : 'text-muted-foreground'}`}>Confirm PIN</Label>
+                   <div onClick={() => setActivePinField('confirm')} className={`p-4 mt-2 rounded-lg cursor-text transition-all ${activePinField === 'confirm' ? 'shadow-neo-out-sm' : 'shadow-neo-in-sm'}`}>
+                      <PinDisplay value={confirmPin} />
+                  </div>
                 </div>
               </div>
+
+              {pinError && <p className="text-destructive text-center my-4 font-bold text-base opacity-90">{pinError}</p>}
+
+              <div className="grid grid-cols-3 gap-4 my-8">
+                {numpadKeys.map((key) => (
+                  key ? (
+                    <Button 
+                      key={key} 
+                      variant="ghost" 
+                      onClick={() => key === 'delete' ? handleDelete() : handlePinInput(key)}
+                      className="h-16 text-2xl font-bold rounded-2xl shadow-neo-out-sm active:shadow-neo-in-sm"
+                      disabled={isProcessing}
+                    >
+                      {key === 'delete' ? <Delete /> : key}
+                    </Button>
+                  ) : <div key="empty"></div>
+                ))}
+              </div>
+
+              <Button onClick={handlePinSubmit} disabled={isProcessing} className={`w-full h-14 text-lg rounded-full bg-primary text-primary-foreground shadow-neo-out-lg active:shadow-neo-in-lg transition-all duration-300 ${isProcessing ? 'btn-glow animate-pulse' : 'btn-glow'}`}>
+                {isProcessing ? <Loader2 className="animate-spin" /> : 'Create PIN'}
+              </Button>
             </div>
           )}
         </div>
