@@ -123,11 +123,11 @@ export default function LandingPage() {
             </div>
             <div className="relative flex justify-center items-center h-full fade-in opacity-0 animate-delay-200">
                 <Image 
-                  src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551163/06_zbj1sx.png" 
-                  width={200}
-                  height={400}
-                  alt="Genesis Vault Interface" 
-                  className="transition-transform duration-500 [filter:drop-shadow(0_0_20px_hsl(var(--primary)/0.2))]" 
+                  src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722677/wallet-2_z7psdg.png" 
+                  width={400}
+                  height={240}
+                  alt="Genesis Vault Wallet" 
+                  className="transition-transform duration-500 [filter:drop-shadow(0_0_15px_hsl(var(--primary)/0.25))]" 
                   data-ai-hint="app interface dark" />
             </div>
         </div>
@@ -151,8 +151,7 @@ export default function LandingPage() {
                             alt={`${token.name} logo`}
                             width={40}
                             height={40}
-                            className="transition-all duration-300 group-hover:scale-110 group-hover:[filter:drop-shadow(0_0_8px_hsl(var(--primary)/0.8))]"
-                        />
+                            className="transition-all duration-300 group-hover:scale-110 group-hover:[filter:drop-shadow(0_0_8px_hsl(var(--primary)/0.8))]"/>
                     </div>
                 ))}
             </div>
