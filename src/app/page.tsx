@@ -124,10 +124,10 @@ export default function LandingPage() {
             <div className="relative flex justify-center items-center h-full fade-in opacity-0 animate-delay-200">
                 <Image 
                   src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722677/wallet-2_z7psdg.png" 
-                  width={250}
-                  height={150}
+                  width={200}
+                  height={100}
                   alt="Genesis Vault Wallet" 
-                  className="transition-transform duration-500 [filter:drop-shadow(0_10px_25px_hsl(var(--primary)/0.25))]" 
+                  className="transition-transform duration-500 [filter:drop-shadow(0_15px_30px_hsl(var(--primary)/0.35))]" 
                   data-ai-hint="app interface dark" />
             </div>
         </div>
@@ -234,7 +234,7 @@ export default function LandingPage() {
               <div/>
             </div>
             <div className="mt-8 relative h-[400px] flex justify-center items-center">
-                <div className="absolute z-0" style={{ transform: 'translateX(-25%)' }}>
+                <div className="absolute z-0" style={{ transform: 'translateX(-35%)' }}>
                     <Image 
                         src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722693/2_tf2hjp.png" 
                         width={250} 
@@ -254,7 +254,7 @@ export default function LandingPage() {
                         data-ai-hint="app interface dark"
                     />
                 </div>
-                <div className="absolute z-0" style={{ transform: 'translateX(25%)' }}>
+                <div className="absolute z-0" style={{ transform: 'translateX(35%)' }}>
                     <Image 
                         src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722692/1_qhxhvr.png" 
                         width={250} 
@@ -341,5 +341,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
-    
