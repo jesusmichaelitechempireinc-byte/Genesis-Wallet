@@ -124,8 +124,8 @@ export default function LandingPage() {
             <div className="relative flex justify-center items-center h-full fade-in opacity-0 animate-delay-200">
                 <Image 
                   src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722677/wallet-2_z7psdg.png" 
-                  width={200}
-                  height={100}
+                  width={150}
+                  height={75}
                   alt="Genesis Vault Wallet" 
                   className="transition-transform duration-500 [filter:drop-shadow(0_15px_30px_hsl(var(--primary)/0.35))]" 
                   data-ai-hint="app interface dark" />
@@ -234,13 +234,13 @@ export default function LandingPage() {
               <div/>
             </div>
             <div className="mt-8 relative h-[400px] flex justify-center items-center">
-                <div className="absolute z-0" style={{ transform: 'translateX(-35%)' }}>
+                <div className="absolute z-0" style={{ transform: 'translateX(-45%)' }}>
                     <Image 
                         src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722693/2_tf2hjp.png" 
                         width={250} 
                         height={500} 
                         alt="Manage Wallets Mockup"
-                        className="rounded-xl [filter:drop-shadow(0_10px_20px_hsl(var(--background)/0.5))]"
+                        className="rounded-xl [filter:drop-shadow(0_10px_25px_hsl(var(--primary)/0.25))]"
                         data-ai-hint="app interface dark"
                     />
                 </div>
@@ -250,17 +250,17 @@ export default function LandingPage() {
                         width={250} 
                         height={500} 
                         alt="Investments Mockup"
-                        className="rounded-xl [filter:drop-shadow(0_20px_30px_hsl(var(--background)/0.7))]"
+                        className="rounded-xl [filter:drop-shadow(0_20px_30px_hsl(var(--primary)/0.35))]"
                         data-ai-hint="app interface dark"
                     />
                 </div>
-                <div className="absolute z-0" style={{ transform: 'translateX(35%)' }}>
+                <div className="absolute z-0" style={{ transform: 'translateX(45%)' }}>
                     <Image 
                         src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722692/1_qhxhvr.png" 
                         width={250} 
                         height={500} 
                         alt="Exchange Wallet Mockup"
-                        className="rounded-xl [filter:drop-shadow(0_10px_20px_hsl(var(--background)/0.5))]"
+                        className="rounded-xl [filter:drop-shadow(0_10px_25px_hsl(var(--primary)/0.25))]"
                         data-ai-hint="app interface dark"
                     />
                 </div>
