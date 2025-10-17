@@ -102,7 +102,7 @@ export default function LandingPage() {
       
       <main className="relative z-10 flex flex-col items-center p-4 overflow-hidden">
         
-        <div className="w-full max-w-7xl mx-auto grid md:grid-cols-2 items-center my-16 md:my-24 gap-8">
+      <div className="w-full max-w-7xl mx-auto grid md:grid-cols-2 items-center my-16 md:my-24 gap-8">
             <div className="text-center md:text-left flex flex-col items-center md:items-start">
                 <h1 className="text-5xl md:text-7xl font-bold font-headline tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground/90 to-muted-foreground fade-in opacity-0">
                     Your Gateway to the <span className="text-primary primary-glow">Digital Economy.</span>
@@ -220,7 +220,7 @@ export default function LandingPage() {
         </section>
 
         <section id="why-choose-us" className="w-full max-w-6xl mx-auto py-24 fade-in opacity-0">
-          <div className="bg-card/40 rounded-3xl p-8 md:p-12">
+          <div className="bg-card/40 rounded-3xl p-8 md:p-12 overflow-hidden">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-5xl font-bold font-headline mb-4">Multi-Wallet Mastery</h2>
@@ -230,10 +230,15 @@ export default function LandingPage() {
               </div>
               <div/>
             </div>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551163/06_zbj1sx.png" width={300} height={600} alt="Manage Wallets" className="rounded-2xl mx-auto" data-ai-hint="app interface dark"/>
-              <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551236/case-img19-1-830x717_ngv5px.png" width={300} height={600} alt="Investments" className="rounded-2xl mx-auto" data-ai-hint="app interface dark"/>
-              <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551018/4IRE_Crypto_Wallet_Development_Company_jbqaud.png" width={300} height={600} alt="Exchange Wallet" className="rounded-2xl mx-auto" data-ai-hint="app interface dark"/>
+            <div className="mt-8">
+              <Image 
+                src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760553298/case-img19-1-830x717_ngv5px_imgupscaler.ai_General_4K_lin107.jpg" 
+                width={1200} 
+                height={500} 
+                alt="Multi-Wallet Management Interface"
+                className="rounded-xl"
+                data-ai-hint="app interface dark"
+              />
             </div>
           </div>
         </section>
