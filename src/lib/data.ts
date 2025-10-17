@@ -1,4 +1,3 @@
-
 import { BitcoinIcon, EthereumIcon, CardanoIcon } from "@/components/icons";
 import { CircleDot, CircleDollarSign, Box } from 'lucide-react';
 import type { ComponentType } from "react";

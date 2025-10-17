@@ -83,4 +83,23 @@ body {
   .animate-delay-200 { animation-delay: 200ms; }
   .animate-delay-400 { animation-delay: 400ms; }
   .animate-delay-600 { animation-delay: 600ms; }
+
+  @keyframes genesis-glow {
+    0% {
+      box-shadow: 0 0 10px hsl(270, 80%, 70%), 0 0 20px hsl(270, 80%, 70%);
+    }
+    33% {
+      box-shadow: 0 0 12px hsl(200, 100%, 70%), 0 0 24px hsl(200, 100%, 70%);
+    }
+    66% {
+      box-shadow: 0 0 12px hsl(320, 100%, 70%), 0 0 24px hsl(320, 100%, 70%);
+    }
+    100% {
+      box-shadow: 0 0 10px hsl(40, 100%, 60%), 0 0 20px hsl(40, 100%, 60%);
+    }
+  }
+
+  .genesis-icon-glow {
+    animation: genesis-glow 4s infinite alternate;
+  }
 }
