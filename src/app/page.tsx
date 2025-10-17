@@ -126,10 +126,10 @@ export default function LandingPage() {
             <div className="relative flex justify-center items-center h-full fade-in opacity-0 animate-delay-200">
                 <Image 
                   src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551163/06_zbj1sx.png" 
-                  width={200} 
-                  height={400} 
+                  width={200}
+                  height={400}
                   alt="Genesis Vault Interface" 
-                  className="transition-transform duration-500 shadow-2xl shadow-primary/10 [filter:drop-shadow(0_0_30px_hsl(var(--primary)/0.3))]" 
+                  className="transition-transform duration-500 shadow-2xl shadow-primary/20 [filter:drop-shadow(0_0_20px_hsl(var(--primary)/0.2))]" 
                   data-ai-hint="app interface dark" />
             </div>
         </div>
@@ -220,44 +220,22 @@ export default function LandingPage() {
         </section>
 
         <section id="why-choose-us" className="w-full max-w-6xl mx-auto py-24 fade-in opacity-0">
-            <div className="grid md:grid-cols-2 gap-16 items-center">
-                <div className="space-y-6">
-                    <h2 className="text-5xl font-bold font-headline">Why Choose Genesis Vault?</h2>
-                    <p className="text-xl text-muted-foreground">We provide a comprehensive suite of tools designed for both beginners and seasoned crypto enthusiasts.</p>
-                    <ul className="space-y-6">
-                        <li className="flex items-start gap-4">
-                            <div className="p-3 rounded-full shadow-neo-in bg-background mt-1">
-                                <KeyRound className="h-6 w-6 text-primary" />
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-lg">Full Ownership</h4>
-                                <p className="text-muted-foreground">You are the sole owner of your private keys. No third-party has access to your funds.</p>
-                            </div>
-                        </li>
-                        <li className="flex items-start gap-4">
-                            <div className="p-3 rounded-full shadow-neo-in bg-background mt-1">
-                                <Globe className="h-6 w-6 text-primary" />
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-lg">Multi-Currency Support</h4>
-                                <p className="text-muted-foreground">Manage a diverse portfolio of assets all in one place, from Bitcoin to the latest DeFi tokens.</p>
-                            </div>
-                        </li>
-                        <li className="flex items-start gap-4">
-                            <div className="p-3 rounded-full shadow-neo-in bg-background mt-1">
-                                <Bot className="h-6 w-6 text-primary" />
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-lg">AI-Powered Insights</h4>
-                                <p className="text-muted-foreground">Leverage our GenAI assistant to analyze market trends, get security tips, and manage your portfolio.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div className="p-8 rounded-3xl shadow-neo-out-xl">
-                    <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551236/case-img19-1-830x717_ngv5px.png" width={600} height={600} alt="Crypto vault hero image" className="rounded-2xl" data-ai-hint="crypto vault abstract" />
-                </div>
+          <div className="bg-card/40 rounded-3xl p-8 md:p-12">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-5xl font-bold font-headline mb-4">Multi-Wallet Mastery</h2>
+                <p className="text-xl text-muted-foreground">
+                  For easy and convenient multi-wallet self-custody while staying ultra secure. Manage all your portfolios from a single, unified interface.
+                </p>
+              </div>
+              <div/>
             </div>
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551163/06_zbj1sx.png" width={300} height={600} alt="Manage Wallets" className="rounded-2xl mx-auto" data-ai-hint="app interface dark"/>
+              <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551236/case-img19-1-830x717_ngv5px.png" width={300} height={600} alt="Investments" className="rounded-2xl mx-auto" data-ai-hint="app interface dark"/>
+              <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551018/4IRE_Crypto_Wallet_Development_Company_jbqaud.png" width={300} height={600} alt="Exchange Wallet" className="rounded-2xl mx-auto" data-ai-hint="app interface dark"/>
+            </div>
+          </div>
         </section>
 
         <section id="get-started" className="w-full max-w-6xl mx-auto py-24 text-center">
