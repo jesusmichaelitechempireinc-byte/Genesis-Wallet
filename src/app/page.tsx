@@ -108,7 +108,7 @@ export default function LandingPage() {
                 </div>
             </div>
             <div className="relative fade-in opacity-0 animate-delay-200">
-                <Image src="https://picsum.photos/seed/33/600/800" width={600} height={800} alt="Genesis Vault Interface" className="rounded-3xl shadow-neo-out-xl rotate-3 hover:rotate-0 transition-transform duration-500" data-ai-hint="app interface dark" />
+                <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551163/06_zbj1sx.png" width={600} height={800} alt="Genesis Vault Interface" className="rounded-3xl shadow-neo-out-xl rotate-3 hover:rotate-0 transition-transform duration-500" data-ai-hint="app interface dark" />
                  <div className="absolute inset-0 rounded-3xl primary-glow opacity-30 -z-10 blur-2xl"></div>
             </div>
         </div>
@@ -165,7 +165,7 @@ export default function LandingPage() {
         
         <section className="w-full max-w-6xl mx-auto py-24 fade-in opacity-0">
              <div className="relative p-8 rounded-3xl shadow-neo-out-xl">
-                <Image src="https://picsum.photos/seed/45/1200/500" width={1200} height={500} alt="Digital wallet interface" className="rounded-2xl" data-ai-hint="digital wallet security" />
+                <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551018/4IRE_Crypto_Wallet_Development_Company_jbqaud.png" width={1200} height={500} alt="Digital wallet interface" className="rounded-2xl" data-ai-hint="digital wallet security" />
                 <div className="absolute inset-0 flex items-center justify-start p-16">
                     <div className="max-w-md text-left bg-background/50 backdrop-blur-md p-8 rounded-2xl shadow-neo-out-lg">
                         <h3 className="text-4xl font-bold font-headline mb-4">Your Digital Fortress</h3>
@@ -211,7 +211,7 @@ export default function LandingPage() {
                     </ul>
                 </div>
                 <div className="p-8 rounded-3xl shadow-neo-out-xl">
-                    <Image src="https://picsum.photos/seed/99/600/600" width={600} height={600} alt="Crypto vault hero image" className="rounded-2xl" data-ai-hint="crypto vault abstract" />
+                    <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551236/case-img19-1-830x717_ngv5px.png" width={600} height={600} alt="Crypto vault hero image" className="rounded-2xl" data-ai-hint="crypto vault abstract" />
                 </div>
             </div>
         </section>
