@@ -124,10 +124,10 @@ export default function LandingPage() {
             <div className="relative flex justify-center items-center h-full fade-in opacity-0 animate-delay-200">
                 <Image 
                   src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722677/wallet-2_z7psdg.png" 
-                  width={300}
-                  height={180}
+                  width={250}
+                  height={150}
                   alt="Genesis Vault Wallet" 
-                  className="transition-transform duration-500 [filter:drop-shadow(0_10px_25px_hsl(var(--primary)/0.35))]" 
+                  className="transition-transform duration-500 [filter:drop-shadow(0_10px_25px_hsl(var(--primary)/0.25))]" 
                   data-ai-hint="app interface dark" />
             </div>
         </div>
@@ -233,15 +233,37 @@ export default function LandingPage() {
               </div>
               <div/>
             </div>
-            <div className="mt-8">
-              <Image 
-                src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551236/case-img19-1-830x717_ngv5px.png" 
-                width={1200} 
-                height={500} 
-                alt="Multi-Wallet Management Interface"
-                className="rounded-xl"
-                data-ai-hint="app interface dark"
-              />
+            <div className="mt-8 relative h-[400px] flex justify-center items-center">
+                <div className="absolute z-0" style={{ transform: 'translateX(-25%)' }}>
+                    <Image 
+                        src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722693/2_tf2hjp.png" 
+                        width={250} 
+                        height={500} 
+                        alt="Manage Wallets Mockup"
+                        className="rounded-xl [filter:drop-shadow(0_10px_20px_hsl(var(--background)/0.5))]"
+                        data-ai-hint="app interface dark"
+                    />
+                </div>
+                <div className="absolute z-10" style={{ transform: 'scale(1.1)' }}>
+                    <Image 
+                        src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722692/3_yydlje.png" 
+                        width={250} 
+                        height={500} 
+                        alt="Investments Mockup"
+                        className="rounded-xl [filter:drop-shadow(0_20px_30px_hsl(var(--background)/0.7))]"
+                        data-ai-hint="app interface dark"
+                    />
+                </div>
+                <div className="absolute z-0" style={{ transform: 'translateX(25%)' }}>
+                    <Image 
+                        src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722692/1_qhxhvr.png" 
+                        width={250} 
+                        height={500} 
+                        alt="Exchange Wallet Mockup"
+                        className="rounded-xl [filter:drop-shadow(0_10px_20px_hsl(var(--background)/0.5))]"
+                        data-ai-hint="app interface dark"
+                    />
+                </div>
             </div>
           </div>
         </section>
