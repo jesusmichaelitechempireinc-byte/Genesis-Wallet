@@ -42,7 +42,7 @@ export default function GenesisAIPage() {
             </Button>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-8 mb-28">
+        <main className="flex-1 overflow-y-auto p-8 pb-36">
             <div className="space-y-8 max-w-4xl mx-auto">
                 {chatMessages.map((message, index) => (
                     <div key={index} className={`flex items-start gap-4 ${message.from === 'user' ? 'justify-end' : ''}`}>
@@ -65,7 +65,7 @@ export default function GenesisAIPage() {
             </div>
         </main>
 
-        <footer className="absolute bottom-0 w-full z-10 border-t bg-background/80 p-4 backdrop-blur-sm mb-28">
+        <footer className="absolute bottom-0 w-full z-10 border-t bg-background/80 p-4 backdrop-blur-sm pb-36">
             <div className="relative max-w-4xl mx-auto">
                 <Input
                     placeholder="Ask Genesis anything about your portfolio, market trends, or security..."

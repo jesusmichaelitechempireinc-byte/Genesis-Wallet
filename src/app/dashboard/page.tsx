@@ -11,7 +11,7 @@ export default function DashboardPage() {
       <Sidebar />
       <div className="flex flex-1 flex-col relative">
         <Header />
-        <main className="flex-1 p-4 md:p-6 lg:p-8 grid gap-8 mb-28">
+        <main className="flex-1 p-4 md:p-6 lg:p-8 grid gap-8 pb-36">
             <WalletActions />
             <PortfolioChart />
             <TransactionHistory />

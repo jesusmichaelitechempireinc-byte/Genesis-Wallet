@@ -23,7 +23,7 @@ const NavItem = ({ href, icon: Icon, label }: typeof navItems[0]) => {
         <Link href={href} className="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary transition-colors group">
             <div className={cn(
                 "w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out",
-                isActive ? 'shadow-neo-in-lg bg-background' : 'shadow-neo-out-sm bg-background group-hover:shadow-neo-in-sm'
+                isActive ? 'shadow-neo-in-lg bg-background/70' : 'shadow-neo-out-sm bg-background/70 group-hover:shadow-neo-in-sm'
             )}>
                 <Icon className={cn("h-7 w-7 transition-all", isActive ? "text-primary primary-glow" : "group-hover:text-primary")} />
             </div>
@@ -34,8 +34,8 @@ const NavItem = ({ href, icon: Icon, label }: typeof navItems[0]) => {
 
 export default function BottomNav() {
   return (
-    <footer className="fixed bottom-0 left-0 right-0 h-28 bg-background/80 backdrop-blur-sm z-50 border-t">
-        <nav className="h-full w-full flex items-center justify-around px-2 max-w-2xl mx-auto">
+    <footer className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-2xl z-50">
+        <nav className="h-28 w-full rounded-2xl bg-background/50 backdrop-blur-lg border border-white/10 shadow-neo-out-lg flex items-center justify-around px-2">
             {navItems.map(item => <NavItem key={item.href} {...item} />)}
         </nav>
     </footer>
