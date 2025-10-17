@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { GenesisVaultLogo } from '@/components/icons';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { CreditCard, ShieldCheck, Zap, Bot, Globe, KeyRound } from 'lucide-react';
+import { CreditCard, ShieldCheck, Zap, Bot, Globe, KeyRound, UserPlus, DownloadCloud, Rocket } from 'lucide-react';
 import Image from 'next/image';
 import { BitcoinIcon, EthereumIcon, CardanoIcon } from '@/components/icons';
 import { Atom, Dog, Unplug, Waves, Wind, Orbit, Sun, Gem } from 'lucide-react';
@@ -53,6 +53,19 @@ const tokenAssets = [
     { name: 'Stellar', icon: Wind },
     { name: 'Tether', icon: Globe },
 ];
+
+const GetStartedStep = ({ icon: Icon, title, description, delay = 0 }: { icon: React.ElementType, title: string, description: string, delay?: number }) => (
+    <div className="flex flex-col items-center text-center fade-in opacity-0" style={{ animationDelay: `${delay}ms` }}>
+        <div className="relative mb-6">
+            <div className="p-6 rounded-full shadow-neo-in-lg bg-background">
+                <Icon className="h-10 w-10 text-primary" />
+            </div>
+            <div className="absolute inset-0 rounded-full primary-glow opacity-30 blur-lg -z-10"></div>
+        </div>
+        <h3 className="text-xl font-bold font-headline mb-2">{title}</h3>
+        <p className="text-muted-foreground">{description}</p>
+    </div>
+);
 
 export default function LandingPage() {
   const [year, setYear] = React.useState(new Date().getFullYear());
@@ -108,7 +121,7 @@ export default function LandingPage() {
                 </div>
             </div>
             <div className="relative flex justify-center items-center fade-in opacity-0 animate-delay-200">
-                <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551163/06_zbj1sx.png" width={220} height={440} alt="Genesis Vault Interface" className="rounded-3xl shadow-neo-out-xl transition-transform duration-500" data-ai-hint="app interface dark" />
+                <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551163/06_zbj1sx.png" width={180} height={360} alt="Genesis Vault Interface" className="rounded-3xl shadow-neo-out-xl transition-transform duration-500" data-ai-hint="app interface dark" />
                  <div className="absolute inset-0 rounded-3xl primary-glow opacity-50 -z-10 blur-2xl"></div>
             </div>
         </div>
@@ -160,6 +173,24 @@ export default function LandingPage() {
                 description="Experience blazing-fast transactions and portfolio updates in real-time."
                 delay={400}
             />
+             <FeatureCard
+                icon={Bot}
+                title="Genesis AI Assistant"
+                description="Leverage our GenAI assistant to analyze trends, get security tips, and manage your portfolio effortlessly."
+                delay={600}
+            />
+            <FeatureCard
+                icon={Globe}
+                title="Global Access"
+                description="Access your funds anywhere, anytime. Your gateway to the digital economy is always in your pocket."
+                delay={800}
+            />
+            <FeatureCard
+                icon={KeyRound}
+                title="Absolute Ownership"
+                description="You and only you control your assets. Non-custodial, decentralized, and truly yours."
+                delay={1000}
+            />
             </div>
         </section>
         
@@ -169,7 +200,12 @@ export default function LandingPage() {
                 <div className="absolute inset-0 flex items-center justify-start p-16">
                     <div className="max-w-md text-left bg-background/50 backdrop-blur-md p-8 rounded-2xl shadow-neo-out-lg">
                         <h3 className="text-4xl font-bold font-headline mb-4">Your Digital Fortress</h3>
-                        <p className="text-lg text-muted-foreground">Built on a foundation of cryptographic excellence, Genesis Vault employs multi-layered security protocols to ensure your assets are impenetrable.</p>
+                        <p className="text-lg text-muted-foreground mb-6">Built on a foundation of cryptographic excellence, Genesis Vault employs multi-layered security protocols to ensure your assets are impenetrable.</p>
+                        <Link href="/wallet-setup">
+                          <Button size="lg" className="h-12 px-8 text-base rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
+                           Launch Web Wallet
+                          </Button>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -213,6 +249,45 @@ export default function LandingPage() {
                 <div className="p-8 rounded-3xl shadow-neo-out-xl">
                     <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760551236/case-img19-1-830x717_ngv5px.png" width={600} height={600} alt="Crypto vault hero image" className="rounded-2xl" data-ai-hint="crypto vault abstract" />
                 </div>
+            </div>
+        </section>
+
+        <section id="get-started" className="w-full max-w-6xl mx-auto py-24 text-center">
+            <div className="mb-16 fade-in opacity-0">
+                <h2 className="text-5xl font-bold font-headline">Get Started in Seconds</h2>
+                <p className="text-xl text-muted-foreground mt-4 max-w-3xl mx-auto">
+                    Embark on your self-custody journey with three simple steps.
+                </p>
+            </div>
+            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
+                <div className="absolute top-1/2 left-0 w-full h-px bg-border/50 -translate-y-1/2 -z-10 hidden md:block"></div>
+                <div className="absolute top-1/2 left-0 w-full border-t-2 border-dashed border-border/50 -translate-y-1/2 -z-10 hidden md:block"></div>
+                
+                <GetStartedStep
+                    icon={UserPlus}
+                    title="Create Your Wallet"
+                    description="Generate a new wallet or import an existing one. Your keys, your crypto."
+                    delay={200}
+                />
+                <GetStartedStep
+                    icon={DownloadCloud}
+                    title="Secure Your Phrase"
+                    description="Safely store your unique secret recovery phrase. This is your master key."
+                    delay={400}
+                />
+                <GetStartedStep
+                    icon={Rocket}
+                    title="Explore Web3"
+                    description="You're all set! Dive into the world of decentralized finance with Genesis Vault."
+                    delay={600}
+                />
+            </div>
+             <div className="mt-16 fade-in opacity-0" style={{ animationDelay: '800ms' }}>
+                <Link href="/wallet-setup">
+                    <Button size="lg" className="h-14 px-10 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
+                        Begin Your Journey
+                    </Button>
+                </Link>
             </div>
         </section>
 
