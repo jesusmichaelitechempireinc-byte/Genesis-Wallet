@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 const navItems = [
-  { href: '#', icon: Home, label: 'Dashboard' },
+  { href: '/dashboard', icon: Home, label: 'Dashboard' },
   { href: '#', icon: Wallet, label: 'My Wallet' },
   { href: '#', icon: ArrowRightLeft, label: 'Swap' },
   { href: '#', icon: History, label: 'History' },
@@ -23,10 +23,10 @@ const navItems = [
 export default function Sidebar() {
   return (
     <aside className="hidden md:flex w-64 flex-col border-r p-4 shadow-neo-out z-20 bg-background">
-      <div className="flex items-center gap-3 px-2 py-4">
+      <Link href="/" className="flex items-center gap-3 px-2 py-4">
         <GenesisVaultLogo />
         <h1 className="text-xl font-bold font-headline">Genesis Vault</h1>
-      </div>
+      </Link>
       <nav className="flex-1 space-y-2 py-4">
         {navItems.map((item, index) => (
           <Link
