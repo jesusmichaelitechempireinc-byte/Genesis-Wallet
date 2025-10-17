@@ -129,4 +129,16 @@ body {
   .primary-glow {
     filter: drop-shadow(0 0 12px hsl(var(--primary) / 0.6));
   }
+  .genesis-glow {
+    animation: genesis-glow-animation 3s infinite ease-in-out;
+  }
+
+  @keyframes genesis-glow-animation {
+    0%, 100% {
+      filter: drop-shadow(0 0 10px hsl(259 100% 73% / 0.8)) drop-shadow(0 0 20px hsl(210 100% 73% / 0.5));
+    }
+    50% {
+      filter: drop-shadow(0 0 20px hsl(259 100% 73% / 1)) drop-shadow(0 0 30px hsl(210 100% 73% / 0.7));
+    }
+  }
 }

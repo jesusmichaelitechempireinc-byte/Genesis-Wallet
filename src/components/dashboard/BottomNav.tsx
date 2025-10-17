@@ -18,16 +18,22 @@ const navItems = [
 const NavItem = ({ href, icon: Icon, label }: typeof navItems[0]) => {
     const pathname = usePathname();
     const isActive = pathname === href;
+    const isGenesis = label === 'Genesis';
 
     return (
         <Link href={href} className="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary transition-colors group">
             <div className={cn(
                 "w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out",
-                isActive ? 'shadow-neo-in-lg bg-background/70' : 'shadow-neo-out-sm bg-background/70 group-hover:shadow-neo-in-sm'
+                isActive ? 'shadow-neo-in-lg bg-background/70' : 'shadow-neo-out-sm bg-background/70 group-hover:shadow-neo-in-sm',
+                isGenesis && 'genesis-glow'
             )}>
-                <Icon className={cn("h-7 w-7 transition-all", isActive ? "text-primary primary-glow" : "group-hover:text-primary")} />
+                <Icon className={cn(
+                    "h-7 w-7 transition-all", 
+                    isActive ? "text-primary primary-glow" : "group-hover:text-primary",
+                    isGenesis && 'text-primary'
+                )} />
             </div>
-            <span className={cn("text-xs font-medium", isActive && "text-primary")}>{label}</span>
+            <span className={cn("text-xs font-medium", (isActive || isGenesis) && "text-primary")}>{label}</span>
         </Link>
     )
 }
