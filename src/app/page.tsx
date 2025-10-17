@@ -232,7 +232,7 @@ export default function LandingPage() {
             </div>
             <div className="mt-8">
               <Image 
-                src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760553298/case-img19-1-830x717_ngv5px_imgupscaler.ai_General_4K_lin107.jpg" 
+                src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722338/case-img19-1-830x717_1_hvmgcu.png" 
                 width={1200} 
                 height={500} 
                 alt="Multi-Wallet Management Interface"
