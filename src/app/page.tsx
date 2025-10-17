@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { GenesisVaultLogo } from '@/components/icons';
@@ -37,6 +38,12 @@ const faqItems = [
 ]
 
 export default function LandingPage() {
+  const [year, setYear] = React.useState(new Date().getFullYear());
+
+  React.useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   return (
     <div className="min-h-screen w-full bg-background font-body text-foreground">
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]"></div>
@@ -146,7 +153,7 @@ export default function LandingPage() {
         </section>
         
         <footer className="w-full max-w-6xl mx-auto py-12 text-center text-muted-foreground border-t border-border mt-12">
-            <p>&copy; {new Date().getFullYear()} Genesis Vault. All rights reserved.</p>
+            <p>&copy; {year} Genesis Vault. All rights reserved.</p>
         </footer>
 
         <style jsx>{`
