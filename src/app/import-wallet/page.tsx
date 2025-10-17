@@ -49,7 +49,7 @@ const ImportWalletPage = () => {
             <>
               <div className="text-center mb-8">
                 <h1 className="text-4xl font-bold font-headline">Import Wallet</h1>
-                <p className="text-muted-foreground mt-2">Enter your 12-word secret recovery phrase.</p>
+                <p className="text-muted-foreground mt-2">Enter your secret recovery phrase.</p>
               </div>
               <div className="grid grid-cols-3 gap-4 mb-8">
                 {secretPhrase.map((word, index) => (
