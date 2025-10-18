@@ -10,6 +10,7 @@ import {
 import { coins, type Coin } from "@/lib/data";
 import { ChevronDown, SlidersHorizontal, ArrowUp, ArrowDown } from "lucide-react";
 import { Button } from "../ui/button";
+import Image from "next/image";
 
 const PriceChange = ({ change }: { change: number }) => {
   const isPositive = change >= 0;
@@ -43,7 +44,7 @@ export default function AssetList() {
                 <TableCell className="p-3">
                   <div className="flex items-center gap-4">
                      <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center">
-                        <asset.icon className="h-6 w-6 text-foreground" />
+                        {asset.iconUrl ? <Image src={asset.iconUrl} alt={asset.name} width={24} height={24} /> : <asset.icon className="h-6 w-6 text-foreground" />}
                      </div>
                     <div>
                       <div className="font-bold text-base">{asset.ticker} <span className="text-xs font-mono text-muted-foreground">{asset.network}</span></div>

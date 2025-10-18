@@ -1,4 +1,3 @@
-import { BitcoinIcon, EthereumIcon, CardanoIcon, SolanaIcon, DogecoinIcon, RippleIcon, AvalancheIcon, SuiIcon, BnbIcon, TronIcon, AsiIcon, PepeIcon } from "@/components/icons";
 import { CircleDollarSign } from 'lucide-react';
 import type { ComponentType } from "react";
 
@@ -6,7 +5,8 @@ export interface Coin {
   name: string;
   ticker: string;
   network?: string;
-  icon: ComponentType<{ className?: string }>;
+  icon?: ComponentType<{ className?: string }>;
+  iconUrl?: string;
   balance: number;
   usdValue: number;
   change: number;
@@ -16,7 +16,7 @@ export const coins: Coin[] = [
   {
     name: "Bitcoin",
     ticker: "BTC",
-    icon: BitcoinIcon,
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675521/bitcoin-btc-logo_fchtil.png',
     balance: 0,
     usdValue: 0.00,
     change: -1.43,
@@ -24,7 +24,7 @@ export const coins: Coin[] = [
   {
     name: "Ethereum",
     ticker: "ETH",
-    icon: EthereumIcon,
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675606/ethereum-eth-logo_gkt5dg.png',
     balance: 0,
     usdValue: 0.00,
     change: -1.35,
@@ -32,7 +32,7 @@ export const coins: Coin[] = [
   {
     name: "Solana",
     ticker: "SOL",
-    icon: SolanaIcon,
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675609/solana-sol-logo_bcifcy.png',
     balance: 0,
     usdValue: 0.00,
     change: -1.28,
@@ -40,7 +40,7 @@ export const coins: Coin[] = [
   {
     name: "Dogecoin",
     ticker: "DOGE",
-    icon: DogecoinIcon,
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675627/dogecoin-doge-logo_vhntvk.png',
     balance: 0,
     usdValue: 0.00,
     change: -1.67,
@@ -48,7 +48,7 @@ export const coins: Coin[] = [
   {
     name: "Cardano",
     ticker: "ADA",
-    icon: CardanoIcon,
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675738/cardano-ada-logo_pbavn1.png',
     balance: 0,
     usdValue: 0.00,
     change: -3.00,
@@ -56,7 +56,7 @@ export const coins: Coin[] = [
   {
     name: "Ripple",
     ticker: "XRP",
-    icon: RippleIcon,
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675751/xrp-xrp-logo_smpmq7.png',
     balance: 0,
     usdValue: 0.00,
     change: -1.16,
@@ -64,7 +64,7 @@ export const coins: Coin[] = [
   {
     name: "Avalanche",
     ticker: "AVAX",
-    icon: AvalancheIcon,
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675757/avalanche-avax-logo_yt45tu.png',
     balance: 0,
     usdValue: 0.00,
     change: -4.63,
@@ -72,7 +72,7 @@ export const coins: Coin[] = [
   {
     name: "Sui",
     ticker: "SUI",
-    icon: SuiIcon,
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675771/sui-sui-logo_blqmgl.png',
     balance: 0,
     usdValue: 0.00,
     change: -2.88,
@@ -80,7 +80,7 @@ export const coins: Coin[] = [
   {
     name: "BNB",
     ticker: "BNB",
-    icon: BnbIcon,
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675782/bnb-bnb-logo_matwsx.png',
     balance: 0,
     usdValue: 0.00,
     change: -6.17,
@@ -88,7 +88,7 @@ export const coins: Coin[] = [
   {
     name: "Tron",
     ticker: "TRX",
-    icon: TronIcon,
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675804/tron-trx-logo_amapma.png',
     balance: 0,
     usdValue: 0.00,
     change: -1.96,
@@ -96,7 +96,7 @@ export const coins: Coin[] = [
   {
     name: "ASI",
     ticker: "FET",
-    icon: AsiIcon,
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675816/artificial-superintelligence-alliance-fet-logo_rhrvie.png',
     balance: 0,
     usdValue: 0.00,
     change: -1.82,
@@ -104,7 +104,7 @@ export const coins: Coin[] = [
   {
     name: "Pepe",
     ticker: "PEPE",
-    icon: PepeIcon,
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675900/pepe-pepe-logo_ey1qka.png',
     balance: 0,
     usdValue: 0.00,
     change: -2.94,

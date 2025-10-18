@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowDown } from "lucide-react";
 import { coins, Coin } from "@/lib/data";
+import Image from "next/image";
 
 export default function TokenSwap() {
   const [fromCoin, setFromCoin] = useState<Coin>(coins[0]);
@@ -50,7 +51,7 @@ export default function TokenSwap() {
                 <SelectTrigger className="w-[120px] rounded-full shadow-heavy-out-sm border-none">
                   <SelectValue>
                     <div className="flex items-center gap-2">
-                      <fromCoin.icon className="h-5 w-5" />
+                       {fromCoin.iconUrl ? <Image src={fromCoin.iconUrl} alt={fromCoin.name} width={20} height={20} /> : <fromCoin.icon className="h-5 w-5" />}
                       {fromCoin.ticker}
                     </div>
                   </SelectValue>
@@ -59,7 +60,7 @@ export default function TokenSwap() {
                   {coins.map((c) => (
                     <SelectItem key={c.ticker} value={c.ticker}>
                       <div className="flex items-center gap-2">
-                        <c.icon className="h-5 w-5" />
+                        {c.iconUrl ? <Image src={c.iconUrl} alt={c.name} width={20} height={20} /> : <c.icon className="h-5 w-5" />}
                         {c.ticker}
                       </div>
                     </SelectItem>
@@ -91,7 +92,7 @@ export default function TokenSwap() {
                 <SelectTrigger className="w-[120px] rounded-full shadow-heavy-out-sm border-none">
                   <SelectValue>
                     <div className="flex items-center gap-2">
-                      <toCoin.icon className="h-5 w-5" />
+                      {toCoin.iconUrl ? <Image src={toCoin.iconUrl} alt={toCoin.name} width={20} height={20} /> : <toCoin.icon className="h-5 w-5" />}
                       {toCoin.ticker}
                     </div>
                   </SelectValue>
@@ -100,7 +101,7 @@ export default function TokenSwap() {
                   {coins.map((c) => (
                     <SelectItem key={c.ticker} value={c.ticker}>
                       <div className="flex items-center gap-2">
-                        <c.icon className="h-5 w-5" />
+                         {c.iconUrl ? <Image src={c.iconUrl} alt={c.name} width={20} height={20} /> : <c.icon className="h-5 w-5" />}
                         {c.ticker}
                       </div>
                     </SelectItem>

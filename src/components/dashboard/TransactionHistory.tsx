@@ -13,6 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { transactions, type Transaction } from "@/lib/data";
 import { ArrowUpRight, ArrowDownLeft } from "lucide-react";
+import Image from "next/image";
 
 const statusColors = {
   Completed: "bg-green-500/20 text-green-400 border-green-500/30",
@@ -52,7 +53,9 @@ export default function TransactionHistory() {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 flex items-center justify-center rounded-full bg-background"><tx.coin.icon className="h-6 w-6" /></div>
+                      <div className="w-8 h-8 flex items-center justify-center rounded-full bg-background">
+                         {tx.coin.iconUrl ? <Image src={tx.coin.iconUrl} alt={tx.coin.name} width={24} height={24} /> : <tx.coin.icon className="h-6 w-6" />}
+                      </div>
                       <div>
                         <div className="font-medium">{tx.coin.name}</div>
                         <div className="text-xs text-muted-foreground font-mono">{tx.address}</div>

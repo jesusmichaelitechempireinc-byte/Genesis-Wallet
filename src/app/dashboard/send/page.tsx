@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { coins } from "@/lib/data";
+import Image from "next/image";
 
 export default function SendPage() {
   return (
@@ -36,7 +37,7 @@ export default function SendPage() {
                             {coins.map((c) => (
                                 <SelectItem key={c.ticker} value={c.ticker}>
                                 <div className="flex items-center gap-2">
-                                    <c.icon className="h-5 w-5" />
+                                    {c.iconUrl ? <Image src={c.iconUrl} alt={c.name} width={20} height={20} /> : (c.icon && <c.icon className="h-5 w-5" />)}
                                     <span>{c.name} ({c.ticker})</span>
                                 </div>
                                 </SelectItem>
