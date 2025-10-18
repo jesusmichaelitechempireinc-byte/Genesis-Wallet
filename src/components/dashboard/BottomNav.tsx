@@ -23,13 +23,14 @@ const NavItem = ({ href, icon: Icon, label }: typeof navItems[0]) => {
     return (
         <Link href={href} className="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary transition-colors group w-full">
             <div className={cn(
-                "p-3 rounded-full shadow-heavy-out-sm transition-all duration-300",
+                "w-16 h-12 flex items-center justify-center rounded-2xl shadow-heavy-out-sm transition-all duration-300",
                 isActive ? "shadow-heavy-in-sm bg-primary/10" : "bg-background",
                 isGenesis && "genesis-icon-glow"
             )}>
               <Icon className={cn(
                   "h-6 w-6 transition-all", 
                   isActive ? "text-primary" : "text-muted-foreground group-hover:text-primary",
+                  isGenesis && "h-8 w-8"
               )} />
             </div>
             <span className={cn("text-xs font-medium", isActive ? "text-primary" : "text-muted-foreground")}>{label}</span>
@@ -39,8 +40,8 @@ const NavItem = ({ href, icon: Icon, label }: typeof navItems[0]) => {
 
 export default function BottomNav() {
   return (
-    <footer className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-md z-50">
-        <nav className="h-24 w-full bg-background/80 backdrop-blur-lg border border-border/50 rounded-full flex items-center justify-between px-6 shadow-heavy-out-lg">
+    <footer className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-lg z-50">
+        <nav className="h-24 w-full bg-background/80 backdrop-blur-lg border border-border/50 rounded-full flex items-center justify-between px-8 shadow-heavy-out-lg">
             {navItems.map(item => <NavItem key={item.href} {...item} />)}
         </nav>
     </footer>
