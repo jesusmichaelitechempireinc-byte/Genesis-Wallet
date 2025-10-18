@@ -7,7 +7,7 @@ import Header from "@/components/dashboard/Header";
 import BottomNav from "@/components/dashboard/BottomNav";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Copy } from "lucide-react";
+import { Copy, AlertTriangle } from "lucide-react";
 import Image from "next/image";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { coins as initialCoins, type Coin } from "@/lib/data";
@@ -97,8 +97,16 @@ export default function ReceivePage() {
                         </SelectContent>
                     </Select>
                     
-                    {walletInfo && (
+                    {walletInfo && selectedCoin && (
                         <div className='flex flex-col items-center gap-6 animate-in fade-in duration-500'>
+                            <div className='bg-yellow-500/10 border border-yellow-500/30 text-yellow-300 p-4 rounded-lg flex gap-4 items-center shadow-heavy-out-sm'>
+                              <AlertTriangle className="h-10 w-10 shrink-0" />
+                              <div>
+                                <h3 className='font-bold text-left'>Send only {selectedCoin.name} ({selectedCoin.ticker})</h3>
+                                <p className='text-sm text-yellow-400/80 text-left'>Sending any other assets to this address may result in permanent loss.</p>
+                              </div>
+                            </div>
+
                             <div className="p-4 bg-background shadow-heavy-in-lg rounded-2xl inline-block">
                                 <Image 
                                     src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${walletInfo.address}`} 
