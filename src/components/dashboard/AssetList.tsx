@@ -54,7 +54,7 @@ export default function AssetList({ searchTerm }: { searchTerm?: string }) {
           <TableBody>
             {filteredAssets.map((asset) => {
               const convertedValue = asset.usdValue * (selectedCurrency.rate || 1);
-              const convertedPrice = (asset.usdValue / (asset.balance || 1)) * (selectedCurrency.rate || 1);
+              const convertedPrice = asset.price * (selectedCurrency.rate || 1);
 
               return (
                 <TableRow key={asset.ticker} className="border-none hover:bg-accent/50 cursor-pointer">
