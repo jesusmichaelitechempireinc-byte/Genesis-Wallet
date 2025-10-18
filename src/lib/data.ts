@@ -19,8 +19,8 @@ export const coins: Coin[] = [
     name: "Bitcoin",
     ticker: "BTC",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675521/bitcoin-btc-logo_fchtil.png',
-    balance: 0.75,
-    usdValue: 50864.25,
+    balance: 0,
+    usdValue: 0,
     price: 67819,
     change: -1.43,
     history: [
@@ -38,8 +38,8 @@ export const coins: Coin[] = [
     name: "Ethereum",
     ticker: "ETH",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675606/ethereum-eth-logo_gkt5dg.png',
-    balance: 10.5,
-    usdValue: 36540,
+    balance: 0,
+    usdValue: 0,
     price: 3480,
     change: -1.35,
     history: [
@@ -57,8 +57,8 @@ export const coins: Coin[] = [
     name: "Solana",
     ticker: "SOL",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675609/solana-sol-logo_bcifcy.png',
-    balance: 100,
-    usdValue: 17120,
+    balance: 0,
+    usdValue: 0,
     price: 171.2,
     change: -1.28,
      history: [
@@ -76,8 +76,8 @@ export const coins: Coin[] = [
     name: "Dogecoin",
     ticker: "DOGE",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675627/dogecoin-doge-logo_vhntvk.png',
-    balance: 50000,
-    usdValue: 6700,
+    balance: 0,
+    usdValue: 0,
     price: 0.134,
     change: -1.67,
      history: [
@@ -95,8 +95,8 @@ export const coins: Coin[] = [
     name: "USD Coin",
     ticker: "USDC",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760678111/usd-coin-usdc-logo_isqxlb.png',
-    balance: 3796.25,
-    usdValue: 3796.25,
+    balance: 108490,
+    usdValue: 108490,
     price: 1.00,
     change: 0.01,
     history: [ { time: '12:00', price: 1.00 }, { time: '13:00', price: 1.00 }, { time: '14:00', price: 1.00 } ]
@@ -235,7 +235,7 @@ export const currencies: Currency[] = [
   { code: 'HKD', name: 'Hong Kong Dollar', symbol: 'HK$', rate: 7.81 },
   { code: 'NOK', name: 'Norwegian Krone', symbol: 'kr', rate: 10.63 },
   { code: 'KRW', name: 'South Korean Won', symbol: '₩', rate: 1388.55 },
-  { code 'TRY', name: 'Turkish Lira', symbol: '₺', rate: 32.95 },
+  { code: 'TRY', name: 'Turkish Lira', symbol: '₺', rate: 32.95 },
   { code: 'RUB', name: 'Russian Ruble', symbol: '₽', rate: 88.22 },
   { code: 'INR', name: 'Indian Rupee', symbol: '₹', rate: 83.45 },
   { code: 'BRL', name: 'Brazilian Real', symbol: 'R$', rate: 5.44 },
@@ -243,12 +243,12 @@ export const currencies: Currency[] = [
 ];
 
 export const portfolioData = [
-    { date: 'Jan', balance: 850000 },
-    { date: 'Feb', balance: 920000 },
-    { date: 'Mar', balance: 900000 },
-    { date: 'Apr', balance: 980000 },
-    { date: 'May', balance: 1100000 },
-    { date: 'Jun', balance: 1250000 },
+    { date: 'Jan', balance: 85000 },
+    { date: 'Feb', balance: 92000 },
+    { date: 'Mar', balance: 90000 },
+    { date: 'Apr', balance: 98000 },
+    { date: 'May', balance: 110000 },
+    { date: 'Jun', balance: 125000 },
     { date: 'Jul', balance: 108490 },
 ]
 
