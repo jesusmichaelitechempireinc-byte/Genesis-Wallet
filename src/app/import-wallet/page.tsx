@@ -94,7 +94,7 @@ const ImportWalletPage = () => {
     setIsProcessing(true);
     setTimeout(() => {
       setWalletExists(true);
-      router.push('/dashboard');
+      router.replace('/dashboard');
     }, 2500);
   };
 

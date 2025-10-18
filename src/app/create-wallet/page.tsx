@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Fingerprint, Loader2, Eye, EyeOff, Delete, Copy, AlertTriangle, ShieldCheck, Shuffle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { useLocalStorage } from '@/hooks/use-local-storage';
 
 const PIN_LENGTH = 6;
 const generatedPhrase = 'orbit scatter marry cause vessel summer obvious basket cannon pattern stereo shield';
@@ -33,6 +34,10 @@ const CreateWalletPage = () => {
   const [useBiometrics, setUseBiometrics] = useState(true);
   const [pinError, setPinError] = useState('');
   
+  const [, setWalletExists] = useLocalStorage('wallet-exists', false);
+  const [, setWalletImported] = useLocalStorage('wallet-imported', 'none');
+
+
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(generatedPhrase);
     toast({
@@ -115,7 +120,9 @@ const CreateWalletPage = () => {
     }
     setIsProcessing(true);
     setTimeout(() => {
-      router.push('/dashboard');
+      setWalletExists(true);
+      setWalletImported('empty'); // Creating a new wallet is like an empty funded wallet
+      router.replace('/dashboard');
     }, 2500);
   };
 
