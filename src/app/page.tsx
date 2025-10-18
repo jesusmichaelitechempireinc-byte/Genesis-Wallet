@@ -108,7 +108,7 @@ export default function LandingPage() {
           <Link href="#faq" className="hover:text-primary transition-colors">FAQ</Link>
         </nav>
         <Link href="/wallet-setup">
-            <Button size="default" className="rounded-full bg-primary/10 border border-primary/50 text-primary-foreground hover:bg-primary/20 shadow-neo-out-sm active:shadow-neo-in-sm transition-all duration-300">
+            <Button size="default" className="rounded-full bg-foreground text-background font-bold hover:bg-foreground/80 shadow-neo-out-sm active:shadow-neo-in-sm transition-all duration-300">
               Launch App
             </Button>
           </Link>
