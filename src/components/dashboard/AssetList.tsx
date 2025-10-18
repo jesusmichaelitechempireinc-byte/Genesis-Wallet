@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useMemo } from "react";
 import {
   Table,
   TableBody,
@@ -24,8 +24,16 @@ const PriceChange = ({ change }: { change: number }) => {
   );
 }
 
-export default function AssetList() {
-  const [assets] = useState<Coin[]>(coins);
+export default function AssetList({ searchTerm }: { searchTerm?: string }) {
+  const filteredAssets = useMemo(() => {
+    if (!searchTerm) return coins;
+    const lowercasedFilter = searchTerm.toLowerCase();
+    return coins.filter(
+      (coin) =>
+        coin.name.toLowerCase().includes(lowercasedFilter) ||
+        coin.ticker.toLowerCase().includes(lowercasedFilter)
+    );
+  }, [searchTerm]);
 
   return (
     <div className="w-full">
@@ -41,7 +49,7 @@ export default function AssetList() {
       <div className="rounded-lg bg-transparent overflow-hidden">
         <Table>
           <TableBody>
-            {assets.map((asset) => (
+            {filteredAssets.map((asset) => (
               <TableRow key={asset.ticker} className="border-none hover:bg-accent/50 cursor-pointer">
                 <TableCell className="p-0">
                   <Link href={`/dashboard/assets/${asset.ticker}`} className="flex items-center gap-4 p-3">
@@ -71,4 +79,3 @@ export default function AssetList() {
     </div>
   );
 }
-
