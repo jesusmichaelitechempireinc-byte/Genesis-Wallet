@@ -12,11 +12,14 @@ export default function Header() {
             <Leaf className="h-6 w-6 text-muted-foreground" />
           </Button>
         </SidebarTrigger>
-        <div className="hidden items-center gap-2 md:flex">
-          <SidebarTrigger />
-          <Leaf className="h-5 w-5 text-green-500" />
-          <h1 className="text-lg font-semibold">Investments</h1>
-        </div>
+        <SidebarTrigger asChild>
+          <div className="hidden items-center gap-2 md:flex">
+            <Button variant="ghost" size="icon">
+              <Leaf className="h-5 w-5 text-green-500" />
+            </Button>
+            <h1 className="text-lg font-semibold">Investments</h1>
+          </div>
+        </SidebarTrigger>
       </div>
       <Button variant="ghost" size="icon">
         <QrCode className="h-6 w-6 text-muted-foreground" />
