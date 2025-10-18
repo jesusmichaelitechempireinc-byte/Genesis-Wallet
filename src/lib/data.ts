@@ -19,7 +19,7 @@ export const coins: Coin[] = [
     ticker: "BTC",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675521/bitcoin-btc-logo_fchtil.png',
     balance: 0,
-    usdValue: 0.00,
+    usdValue: 0,
     change: -1.43,
     history: [
       { time: '00:00', price: 67100 },
@@ -53,7 +53,7 @@ export const coins: Coin[] = [
     ticker: "ETH",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675606/ethereum-eth-logo_gkt5dg.png',
     balance: 0,
-    usdValue: 0.00,
+    usdValue: 0,
     change: -1.35,
     history: [
       { time: '00:00', price: 3400 },
@@ -87,7 +87,7 @@ export const coins: Coin[] = [
     ticker: "SOL",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675609/solana-sol-logo_bcifcy.png',
     balance: 0,
-    usdValue: 0.00,
+    usdValue: 0,
     change: -1.28,
      history: [
       { time: '00:00', price: 165.00 }, { time: '01:00', price: 165.50 }, { time: '02:00', price: 164.80 },
@@ -105,7 +105,7 @@ export const coins: Coin[] = [
     ticker: "DOGE",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675627/dogecoin-doge-logo_vhntvk.png',
     balance: 0,
-    usdValue: 0.00,
+    usdValue: 0,
     change: -1.67,
      history: [
       { time: '00:00', price: 0.120 }, { time: '01:00', price: 0.121 }, { time: '02:00', price: 0.119 },
@@ -123,7 +123,7 @@ export const coins: Coin[] = [
     ticker: "ADA",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675738/cardano-ada-logo_pbavn1.png',
     balance: 0,
-    usdValue: 0.00,
+    usdValue: 0,
     change: -3.00,
      history: [
       { time: '00:00', price: 0.380 }, { time: '01:00', price: 0.382 }, { time: '02:00', price: 0.379 },
@@ -141,7 +141,7 @@ export const coins: Coin[] = [
     ticker: "XRP",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675751/xrp-xrp-logo_smpmq7.png',
     balance: 0,
-    usdValue: 0.00,
+    usdValue: 0,
     change: -1.16,
     history: [ { time: '12:00', price: 0.4750 }, { time: '13:00', price: 0.4755 }, { time: '14:00', price: 0.4760 } ]
   },
@@ -150,7 +150,7 @@ export const coins: Coin[] = [
     ticker: "AVAX",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675757/avalanche-avax-logo_yt45tu.png',
     balance: 0,
-    usdValue: 0.00,
+    usdValue: 0,
     change: -4.63,
     history: [ { time: '12:00', price: 25.50 }, { time: '13:00', price: 25.55 }, { time: '14:00', price: 25.60 } ]
   },
@@ -159,7 +159,7 @@ export const coins: Coin[] = [
     ticker: "SUI",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675771/sui-sui-logo_blqmgl.png',
     balance: 0,
-    usdValue: 0.00,
+    usdValue: 0,
     change: -2.88,
     history: [ { time: '12:00', price: 0.880 }, { time: '13:00', price: 0.882 }, { time: '14:00', price: 0.884 } ]
   },
@@ -168,7 +168,7 @@ export const coins: Coin[] = [
     ticker: "BNB",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675782/bnb-bnb-logo_matwsx.png',
     balance: 0,
-    usdValue: 0.00,
+    usdValue: 0,
     change: -6.17,
     history: [ { time: '12:00', price: 575.00 }, { time: '13:00', price: 575.50 }, { time: '14:00', price: 576.00 } ]
   },
@@ -177,7 +177,7 @@ export const coins: Coin[] = [
     ticker: "TRX",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675804/tron-trx-logo_amapma.png',
     balance: 0,
-    usdValue: 0.00,
+    usdValue: 0,
     change: -1.96,
     history: [ { time: '12:00', price: 0.1140 }, { time: '13:00', price: 0.1142 }, { time: '14:00', price: 0.1144 } ]
   },
@@ -186,7 +186,7 @@ export const coins: Coin[] = [
     ticker: "FET",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675816/artificial-superintelligence-alliance-fet-logo_rhrvie.png',
     balance: 0,
-    usdValue: 0.00,
+    usdValue: 0,
     change: -1.82,
     history: [ { time: '12:00', price: 1.62 }, { time: '13:00', price: 1.625 }, { time: '14:00', price: 1.63 } ]
   },
@@ -195,7 +195,7 @@ export const coins: Coin[] = [
     ticker: "PEPE",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675900/pepe-pepe-logo_ey1qka.png',
     balance: 0,
-    usdValue: 0.00,
+    usdValue: 0,
     change: -2.94,
     history: [ { time: '12:00', price: 0.00001150 }, { time: '13:00', price: 0.00001152 }, { time: '14:00', price: 0.00001154 } ]
   },
@@ -204,7 +204,7 @@ export const coins: Coin[] = [
     ticker: "USDC",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760678111/usd-coin-usdc-logo_isqxlb.png',
     balance: 108490,
-    usdValue: 108477.31,
+    usdValue: 108490,
     change: 0.01,
     history: [ { time: '12:00', price: 1.00 }, { time: '13:00', price: 1.00 }, { time: '14:00', price: 1.00 } ]
   },
@@ -213,7 +213,7 @@ export const coins: Coin[] = [
     ticker: "USDT-ERC20",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688489/USDT-ERC20_zylqxi.png',
     balance: 0,
-    usdValue: 0.00,
+    usdValue: 0,
     change: 0.03,
     history: [ { time: '12:00', price: 1.00 }, { time: '13:00', price: 1.00 }, { time: '14:00', price: 1.00 } ]
   },
@@ -222,7 +222,7 @@ export const coins: Coin[] = [
     ticker: "USDT-TRC20",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688695/USDT-TRC20_mautso.png',
     balance: 0,
-    usdValue: 0.00,
+    usdValue: 0,
     change: 0.02,
     history: [ { time: '12:00', price: 1.00 }, { time: '13:00', price: 1.00 }, { time: '14:00', price: 1.00 } ]
   },
