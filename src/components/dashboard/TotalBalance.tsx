@@ -1,19 +1,18 @@
+
+'use client';
+
 import { totalBalance } from "@/lib/data";
+import { useCurrency } from "@/hooks/use-currency";
 
 export default function TotalBalance() {
-  const formattedBalance = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(totalBalance);
+  const { selectedCurrency, formatCurrency } = useCurrency();
+  const convertedBalance = totalBalance * (selectedCurrency.rate || 1);
+  const formattedBalance = formatCurrency(convertedBalance);
   
-  const usdcBalance = totalBalance;
-
   return (
     <div className="text-center my-4">
       <h1 className="text-5xl font-bold tracking-tight">{formattedBalance}</h1>
-      <p className="text-muted-foreground text-lg mt-1">≈{usdcBalance.toLocaleString()} USDC</p>
+      <p className="text-muted-foreground text-lg mt-1">{selectedCurrency.code}</p>
     </div>
   );
 }

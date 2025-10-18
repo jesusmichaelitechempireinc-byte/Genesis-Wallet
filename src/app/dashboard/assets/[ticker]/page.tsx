@@ -1,4 +1,6 @@
 
+'use client';
+
 import AssetHeader from "@/components/dashboard/AssetHeader";
 import BottomNav from "@/components/dashboard/BottomNav";
 import { coins } from "@/lib/data";
@@ -6,9 +8,11 @@ import AssetChart from "@/components/dashboard/AssetChart";
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown, Repeat } from "lucide-react";
 import Link from 'next/link';
+import { useCurrency } from '@/hooks/use-currency';
 
 export default function AssetPage({ params }: { params: { ticker: string } }) {
   const coin = coins.find((c) => c.ticker === params.ticker.toUpperCase());
+  const { selectedCurrency, formatCurrency } = useCurrency();
 
   if (!coin) {
     return (
@@ -23,12 +27,8 @@ export default function AssetPage({ params }: { params: { ticker: string } }) {
     );
   }
 
-  const formattedBalance = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(coin.usdValue);
+  const convertedUsdValue = coin.usdValue * (selectedCurrency.rate || 1);
+  const formattedBalance = formatCurrency(convertedUsdValue);
 
   return (
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">

@@ -13,6 +13,7 @@ import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer } fro
 import { Coin } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useCurrency } from "@/hooks/use-currency";
 
 const chartConfig = {
   price: {
@@ -25,7 +26,12 @@ const timeRanges = ['1H', '1D', '1W', '1M', '1Y', 'ALL'];
 
 export default function AssetChart({ coin }: { coin: Coin }) {
   const [activeRange, setActiveRange] = useState('1D');
-  const chartData = coin.history;
+  const { selectedCurrency, formatCurrency } = useCurrency();
+  
+  const chartData = coin.history.map(h => ({
+      ...h,
+      price: h.price * (selectedCurrency.rate || 1)
+  }));
   
   const currentPrice = chartData[chartData.length - 1].price;
   const priceChange = currentPrice - chartData[0].price;
@@ -37,9 +43,9 @@ export default function AssetChart({ coin }: { coin: Coin }) {
     <Card className="shadow-heavy-out-lg border-none bg-transparent">
       <CardContent className="p-4 md:p-6">
         <div className="px-2 mb-4">
-             <p className="text-3xl font-bold font-mono">${currentPrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</p>
+             <p className="text-3xl font-bold font-mono">{formatCurrency(currentPrice)}</p>
              <p className={`font-semibold text-lg ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
-                {isPositive ? '+' : ''}{priceChange.toFixed(2)} ({percentageChange.toFixed(2)}%) Today
+                {isPositive ? '+' : ''}{formatCurrency(priceChange, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ({percentageChange.toFixed(2)}%) Today
              </p>
         </div>
         <ChartContainer config={chartConfig} className="h-[250px] w-full">
@@ -56,7 +62,7 @@ export default function AssetChart({ coin }: { coin: Coin }) {
               <ChartTooltip
                 cursor={{stroke: 'hsl(var(--muted-foreground))', strokeWidth: 1, strokeDasharray: '4 4'}}
                 content={<ChartTooltipContent
-                    formatter={(value) => `$${Number(value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}
+                    formatter={(value) => formatCurrency(Number(value))}
                     indicator="dot"
                     labelClassName="font-medium"
                     className="shadow-heavy-out-sm bg-background/80 backdrop-blur-sm rounded-xl"

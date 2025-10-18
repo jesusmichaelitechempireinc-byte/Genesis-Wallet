@@ -9,6 +9,7 @@ export interface Coin {
   iconUrl?: string;
   balance: number;
   usdValue: number;
+  price: number;
   change: number;
   history: { time: string, price: number }[];
 }
@@ -18,76 +19,47 @@ export const coins: Coin[] = [
     name: "Bitcoin",
     ticker: "BTC",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675521/bitcoin-btc-logo_fchtil.png',
-    balance: 0,
-    usdValue: 0,
+    balance: 0.75,
+    usdValue: 50864.25,
+    price: 67819,
     change: -1.43,
     history: [
-      { time: '00:00', price: 67100 },
-      { time: '01:00', price: 67250 },
-      { time: '02:00', price: 67150 },
-      { time: '03:00', price: 67300 },
-      { time: '04:00', price: 67400 },
-      { time: '05:00', price: 67350 },
-      { time: '06:00', price: 67500 },
-      { time: '07:00', price: 67600 },
-      { time: '08:00', price: 67550 },
-      { time: '09:00', price: 67700 },
-      { time: '10:00', price: 67800 },
-      { time: '11:00', price: 67750 },
-      { time: '12:00', price: 67900 },
-      { time: '13:00', price: 68000 },
-      { time: '14:00', price: 67950 },
-      { time: '15:00', price: 68100 },
-      { time: '16:00', price: 68200 },
-      { time: '17:00', price: 68150 },
-      { time: '18:00', price: 68300 },
-      { time: '19:00', price: 68400 },
-      { time: '20:00', price: 68350 },
-      { time: '21:00', price: 68500 },
-      { time: '22:00', price: 68600 },
-      { time: '23:00', price: 68550 },
+      { time: '00:00', price: 67100 }, { time: '01:00', price: 67250 }, { time: '02:00', price: 67150 },
+      { time: '03:00', price: 67300 }, { time: '04:00', price: 67400 }, { time: '05:00', price: 67350 },
+      { time: '06:00', price: 67500 }, { time: '07:00', price: 67600 }, { time: '08:00', price: 67550 },
+      { time: '09:00', price: 67700 }, { time: '10:00', price: 67800 }, { time: '11:00', price: 67750 },
+      { time: '12:00', price: 67900 }, { time: '13:00', price: 68000 }, { time: '14:00', price: 67950 },
+      { time: '15:00', price: 68100 }, { time: '16:00', price: 68200 }, { time: '17:00', price: 68150 },
+      { time: '18:00', price: 68300 }, { time: '19:00', price: 68400 }, { time: '20:00', price: 68350 },
+      { time: '21:00', price: 68500 }, { time: '22:00', price: 68600 }, { time: '23:00', price: 67819 },
     ],
   },
   {
     name: "Ethereum",
     ticker: "ETH",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675606/ethereum-eth-logo_gkt5dg.png',
-    balance: 0,
-    usdValue: 0,
+    balance: 10.5,
+    usdValue: 36540,
+    price: 3480,
     change: -1.35,
     history: [
-      { time: '00:00', price: 3400 },
-      { time: '01:00', price: 3410 },
-      { time: '02:00', price: 3405 },
-      { time: '03:00', price: 3415 },
-      { time: '04:00', price: 3420 },
-      { time: '05:00', price: 3418 },
-      { time: '06:00', price: 3425 },
-      { time: '07:00', price: 3430 },
-      { time: '08:00', price: 3428 },
-      { time: '09:00', price: 3435 },
-      { time: '10:00', price: 3440 },
-      { time: '11:00', price: 3438 },
-      { time: '12:00', price: 3445 },
-      { time: '13:00', price: 3450 },
-      { time: '14:00', price: 3448 },
-      { time: '15:00', price: 3455 },
-      { time: '16:00', price: 3460 },
-      { time: '17:00', price: 3458 },
-      { time: '18:00', price: 3465 },
-      { time: '19:00', price: 3470 },
-      { time: '20:00', price: 3468 },
-      { time: '21:00', price: 3475 },
-      { time: '22:00', price: 3480 },
-      { time: '23:00', price: 3478 },
+      { time: '00:00', price: 3400 }, { time: '01:00', price: 3410 }, { time: '02:00', price: 3405 },
+      { time: '03:00', price: 3415 }, { time: '04:00', price: 3420 }, { time: '05:00', price: 3418 },
+      { time: '06:00', price: 3425 }, { time: '07:00', price: 3430 }, { time: '08:00', price: 3428 },
+      { time: '09:00', price: 3435 }, { time: '10:00', price: 3440 }, { time: '11:00', price: 3438 },
+      { time: '12:00', price: 3445 }, { time: '13:00', price: 3450 }, { time: '14:00', price: 3448 },
+      { time: '15:00', price: 3455 }, { time: '16:00', price: 3460 }, { time: '17:00', price: 3458 },
+      { time: '18:00', price: 3465 }, { time: '19:00', price: 3470 }, { time: '20:00', price: 3468 },
+      { time: '21:00', price: 3475 }, { time: '22:00', price: 3480 }, { time: '23:00', price: 3480 },
     ]
   },
   {
     name: "Solana",
     ticker: "SOL",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675609/solana-sol-logo_bcifcy.png',
-    balance: 0,
-    usdValue: 0,
+    balance: 100,
+    usdValue: 17120,
+    price: 171.2,
     change: -1.28,
      history: [
       { time: '00:00', price: 165.00 }, { time: '01:00', price: 165.50 }, { time: '02:00', price: 164.80 },
@@ -104,8 +76,9 @@ export const coins: Coin[] = [
     name: "Dogecoin",
     ticker: "DOGE",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675627/dogecoin-doge-logo_vhntvk.png',
-    balance: 0,
-    usdValue: 0,
+    balance: 50000,
+    usdValue: 6700,
+    price: 0.134,
     change: -1.67,
      history: [
       { time: '00:00', price: 0.120 }, { time: '01:00', price: 0.121 }, { time: '02:00', price: 0.119 },
@@ -119,11 +92,22 @@ export const coins: Coin[] = [
     ]
   },
   {
+    name: "USD Coin",
+    ticker: "USDC",
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760678111/usd-coin-usdc-logo_isqxlb.png',
+    balance: 3796.25,
+    usdValue: 3796.25,
+    price: 1.00,
+    change: 0.01,
+    history: [ { time: '12:00', price: 1.00 }, { time: '13:00', price: 1.00 }, { time: '14:00', price: 1.00 } ]
+  },
+  {
     name: "Cardano",
     ticker: "ADA",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675738/cardano-ada-logo_pbavn1.png',
     balance: 0,
     usdValue: 0,
+    price: 0.407,
     change: -3.00,
      history: [
       { time: '00:00', price: 0.380 }, { time: '01:00', price: 0.382 }, { time: '02:00', price: 0.379 },
@@ -142,6 +126,7 @@ export const coins: Coin[] = [
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675751/xrp-xrp-logo_smpmq7.png',
     balance: 0,
     usdValue: 0,
+    price: 0.476,
     change: -1.16,
     history: [ { time: '12:00', price: 0.4750 }, { time: '13:00', price: 0.4755 }, { time: '14:00', price: 0.4760 } ]
   },
@@ -151,6 +136,7 @@ export const coins: Coin[] = [
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675757/avalanche-avax-logo_yt45tu.png',
     balance: 0,
     usdValue: 0,
+    price: 25.60,
     change: -4.63,
     history: [ { time: '12:00', price: 25.50 }, { time: '13:00', price: 25.55 }, { time: '14:00', price: 25.60 } ]
   },
@@ -160,6 +146,7 @@ export const coins: Coin[] = [
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675771/sui-sui-logo_blqmgl.png',
     balance: 0,
     usdValue: 0,
+    price: 0.884,
     change: -2.88,
     history: [ { time: '12:00', price: 0.880 }, { time: '13:00', price: 0.882 }, { time: '14:00', price: 0.884 } ]
   },
@@ -169,6 +156,7 @@ export const coins: Coin[] = [
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675782/bnb-bnb-logo_matwsx.png',
     balance: 0,
     usdValue: 0,
+    price: 576.00,
     change: -6.17,
     history: [ { time: '12:00', price: 575.00 }, { time: '13:00', price: 575.50 }, { time: '14:00', price: 576.00 } ]
   },
@@ -178,6 +166,7 @@ export const coins: Coin[] = [
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675804/tron-trx-logo_amapma.png',
     balance: 0,
     usdValue: 0,
+    price: 0.1144,
     change: -1.96,
     history: [ { time: '12:00', price: 0.1140 }, { time: '13:00', price: 0.1142 }, { time: '14:00', price: 0.1144 } ]
   },
@@ -187,6 +176,7 @@ export const coins: Coin[] = [
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675816/artificial-superintelligence-alliance-fet-logo_rhrvie.png',
     balance: 0,
     usdValue: 0,
+    price: 1.63,
     change: -1.82,
     history: [ { time: '12:00', price: 1.62 }, { time: '13:00', price: 1.625 }, { time: '14:00', price: 1.63 } ]
   },
@@ -196,17 +186,9 @@ export const coins: Coin[] = [
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675900/pepe-pepe-logo_ey1qka.png',
     balance: 0,
     usdValue: 0,
+    price: 0.00001154,
     change: -2.94,
     history: [ { time: '12:00', price: 0.00001150 }, { time: '13:00', price: 0.00001152 }, { time: '14:00', price: 0.00001154 } ]
-  },
-  {
-    name: "USD Coin",
-    ticker: "USDC",
-    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760678111/usd-coin-usdc-logo_isqxlb.png',
-    balance: 108490,
-    usdValue: 108490,
-    change: 0.01,
-    history: [ { time: '12:00', price: 1.00 }, { time: '13:00', price: 1.00 }, { time: '14:00', price: 1.00 } ]
   },
   {
     name: "Tether USD (ERC20)",
@@ -214,6 +196,7 @@ export const coins: Coin[] = [
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688489/USDT-ERC20_zylqxi.png',
     balance: 0,
     usdValue: 0,
+    price: 1.00,
     change: 0.03,
     history: [ { time: '12:00', price: 1.00 }, { time: '13:00', price: 1.00 }, { time: '14:00', price: 1.00 } ]
   },
@@ -223,9 +206,40 @@ export const coins: Coin[] = [
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688695/USDT-TRC20_mautso.png',
     balance: 0,
     usdValue: 0,
+    price: 1.00,
     change: 0.02,
     history: [ { time: '12:00', price: 1.00 }, { time: '13:00', price: 1.00 }, { time: '14:00', price: 1.00 } ]
   },
+];
+
+export interface Currency {
+  code: string;
+  name: string;
+  symbol: string;
+  rate?: number;
+}
+
+export const currencies: Currency[] = [
+  { code: 'USD', name: 'United States Dollar', symbol: '$', rate: 1 },
+  { code: 'EUR', name: 'Euro', symbol: '€', rate: 0.93 },
+  { code: 'JPY', name: 'Japanese Yen', symbol: '¥', rate: 159.81 },
+  { code: 'GBP', name: 'British Pound Sterling', symbol: '£', rate: 0.79 },
+  { code: 'AUD', name: 'Australian Dollar', symbol: 'A$', rate: 1.50 },
+  { code: 'CAD', name: 'Canadian Dollar', symbol: 'C$', rate: 1.37 },
+  { code: 'CHF', name: 'Swiss Franc', symbol: 'CHF', rate: 0.90 },
+  { code: 'CNY', name: 'Chinese Yuan', symbol: '¥', rate: 7.26 },
+  { code: 'SEK', name: 'Swedish Krona', symbol: 'kr', rate: 10.55 },
+  { code: 'NZD', name: 'New Zealand Dollar', symbol: 'NZ$', rate: 1.64 },
+  { code: 'MXN', name: 'Mexican Peso', symbol: '$', rate: 18.11 },
+  { code: 'SGD', name: 'Singapore Dollar', symbol: 'S$', rate: 1.35 },
+  { code: 'HKD', name: 'Hong Kong Dollar', symbol: 'HK$', rate: 7.81 },
+  { code: 'NOK', name: 'Norwegian Krone', symbol: 'kr', rate: 10.63 },
+  { code: 'KRW', name: 'South Korean Won', symbol: '₩', rate: 1388.55 },
+  { code 'TRY', name: 'Turkish Lira', symbol: '₺', rate: 32.95 },
+  { code: 'RUB', name: 'Russian Ruble', symbol: '₽', rate: 88.22 },
+  { code: 'INR', name: 'Indian Rupee', symbol: '₹', rate: 83.45 },
+  { code: 'BRL', name: 'Brazilian Real', symbol: 'R$', rate: 5.44 },
+  { code: 'ZAR', name: 'South African Rand', symbol: 'R', rate: 18.23 },
 ];
 
 export const portfolioData = [
@@ -235,7 +249,7 @@ export const portfolioData = [
     { date: 'Apr', balance: 980000 },
     { date: 'May', balance: 1100000 },
     { date: 'Jun', balance: 1250000 },
-    { date: 'Jul', balance: 1371667.21 },
+    { date: 'Jul', balance: 108490 },
 ]
 
 export interface Transaction {
@@ -256,7 +270,7 @@ export const transactions: Transaction[] = [
     status: "Completed",
     coin: coins[1],
     amount: 2.5,
-    usdValue: 8500.0,
+    usdValue: 8700.0,
     date: "2024-07-20",
     address: "0x...a1b2",
   },
@@ -266,7 +280,7 @@ export const transactions: Transaction[] = [
     status: "Completed",
     coin: coins[0],
     amount: 0.1,
-    usdValue: 6500.0,
+    usdValue: 6781.9,
     date: "2024-07-19",
     address: "bc1...y3z4",
   },
@@ -275,8 +289,8 @@ export const transactions: Transaction[] = [
     type: "Receive",
     status: "Pending",
     coin: coins[2],
-    amount: 500,
-    usdValue: 235.0,
+    amount: 50,
+    usdValue: 8560.0,
     date: "2024-07-18",
     address: "addr1...k7l8",
   },
@@ -286,7 +300,7 @@ export const transactions: Transaction[] = [
     status: "Failed",
     coin: coins[1],
     amount: 1.0,
-    usdValue: 3400.0,
+    usdValue: 3480.0,
     date: "2024-07-17",
     address: "0x...c3d4",
   },
@@ -296,7 +310,7 @@ export const transactions: Transaction[] = [
     status: "Completed",
     coin: coins[0],
     amount: 0.05,
-    usdValue: 3250.0,
+    usdValue: 3390.95,
     date: "2024-07-16",
     address: "bc1...w5x6",
   },

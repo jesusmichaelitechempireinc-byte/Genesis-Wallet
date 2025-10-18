@@ -2,12 +2,14 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, Bell, Settings, X, ChevronDown, Check, Coins, AlertCircle } from "lucide-react";
+import { Search, Bell, Settings, X, ChevronDown, Check, Coins, AlertCircle, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '@/components/ui/dropdown-menu';
+import { currencies } from '@/lib/data';
+import { useCurrency } from '@/hooks/use-currency';
 
 const notifications = [
     {
@@ -28,6 +30,7 @@ export default function Header({ onSearchChange }: { onSearchChange?: (term: str
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [walletName, setWalletName] = useState("Primary Wallet");
   const [editingWalletName, setEditingWalletName] = useState(walletName);
+  const { selectedCurrency, setSelectedCurrency } = useCurrency();
 
   const handleSaveWalletName = () => {
     setWalletName(editingWalletName);
@@ -74,6 +77,33 @@ export default function Header({ onSearchChange }: { onSearchChange?: (term: str
       </div>
 
       <div className={cn("flex items-center gap-2 transition-all duration-300", isSearchOpen && 'opacity-0 pointer-events-none')}>
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="rounded-full shadow-heavy-out-sm active:shadow-heavy-in-sm">
+                    <Globe className="h-5 w-5 text-muted-foreground" />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56 shadow-heavy-out-lg border-none max-h-80 overflow-y-auto" align="end">
+                <DropdownMenuLabel>Select Currency</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuRadioGroup value={selectedCurrency.code} onValueChange={(code) => {
+                    const currency = currencies.find(c => c.code === code);
+                    if (currency) {
+                        setSelectedCurrency(currency);
+                    }
+                }}>
+                {currencies.map(c => (
+                    <DropdownMenuRadioItem key={c.code} value={c.code} className="cursor-pointer">
+                        <div className="flex items-center justify-between w-full">
+                           <span>{c.code} - {c.name}</span>
+                           <span className="font-bold">{c.symbol}</span>
+                        </div>
+                    </DropdownMenuRadioItem>
+                ))}
+                </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+        </DropdownMenu>
+
         {onSearchChange && (
             <Button variant="ghost" size="icon" className="rounded-full shadow-heavy-out-sm active:shadow-heavy-in-sm" onClick={() => setIsSearchOpen(true)}>
                 <Search className="h-5 w-5 text-muted-foreground" />
