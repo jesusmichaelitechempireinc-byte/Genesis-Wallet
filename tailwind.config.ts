@@ -32,7 +32,7 @@ export default {
         'heavy-in-lg': 'inset 20px 20px 40px #161616, inset -20px -20px 40px #2e2e2e',
       },
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
+        body: ['DM Sans', 'sans-serif'],
         headline: ['DM Sans', 'sans-serif'],
         code: ['monospace'],
       },
