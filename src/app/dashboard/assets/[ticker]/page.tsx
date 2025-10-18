@@ -43,6 +43,7 @@ export default function AssetPage({ params }: { params: { ticker: string } }) {
 
   const convertedUsdValue = coin.usdValue * (selectedCurrency.rate || 1);
   const formattedBalance = formatCurrency(convertedUsdValue);
+  const formattedPrice = formatCurrency(coin.price * (selectedCurrency.rate || 1));
 
   return (
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">

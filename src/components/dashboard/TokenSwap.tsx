@@ -25,7 +25,7 @@ export default function TokenSwap() {
   useEffect(() => {
     if (walletImported === 'funded') {
       setCoins(getFundedCoins());
-    } else {
+    } else if (walletImported === 'empty') {
       setCoins(getEmptyCoins());
     }
   }, [walletImported]);
