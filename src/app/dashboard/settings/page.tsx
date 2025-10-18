@@ -2,10 +2,16 @@
 import Header from "@/components/dashboard/Header";
 import BottomNav from "@/components/dashboard/BottomNav";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChevronRight, Brush, Shield, Network, Info } from "lucide-react";
+import { ChevronRight, Brush, Shield, Network, Info, Wallet2 } from "lucide-react";
 import Link from 'next/link';
 
 const settingsItems = [
+    {
+        icon: Wallet2,
+        title: "Wallet",
+        description: "Manage wallet settings and preferences.",
+        href: "/dashboard/settings/wallet"
+    },
     {
         icon: Brush,
         title: "Appearance",

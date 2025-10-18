@@ -1,19 +1,20 @@
 
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import {
   Table,
   TableBody,
   TableCell,
   TableRow,
 } from "@/components/ui/table";
-import { coins, type Coin } from "@/lib/data";
+import { coins as initialCoins, type Coin, getFundedCoins, getEmptyCoins } from "@/lib/data";
 import { ChevronDown, SlidersHorizontal, ArrowUp, ArrowDown } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import Link from 'next/link';
 import { useCurrency } from "@/hooks/use-currency";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 const PriceChange = ({ change }: { change: number }) => {
   const isPositive = change >= 0;
@@ -27,6 +28,18 @@ const PriceChange = ({ change }: { change: number }) => {
 
 export default function AssetList({ searchTerm }: { searchTerm?: string }) {
   const { selectedCurrency, formatCurrency } = useCurrency();
+  const [walletImported] = useLocalStorage('wallet-imported', 'none');
+  const [coins, setCoins] = useState<Coin[]>(initialCoins);
+
+  useEffect(() => {
+    if (walletImported === 'funded') {
+      setCoins(getFundedCoins());
+    } else if (walletImported === 'empty') {
+      setCoins(getEmptyCoins());
+    } else {
+      setCoins(initialCoins);
+    }
+  }, [walletImported]);
 
   const filteredAssets = useMemo(() => {
     if (!searchTerm) return coins;
@@ -36,7 +49,7 @@ export default function AssetList({ searchTerm }: { searchTerm?: string }) {
         coin.name.toLowerCase().includes(lowercasedFilter) ||
         coin.ticker.toLowerCase().includes(lowercasedFilter)
     );
-  }, [searchTerm]);
+  }, [searchTerm, coins]);
 
   return (
     <div className="w-full">

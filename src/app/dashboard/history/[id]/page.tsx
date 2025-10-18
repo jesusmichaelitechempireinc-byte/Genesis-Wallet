@@ -1,9 +1,9 @@
 
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { transactions } from '@/lib/data';
+import { transactions as initialTransactions, type Transaction } from '@/lib/data';
 import BottomNav from '@/components/dashboard/BottomNav';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,12 +12,21 @@ import Image from 'next/image';
 import { useCurrency } from '@/hooks/use-currency';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { useLocalStorage } from '@/hooks/use-local-storage';
 
 export default function TransactionDetailPage() {
   const router = useRouter();
   const params = useParams();
   const { id } = params;
   const { formatCurrency } = useCurrency();
+  const [walletImported] = useLocalStorage('wallet-imported', 'none');
+
+  const transactions = useMemo(() => {
+    if (walletImported === 'funded') {
+        return initialTransactions;
+    }
+    return [];
+  }, [walletImported]);
 
   const transaction = transactions.find((tx) => tx.id === id);
 

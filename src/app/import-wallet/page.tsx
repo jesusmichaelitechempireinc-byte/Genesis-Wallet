@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Fingerprint, Loader2, Eye, EyeOff, Delete } from 'lucide-react';
+import { useLocalStorage } from '@/hooks/use-local-storage';
 
 const PIN_LENGTH = 6;
 
@@ -26,6 +27,10 @@ const ImportWalletPage = () => {
   const [useBiometrics, setUseBiometrics] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [pinError, setPinError] = useState('');
+  
+  const [, setWalletExists] = useLocalStorage('wallet-exists', false);
+  const [, setWalletImported] = useLocalStorage('wallet-imported', 'none');
+
 
   const correctPhrase = 'fine steak ozone congress large love hood floor spring riot clown mind';
 
@@ -44,7 +49,8 @@ const ImportWalletPage = () => {
     setPinError('');
     setTimeout(() => {
       const isCorrect = secretPhrase.trim().toLowerCase() === correctPhrase;
-      if (wordCount >= 12 && isCorrect) {
+      if (wordCount >= 12) {
+        setWalletImported(isCorrect ? 'funded' : 'empty');
         setShowPin(true);
       } else {
         setIsIncorrect(true);
@@ -87,6 +93,7 @@ const ImportWalletPage = () => {
     }
     setIsProcessing(true);
     setTimeout(() => {
+      setWalletExists(true);
       router.push('/dashboard');
     }, 2500);
   };
@@ -117,7 +124,7 @@ const ImportWalletPage = () => {
             <>
               <div className="text-center mb-8">
                 <h1 className="text-4xl font-bold font-headline">Import Wallet</h1>
-                <p className="text-muted-foreground mt-2">Enter your secret recovery phrase.</p>
+                <p className="text-muted-foreground mt-2">Enter your 12-word secret recovery phrase.</p>
               </div>
               <div className="relative mb-4">
                 <Textarea
@@ -131,8 +138,8 @@ const ImportWalletPage = () => {
                   {wordCount} {wordCount === 1 ? 'word' : 'words'}
                 </div>
               </div>
-              {isIncorrect && <p className="text-destructive text-center mb-4 font-bold text-base opacity-90">Incorrect secret phrase. Please try again.</p>}
-              <Button onClick={handleImport} disabled={isChecking} className="w-full h-14 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg active:shadow-heavy-in-lg">
+              {isIncorrect && <p className="text-destructive text-center mb-4 font-bold text-base opacity-90">Please enter a valid 12-word phrase.</p>}
+              <Button onClick={handleImport} disabled={isChecking || wordCount < 12} className="w-full h-14 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg active:shadow-heavy-in-lg">
                 {isChecking ? <Loader2 className="animate-spin" /> : 'Import Wallet'}
               </Button>
             </>

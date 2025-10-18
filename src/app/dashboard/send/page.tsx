@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from "@/components/dashboard/Header";
 import BottomNav from "@/components/dashboard/BottomNav";
@@ -11,22 +11,30 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { coins, type Coin } from "@/lib/data";
+import { type Coin, getFundedCoins, getEmptyCoins } from "@/lib/data";
 import Image from "next/image";
 import { AlertCircle, Info, Loader2 } from 'lucide-react';
 import { useCurrency } from '@/hooks/use-currency';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useLocalStorage } from '@/hooks/use-local-storage';
 
 export default function SendPage() {
     const searchParams = useSearchParams();
     const initialTicker = searchParams.get('ticker');
+    const [walletImported] = useLocalStorage('wallet-imported', 'none');
+    const [coins, setCoins] = useState<Coin[]>([]);
+    
+    useEffect(() => {
+        if (walletImported === 'funded') {
+            setCoins(getFundedCoins());
+        } else if (walletImported === 'empty') {
+            setCoins(getEmptyCoins());
+        }
+    }, [walletImported]);
 
     const [recipient, setRecipient] = useState('');
     const [amount, setAmount] = useState('');
-    const [selectedCoin, setSelectedCoin] = useState<Coin | null>(() => {
-        if (!initialTicker) return null;
-        return coins.find((c) => c.ticker === initialTicker) || null;
-    });
+    const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [isConfirming, setIsConfirming] = useState(false);
     const [error, setError] = useState('');
@@ -39,12 +47,16 @@ export default function SendPage() {
     const totalAmount = amountAsNumber + (selectedCoin ? (networkFee / selectedCoin.price) : 0);
 
     useEffect(() => {
-        const ticker = searchParams.get('ticker');
-        if (ticker) {
-            const coin = coins.find((c) => c.ticker === ticker);
-            setSelectedCoin(coin || null);
+        if (coins.length > 0) {
+            const ticker = searchParams.get('ticker');
+            if (ticker) {
+                const coin = coins.find((c) => c.ticker === ticker);
+                setSelectedCoin(coin || null);
+            } else if (!selectedCoin) {
+                setSelectedCoin(coins[0]);
+            }
         }
-    }, [searchParams]);
+    }, [searchParams, coins, selectedCoin]);
 
     const handleAssetChange = (ticker: string) => {
         const coin = coins.find((c) => c.ticker === ticker);

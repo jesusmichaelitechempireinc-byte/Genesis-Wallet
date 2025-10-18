@@ -14,7 +14,7 @@ export interface Coin {
   history: { time: string, price: number }[];
 }
 
-export const coins: Coin[] = [
+const initialCoins: Coin[] = [
   {
     name: "Bitcoin",
     ticker: "BTC",
@@ -95,8 +95,8 @@ export const coins: Coin[] = [
     name: "USD Coin",
     ticker: "USDC",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760678111/usd-coin-usdc-logo_isqxlb.png',
-    balance: 108490,
-    usdValue: 108490,
+    balance: 0,
+    usdValue: 0,
     price: 1.00,
     change: 0.01,
     history: [ { time: '12:00', price: 1.00 }, { time: '13:00', price: 1.00 }, { time: '14:00', price: 1.00 } ]
@@ -212,6 +212,8 @@ export const coins: Coin[] = [
   },
 ];
 
+export const coins = getEmptyCoins();
+
 export interface Currency {
   code: string;
   name: string;
@@ -242,37 +244,49 @@ export const currencies: Currency[] = [
   { code: 'ZAR', name: 'South African Rand', symbol: 'R', rate: 18.23 },
 ];
 
-export const portfolioData = [
-    { date: 'Jan', balance: 85000 },
-    { date: 'Feb', balance: 92000 },
-    { date: 'Mar', balance: 90000 },
-    { date: 'Apr', balance: 98000 },
-    { date: 'May', balance: 110000 },
-    { date: 'Jun', balance: 125000 },
-    { date: 'Jul', balance: 108490 },
-]
+export function getFundedCoins(): Coin[] {
+    const fundedCoinsMap = {
+      'BTC': { balance: 0.75, usdValue: 50864.25 },
+      'ETH': { balance: 10.5, usdValue: 36540 },
+      'SOL': { balance: 120, usdValue: 20544 },
+      'USDC': { balance: 108490, usdValue: 108490 },
+    };
+
+    return initialCoins.map(coin => {
+        if (fundedCoinsMap.hasOwnProperty(coin.ticker)) {
+            const fundedData = fundedCoinsMap[coin.ticker as keyof typeof fundedCoinsMap];
+            return { ...coin, balance: fundedData.balance, usdValue: fundedData.usdValue };
+        }
+        return { ...coin, balance: 0, usdValue: 0 };
+    });
+}
+
+export function getEmptyCoins(): Coin[] {
+    return initialCoins.map(c => ({ ...c, balance: 0, usdValue: 0 }));
+}
 
 export interface Transaction {
-  id: string;
-  type: "Send" | "Receive";
-  status: "Completed" | "Pending" | "Failed";
-  coin: Coin;
-  amount: number;
-  usdValue: number;
-  timestamp: number;
-  fromAddress: string;
-  toAddress: string;
-  hash: string;
-  block: number;
-  fee: number;
+    id: string;
+    type: 'Send' | 'Receive';
+    status: 'Completed' | 'Pending' | 'Failed';
+    coin: Coin;
+    amount: number;
+    usdValue: number;
+    timestamp: number;
+    fromAddress: string;
+    toAddress: string;
+    hash: string;
+    block: number;
+    fee: number;
 }
+
 
 export const transactions: Transaction[] = [
   {
     id: "txn1",
     type: "Receive",
     status: "Completed",
-    coin: coins.find(c => c.ticker === 'USDC')!,
+    coin: initialCoins.find(c => c.ticker === 'USDC')!,
     amount: 50000.00,
     usdValue: 50000.00,
     timestamp: 1721484000000, // July 20, 2024 10:00:00 AM UTC
@@ -286,7 +300,7 @@ export const transactions: Transaction[] = [
     id: "txn2",
     type: "Receive",
     status: "Completed",
-    coin: coins.find(c => c.ticker === 'USDC')!,
+    coin: initialCoins.find(c => c.ticker === 'USDC')!,
     amount: 25000.00,
     usdValue: 25000.00,
     timestamp: 1721397600000, // July 19, 2024 10:00:00 AM UTC
@@ -300,7 +314,7 @@ export const transactions: Transaction[] = [
     id: "txn3",
     type: "Send",
     status: "Completed",
-    coin: coins.find(c => c.ticker === 'ETH')!,
+    coin: initialCoins.find(c => c.ticker === 'ETH')!,
     amount: 1.5,
     usdValue: 5220,
     timestamp: 1721311200000, // July 18, 2024 10:00:00 AM UTC
@@ -314,7 +328,7 @@ export const transactions: Transaction[] = [
     id: "txn4",
     type: "Receive",
     status: "Completed",
-    coin: coins.find(c => c.ticker === 'USDC')!,
+    coin: initialCoins.find(c => c.ticker === 'USDC')!,
     amount: 33490.00,
     usdValue: 33490.00,
     timestamp: 1721224800000, // July 17, 2024 10:00:00 AM UTC
@@ -328,7 +342,7 @@ export const transactions: Transaction[] = [
     id: "txn5",
     type: "Send",
     status: "Pending",
-    coin: coins.find(c => c.ticker === 'BTC')!,
+    coin: initialCoins.find(c => c.ticker === 'BTC')!,
     amount: 0.02,
     usdValue: 1356.38,
     timestamp: 1721138400000, // July 16, 2024 10:00:00 AM UTC
@@ -342,7 +356,7 @@ export const transactions: Transaction[] = [
     id: "txn6",
     type: "Receive",
     status: "Failed",
-    coin: coins.find(c => c.ticker === 'SOL')!,
+    coin: initialCoins.find(c => c.ticker === 'SOL')!,
     amount: 10,
     usdValue: 1712,
     timestamp: 1721052000000, // July 15, 2024 10:00:00 AM UTC
@@ -353,5 +367,3 @@ export const transactions: Transaction[] = [
     fee: 0.01
   },
 ];
-
-export const totalBalance = coins.reduce((acc, coin) => acc + coin.usdValue, 0);

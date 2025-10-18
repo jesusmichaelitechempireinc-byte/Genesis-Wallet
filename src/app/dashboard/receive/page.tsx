@@ -10,8 +10,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Copy } from "lucide-react";
 import Image from "next/image";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { coins, type Coin } from "@/lib/data";
+import { coins as initialCoins, type Coin } from "@/lib/data";
 import { toast } from '@/hooks/use-toast';
+import { useLocalStorage } from '@/hooks/use-local-storage';
+import { getFundedCoins, getEmptyCoins } from '@/lib/data';
+
 
 const walletAddresses: Record<string, { address: string, network: string }> = {
     'BTC': { address: 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq', network: 'Bitcoin' },
@@ -27,6 +30,18 @@ const walletAddresses: Record<string, { address: string, network: string }> = {
 export default function ReceivePage() {
     const searchParams = useSearchParams();
     const initialTicker = searchParams.get('ticker');
+    const [walletImported] = useLocalStorage('wallet-imported', 'none');
+    const [coins, setCoins] = useState<Coin[]>(initialCoins);
+
+    useEffect(() => {
+        if (walletImported === 'funded') {
+            setCoins(getFundedCoins());
+        } else if (walletImported === 'empty') {
+            setCoins(getEmptyCoins());
+        } else {
+            setCoins(initialCoins);
+        }
+    }, [walletImported]);
     
     const [selectedCoin, setSelectedCoin] = useState<Coin | null>(() => {
         if (!initialTicker) return null;
@@ -39,7 +54,7 @@ export default function ReceivePage() {
             const coin = coins.find((c) => c.ticker === ticker);
             setSelectedCoin(coin || null);
         }
-    }, [searchParams]);
+    }, [searchParams, coins]);
     
     const handleCoinChange = (ticker: string) => {
         const coin = coins.find((c) => c.ticker === ticker);

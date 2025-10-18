@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,37 +10,53 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { ArrowDown, Loader2, AlertCircle, Info } from "lucide-react";
-import { coins, Coin } from "@/lib/data";
+import { Coin, getFundedCoins, getEmptyCoins } from "@/lib/data";
 import Image from "next/image";
 import { useCurrency } from "@/hooks/use-currency";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 export default function TokenSwap() {
   const searchParams = useSearchParams();
   const initialFromTicker = searchParams.get('from');
-
-  const [fromCoin, setFromCoin] = useState<Coin>(() => {
-    if(initialFromTicker) {
-        return coins.find(c => c.ticker === initialFromTicker) || coins.find(c => c.ticker === 'USDC') || coins[0]
+  const [walletImported] = useLocalStorage('wallet-imported', 'none');
+  const [coins, setCoins] = useState<Coin[]>([]);
+  
+  useEffect(() => {
+    if (walletImported === 'funded') {
+      setCoins(getFundedCoins());
+    } else {
+      setCoins(getEmptyCoins());
     }
-    return coins.find(c => c.ticker === 'USDC') || coins[0]
-  });
-  const [toCoin, setToCoin] = useState<Coin>(coins.find(c => c.ticker === 'BTC') || coins[1]);
+  }, [walletImported]);
+
+  const [fromCoin, setFromCoin] = useState<Coin | undefined>(undefined);
+  const [toCoin, setToCoin] = useState<Coin | undefined>(undefined);
+  
+  useEffect(() => {
+      if (coins.length > 0) {
+        let initialFrom = coins.find(c => c.ticker === 'USDC') || coins[0];
+        if (initialFromTicker) {
+            initialFrom = coins.find(c => c.ticker === initialFromTicker) || initialFrom;
+        }
+        setFromCoin(initialFrom);
+
+        let initialTo = coins.find(c => c.ticker === 'BTC') || coins[1];
+        if (initialFrom.ticker === initialTo.ticker) {
+            initialTo = coins.find(c => c.ticker !== initialFrom.ticker) || coins[1];
+        }
+        setToCoin(initialTo);
+      }
+  }, [coins, initialFromTicker]);
+
+
   const [fromAmount, setFromAmount] = useState<string>("1000.0");
   const [error, setError] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
   const [gasError, setGasError] = useState(false);
 
-  const { selectedCurrency, formatCurrency } = useCurrency();
-
-  useEffect(() => {
-    const fromTicker = searchParams.get('from');
-    if (fromTicker) {
-      const coin = coins.find((c) => c.ticker === fromTicker);
-      if (coin) setFromCoin(coin);
-    }
-  }, [searchParams]);
+  const { formatCurrency } = useCurrency();
 
   const handleFromCoinChange = (ticker: string) => {
     const coin = coins.find((c) => c.ticker === ticker);
@@ -53,9 +69,9 @@ export default function TokenSwap() {
     const coin = coins.find((c) => c.ticker === ticker);
     if (coin) setToCoin(coin);
   };
-  
-  const fromPriceUsd = (fromCoin.usdValue / fromCoin.balance) || fromCoin.price || 0;
-  const toPriceUsd = (toCoin.usdValue / toCoin.balance) || toCoin.price || 0;
+
+  const fromPriceUsd = useMemo(() => (fromCoin?.price || 0), [fromCoin]);
+  const toPriceUsd = useMemo(() => (toCoin?.price || 0), [toCoin]);
   
   const exchangeRate = fromPriceUsd > 0 && toPriceUsd > 0 ? fromPriceUsd / toPriceUsd : 0;
   const toAmount = parseFloat(fromAmount) * exchangeRate;
@@ -64,6 +80,7 @@ export default function TokenSwap() {
   const networkFee = 15.73;
 
   const handleReviewSwap = () => {
+    if (!fromCoin) return;
     if (fromCoin.balance <= 0) {
         setError(`You have no ${fromCoin.ticker} to swap.`);
         return;
@@ -81,7 +98,7 @@ export default function TokenSwap() {
     setGasError(false);
 
     setTimeout(() => {
-        if(fromCoin.ticker === 'USDC') {
+        if(fromCoin?.ticker === 'USDC') {
             setGasError(true);
         } else {
             setShowConfirmation(false);
@@ -90,7 +107,11 @@ export default function TokenSwap() {
     }, 2500);
   };
   
-  const isSwapDisabled = fromCoin.balance <= 0 || !fromAmount || parseFloat(fromAmount) <= 0;
+  const isSwapDisabled = !fromCoin || fromCoin.balance <= 0 || !fromAmount || parseFloat(fromAmount) <= 0;
+
+  if (!fromCoin || !toCoin) {
+    return <div className="flex items-center justify-center h-full w-full"><Loader2 className="animate-spin"/></div>
+  }
 
   return (
       <>

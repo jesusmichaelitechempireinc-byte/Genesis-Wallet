@@ -1,17 +1,31 @@
 
 'use client';
 
+import React, { useMemo, useState, useEffect } from 'react';
 import AssetHeader from "@/components/dashboard/AssetHeader";
 import BottomNav from "@/components/dashboard/BottomNav";
-import { coins } from "@/lib/data";
+import { type Coin, getFundedCoins, getEmptyCoins } from "@/lib/data";
 import AssetChart from "@/components/dashboard/AssetChart";
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown, Repeat } from "lucide-react";
 import Link from 'next/link';
 import { useCurrency } from '@/hooks/use-currency';
+import { useLocalStorage } from '@/hooks/use-local-storage';
 
 export default function AssetPage({ params }: { params: { ticker: string } }) {
-  const coin = coins.find((c) => c.ticker === params.ticker.toUpperCase());
+  const [walletImported] = useLocalStorage('wallet-imported', 'none');
+  const [coins, setCoins] = useState<Coin[]>([]);
+  
+  useEffect(() => {
+    if (walletImported === 'funded') {
+      setCoins(getFundedCoins());
+    } else if (walletImported === 'empty') {
+      setCoins(getEmptyCoins());
+    }
+  }, [walletImported]);
+
+  const coin = useMemo(() => coins.find((c) => c.ticker === params.ticker.toUpperCase()), [coins, params.ticker]);
+  
   const { selectedCurrency, formatCurrency } = useCurrency();
 
   if (!coin) {
