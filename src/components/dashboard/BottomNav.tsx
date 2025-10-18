@@ -10,10 +10,9 @@ import { GenesisAILogo } from '../icons/GenesisAILogo';
 const navItems = [
   { href: '/dashboard', icon: Wallet, label: 'Wallet' },
   { href: '/dashboard/swap', icon: Repeat, label: 'Swap' },
-  { href: '/dashboard/send', icon: AreaChart, label: 'Send' },
-  { href: '/dashboard/receive', icon: History, label: 'Receive' },
-  { href: '/dashboard/history', icon: History, label: 'History' },
   { href: '/dashboard/genesis-ai', icon: GenesisAILogo, label: 'Genesis' },
+  { href: '/dashboard/history', icon: History, label: 'History' },
+  { href: '/dashboard/settings', icon: Settings, label: 'Settings' },
 ];
 
 const NavItem = ({ href, icon: Icon, label }: typeof navItems[0]) => {
@@ -41,7 +40,7 @@ const NavItem = ({ href, icon: Icon, label }: typeof navItems[0]) => {
 export default function BottomNav() {
   return (
     <footer className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-md z-50">
-        <nav className="h-24 w-full bg-background/80 backdrop-blur-lg border border-border/50 rounded-full flex items-center justify-around px-2 shadow-heavy-out-lg">
+        <nav className="h-24 w-full bg-background/80 backdrop-blur-lg border border-border/50 rounded-full flex items-center justify-between px-6 shadow-heavy-out-lg">
             {navItems.map(item => <NavItem key={item.href} {...item} />)}
         </nav>
     </footer>
