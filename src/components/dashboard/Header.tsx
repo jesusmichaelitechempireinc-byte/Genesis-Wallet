@@ -35,6 +35,7 @@ export default function Header({ onSearchChange }: { onSearchChange?: (term: str
   const [walletName, setWalletName] = useLocalStorage("walletName", "Primary Wallet");
   const [editingWalletName, setEditingWalletName] = useState(walletName);
   const [selectedAvatar, setSelectedAvatar] = useLocalStorage('selectedAvatar', avatars[0].url);
+  const [hasNewNotification, setHasNewNotification] = useState(true);
 
   const { selectedCurrency, setSelectedCurrency } = useCurrency();
 
@@ -139,11 +140,11 @@ export default function Header({ onSearchChange }: { onSearchChange?: (term: str
                 <Search className="h-5 w-5 text-muted-foreground" />
             </Button>
         )}
-        <DropdownMenu>
+        <DropdownMenu onOpenChange={(isOpen) => { if(isOpen) setHasNewNotification(false)}}>
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="rounded-full shadow-heavy-out-sm active:shadow-heavy-in-sm relative">
                     <Bell className="h-5 w-5 text-muted-foreground" />
-                    <div className="absolute top-2 right-2 h-2 w-2 rounded-full bg-primary primary-glow"></div>
+                    {hasNewNotification && <div className="absolute top-2 right-2 h-2 w-2 rounded-full bg-primary primary-glow"></div>}
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-80 shadow-heavy-out-lg border-none" align="end">
