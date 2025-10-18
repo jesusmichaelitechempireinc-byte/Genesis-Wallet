@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { BrainCircuit, MessageSquare, Plus, Send, Settings2, Trash2, MoreVertical, Edit, Check } from 'lucide-react';
 import { GenesisAILogo } from '@/components/icons/GenesisAILogo';
+import { GenesisVaultLogo } from '@/components/icons';
 import Image from 'next/image';
 import BottomNav from '@/components/dashboard/BottomNav';
 import {
@@ -268,5 +269,3 @@ export default function GenesisAIPage() {
       </div>
   );
 }
-
-    
