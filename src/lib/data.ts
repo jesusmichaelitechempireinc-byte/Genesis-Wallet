@@ -1,5 +1,4 @@
 
-import { CircleDollarSign } from 'lucide-react';
 import type { ComponentType } from "react";
 
 export interface Coin {
@@ -113,7 +112,7 @@ export const coins: Coin[] = [
   {
     name: "USD Coin",
     ticker: "USDC",
-    icon: CircleDollarSign,
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760678111/usd-coin-usdc-logo_isqxlb.png',
     balance: 108490,
     usdValue: 108477.31,
     change: 0.01,
