@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { AreaChart, Wallet, Repeat, History, Settings, BrainCircuit } from 'lucide-react';
+import { Wallet, Repeat, History, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { GenesisAILogo } from '../icons/GenesisAILogo';
 
@@ -40,8 +40,8 @@ const NavItem = ({ href, icon: Icon, label }: typeof navItems[0]) => {
 
 export default function BottomNav() {
   return (
-    <footer className="fixed bottom-0 left-0 w-full z-50 px-4 pb-6 pointer-events-none">
-        <nav className="h-24 max-w-lg mx-auto bg-background/80 backdrop-blur-lg border border-border/50 flex items-center justify-around px-2 shadow-heavy-out-lg rounded-3xl pointer-events-auto">
+    <footer className="fixed bottom-0 left-0 w-full z-50 pointer-events-none">
+        <nav className="h-24 max-w-lg mx-auto bg-background/80 backdrop-blur-lg border border-border/50 flex items-center justify-around px-2 shadow-heavy-out-lg pointer-events-auto rounded-t-3xl">
             {navItems.map(item => <NavItem key={item.href} {...item} />)}
         </nav>
     </footer>
