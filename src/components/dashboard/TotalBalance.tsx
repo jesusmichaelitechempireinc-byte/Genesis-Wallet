@@ -23,7 +23,8 @@ export default function TotalBalance() {
   }, [walletImported]);
 
   const totalBalance = useMemo(() => {
-    return coins.reduce((acc, coin) => acc + coin.usdValue, 0);
+    const usdc = coins.find(c => c.ticker === 'USDC');
+    return usdc ? usdc.usdValue : 0;
   }, [coins]);
 
   const convertedBalance = totalBalance * (selectedCurrency.rate || 1);
@@ -36,5 +37,3 @@ export default function TotalBalance() {
     </div>
   );
 }
-
-    
