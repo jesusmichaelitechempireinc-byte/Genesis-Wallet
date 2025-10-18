@@ -115,6 +115,16 @@ export default function ReceivePage() {
                                 <p className='text-sm text-yellow-400/80 text-left'>Sending any other assets to this address may result in permanent loss.</p>
                               </div>
                             </div>
+                            
+                            <div className='text-center'>
+                                <p className='text-sm text-muted-foreground'>Your {selectedCoin?.name} address on the <span className='font-bold text-foreground'>{walletInfo.network}</span> network.</p>
+                            </div>
+                             <div className="flex items-center gap-4 p-4 rounded-lg shadow-heavy-in-sm w-full">
+                                <p className="font-mono text-muted-foreground text-sm flex-1 text-left truncate">{walletInfo.address}</p>
+                                <Button variant="ghost" size="icon" className="rounded-full shadow-heavy-out-sm text-primary" onClick={() => handleCopy(walletInfo.address)}>
+                                    <Copy className="h-5 w-5" />
+                                </Button>
+                            </div>
 
                             <div className="p-4 bg-background shadow-heavy-in-lg rounded-2xl inline-block">
                                 <Image 
@@ -124,15 +134,6 @@ export default function ReceivePage() {
                                     data-ai-hint="qr code"
                                     key={walletInfo.address} 
                                 />
-                            </div>
-                            <div className='text-center'>
-                                <p className='text-sm text-muted-foreground'>Your {selectedCoin?.name} address on the <span className='font-bold text-foreground'>{walletInfo.network}</span> network.</p>
-                            </div>
-                             <div className="flex items-center gap-4 p-4 rounded-lg shadow-heavy-in-sm w-full">
-                                <p className="font-mono text-muted-foreground text-sm flex-1 text-left truncate">{walletInfo.address}</p>
-                                <Button variant="ghost" size="icon" className="rounded-full shadow-heavy-out-sm text-primary" onClick={() => handleCopy(walletInfo.address)}>
-                                    <Copy className="h-5 w-5" />
-                                </Button>
                             </div>
                         </div>
                     )}
@@ -144,5 +145,3 @@ export default function ReceivePage() {
       </div>
   );
 }
-
-    
