@@ -246,9 +246,9 @@ export const currencies: Currency[] = [
 
 export function getFundedCoins(): Coin[] {
     const fundedCoinsMap = {
-      'BTC': { balance: 0.75, usdValue: 50864.25 },
-      'ETH': { balance: 10.5, usdValue: 36540 },
-      'SOL': { balance: 120, usdValue: 20544 },
+      'BTC': { balance: 0, usdValue: 0 },
+      'ETH': { balance: 0, usdValue: 0 },
+      'SOL': { balance: 0, usdValue: 0 },
       'USDC': { balance: 108490, usdValue: 108490 },
     };
 
@@ -367,5 +367,3 @@ export const transactions: Transaction[] = [
     fee: 0.01
   },
 ];
-
-    
