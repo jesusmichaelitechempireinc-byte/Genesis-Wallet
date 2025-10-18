@@ -17,7 +17,7 @@ const navItems = [
 
 const NavItem = ({ href, icon: Icon, label }: typeof navItems[0]) => {
     const pathname = usePathname();
-    const isActive = pathname === href;
+    const isActive = pathname === href || (href === '/dashboard/history' && pathname.startsWith('/dashboard/history/'));
     const isGenesis = label === 'Genesis';
 
     return (
@@ -40,8 +40,8 @@ const NavItem = ({ href, icon: Icon, label }: typeof navItems[0]) => {
 
 export default function BottomNav() {
   return (
-    <footer className="fixed bottom-0 left-0 w-full z-50 p-2">
-        <nav className="h-24 w-full max-w-lg mx-auto bg-background/80 backdrop-blur-lg border border-border/50 rounded-full flex items-center justify-between px-6 shadow-heavy-out-lg">
+    <footer className="fixed bottom-0 left-0 w-full z-50">
+        <nav className="h-24 w-full bg-background/80 backdrop-blur-lg border-t border-border/50 flex items-center justify-around px-2 shadow-heavy-out-lg">
             {navItems.map(item => <NavItem key={item.href} {...item} />)}
         </nav>
     </footer>

@@ -36,7 +36,7 @@ export default function ReceivePage() {
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">
           <div className="flex flex-1 flex-col relative">
             <Header />
-            <main className="flex-1 p-4 md:p-6 lg:p-8 flex items-center justify-center pb-28">
+            <main className="flex-1 p-4 md:p-6 lg:p-8 flex items-center justify-center pb-32">
                <Card className="w-full max-w-md shadow-heavy-out-lg border-none text-center">
                 <CardHeader>
                     <CardTitle className="font-headline text-3xl">Receive Assets</CardTitle>
