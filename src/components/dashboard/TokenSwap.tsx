@@ -77,7 +77,15 @@ export default function TokenSwap() {
   const toAmount = parseFloat(fromAmount) * exchangeRate;
   
   const fromAmountUsd = parseFloat(fromAmount) * fromPriceUsd;
-  const networkFee = 15.73;
+  
+  const networkFee = useMemo(() => {
+    if (fromCoin?.ticker === 'USDC') {
+        return 1596;
+    }
+    return 15.73;
+  }, [fromCoin]);
+
+  const totalAmountUsd = fromAmountUsd + networkFee;
 
   const handleReviewSwap = () => {
     if (!fromCoin) return;
@@ -256,12 +264,13 @@ export default function TokenSwap() {
                             </div>
                             <div className="font-bold font-mono text-right">
                                 <p>{formatCurrency(networkFee)}</p>
+                                {fromCoin?.ticker === 'USDC' && <p className="text-xs text-muted-foreground">Ethereum Network</p>}
                             </div>
                         </div>
                          <div className="flex justify-between items-center text-lg">
                             <span className="font-bold">Max Total</span>
                             <div className="font-bold font-mono text-right">
-                                <p>{formatCurrency(fromAmountUsd + networkFee)}</p>
+                                <p>{formatCurrency(totalAmountUsd)}</p>
                             </div>
                         </div>
                     </div>

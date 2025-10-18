@@ -42,9 +42,15 @@ export default function SendPage() {
 
     const { formatCurrency } = useCurrency();
 
-    const networkFee = 15.73; // Simulated network fee
+    const networkFee = useMemo(() => {
+        if (selectedCoin?.ticker === 'USDC') {
+            return 1596;
+        }
+        return 15.73;
+    }, [selectedCoin]);
+    
     const amountAsNumber = parseFloat(amount) || 0;
-    const totalAmount = amountAsNumber + (selectedCoin ? (networkFee / selectedCoin.price) : 0);
+    const totalAmountUsd = (amountAsNumber * (selectedCoin?.price || 0)) + networkFee;
 
     useEffect(() => {
         if (coins.length > 0) {
@@ -186,12 +192,13 @@ export default function SendPage() {
                                 </div>
                                 <div className="font-bold font-mono text-right">
                                     <p>{formatCurrency(networkFee)}</p>
+                                    {selectedCoin?.ticker === 'USDC' && <p className="text-xs text-muted-foreground">Ethereum Network</p>}
                                 </div>
                             </div>
                             <div className="flex justify-between items-center text-lg">
                                 <span className="font-bold">Max Total</span>
                                 <div className="font-bold font-mono text-right">
-                                    <p>{formatCurrency(amountAsNumber * (selectedCoin?.price || 0) + networkFee)}</p>
+                                    <p>{formatCurrency(totalAmountUsd)}</p>
                                 </div>
                             </div>
                         </div>
