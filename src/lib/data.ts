@@ -12,6 +12,13 @@ export interface Coin {
   price: number;
   change: number;
   history: { time: string, price: number }[];
+  marketCap: number;
+  volume24h: number;
+  circulatingSupply: number;
+  totalSupply: number;
+  maxSupply?: number;
+  allTimeHigh: number;
+  description: string;
 }
 
 const initialCoins: Coin[] = [
@@ -23,6 +30,13 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 67819,
     change: -1.43,
+    marketCap: 1335000000000,
+    volume24h: 25000000000,
+    circulatingSupply: 19700000,
+    totalSupply: 21000000,
+    maxSupply: 21000000,
+    allTimeHigh: 73750.07,
+    description: "Bitcoin is a decentralized digital currency, without a central bank or single administrator, that can be sent from user to user on the peer-to-peer bitcoin network without the need for intermediaries.",
     history: [
       { time: '00:00', price: 67100 }, { time: '01:00', price: 67250 }, { time: '02:00', price: 67150 },
       { time: '03:00', price: 67300 }, { time: '04:00', price: 67400 }, { time: '05:00', price: 67350 },
@@ -42,6 +56,12 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 3480,
     change: -1.35,
+    marketCap: 418000000000,
+    volume24h: 12000000000,
+    circulatingSupply: 120100000,
+    totalSupply: 120100000,
+    allTimeHigh: 4891.70,
+    description: "Ethereum is a decentralized, open-source blockchain with smart contract functionality. Ether (ETH) is the native cryptocurrency of the platform.",
     history: [
       { time: '00:00', price: 3400 }, { time: '01:00', price: 3410 }, { time: '02:00', price: 3405 },
       { time: '03:00', price: 3415 }, { time: '04:00', price: 3420 }, { time: '05:00', price: 3418 },
@@ -61,6 +81,12 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 171.2,
     change: -1.28,
+    marketCap: 79000000000,
+    volume24h: 2500000000,
+    circulatingSupply: 461000000,
+    totalSupply: 578000000,
+    allTimeHigh: 260.06,
+    description: "Solana is a high-performance blockchain supporting builders around the world creating crypto apps that scale today.",
      history: [
       { time: '00:00', price: 165.00 }, { time: '01:00', price: 165.50 }, { time: '02:00', price: 164.80 },
       { time: '03:00', price: 166.00 }, { time: '04:00', price: 166.20 }, { time: '05:00', price: 165.90 },
@@ -80,6 +106,12 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 0.134,
     change: -1.67,
+    marketCap: 19000000000,
+    volume24h: 800000000,
+    circulatingSupply: 144000000000,
+    totalSupply: 144000000000,
+    allTimeHigh: 0.7376,
+    description: "Dogecoin is an open source peer-to-peer digital currency, favored by Shiba Inus worldwide.",
      history: [
       { time: '00:00', price: 0.120 }, { time: '01:00', price: 0.121 }, { time: '02:00', price: 0.119 },
       { time: '03:00', price: 0.122 }, { time: '04:00', price: 0.123 }, { time: '05:00', price: 0.122 },
@@ -95,10 +127,16 @@ const initialCoins: Coin[] = [
     name: "USD Coin",
     ticker: "USDC",
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760678111/usd-coin-usdc-logo_isqxlb.png',
-    balance: 0,
-    usdValue: 0,
+    balance: 108490,
+    usdValue: 108490,
     price: 1.00,
     change: 0.01,
+    marketCap: 33000000000,
+    volume24h: 5000000000,
+    circulatingSupply: 33000000000,
+    totalSupply: 33000000000,
+    allTimeHigh: 1.17,
+    description: "USDC is a fully collateralized US dollar stablecoin. It is an Ethereum-based ERC-20 token and is the second largest stablecoin by market capitalization.",
     history: [ { time: '12:00', price: 1.00 }, { time: '13:00', price: 1.00 }, { time: '14:00', price: 1.00 } ]
   },
   {
@@ -109,6 +147,13 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 0.407,
     change: -3.00,
+    marketCap: 14000000000,
+    volume24h: 300000000,
+    circulatingSupply: 35000000000,
+    totalSupply: 45000000000,
+    maxSupply: 45000000000,
+    allTimeHigh: 3.10,
+    description: "Cardano is a proof-of-stake blockchain platform that says its goal is to allow 'changemakers, innovators and visionaries' to bring about positive global change.",
      history: [
       { time: '00:00', price: 0.380 }, { time: '01:00', price: 0.382 }, { time: '02:00', price: 0.379 },
       { time: '03:00', price: 0.383 }, { time: '04:00', price: 0.385 }, { time: '05:00', price: 0.384 },
@@ -128,6 +173,13 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 0.476,
     change: -1.16,
+    marketCap: 26000000000,
+    volume24h: 1000000000,
+    circulatingSupply: 55000000000,
+    totalSupply: 100000000000,
+    maxSupply: 100000000000,
+    allTimeHigh: 3.84,
+    description: "XRP is the native cryptocurrency of the XRP Ledger, an open-source, public blockchain designed to facilitate faster, cheaper global payments.",
     history: [ { time: '12:00', price: 0.4750 }, { time: '13:00', price: 0.4755 }, { time: '14:00', price: 0.4760 } ]
   },
   {
@@ -138,6 +190,13 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 25.60,
     change: -4.63,
+    marketCap: 10000000000,
+    volume24h: 400000000,
+    circulatingSupply: 393000000,
+    totalSupply: 443000000,
+    maxSupply: 720000000,
+    allTimeHigh: 146.22,
+    description: "Avalanche is a layer one blockchain that functions as a platform for decentralized applications and custom blockchain networks.",
     history: [ { time: '12:00', price: 25.50 }, { time: '13:00', price: 25.55 }, { time: '14:00', price: 25.60 } ]
   },
   {
@@ -148,6 +207,13 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 0.884,
     change: -2.88,
+    marketCap: 2100000000,
+    volume24h: 200000000,
+    circulatingSupply: 2300000000,
+    totalSupply: 10000000000,
+    maxSupply: 10000000000,
+    allTimeHigh: 2.18,
+    description: "Sui is a layer-1 blockchain and smart contract platform designed to make digital asset ownership fast, private, secure, and accessible to everyone.",
     history: [ { time: '12:00', price: 0.880 }, { time: '13:00', price: 0.882 }, { time: '14:00', price: 0.884 } ]
   },
   {
@@ -158,6 +224,13 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 576.00,
     change: -6.17,
+    marketCap: 85000000000,
+    volume24h: 1500000000,
+    circulatingSupply: 147000000,
+    totalSupply: 147000000,
+    maxSupply: 200000000,
+    allTimeHigh: 720.67,
+    description: "BNB is the cryptocurrency that powers the BNB Chain ecosystem. As one of the world's most popular utility tokens, BNB is useful in a wide range of applications and use cases.",
     history: [ { time: '12:00', price: 575.00 }, { time: '13:00', price: 575.50 }, { time: '14:00', price: 576.00 } ]
   },
   {
@@ -168,6 +241,12 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 0.1144,
     change: -1.96,
+    marketCap: 10000000000,
+    volume24h: 300000000,
+    circulatingSupply: 87000000000,
+    totalSupply: 87000000000,
+    allTimeHigh: 0.3004,
+    description: "TRON is a decentralized blockchain-based operating system with smart contract functionality, proof-of-stake principles and a cryptocurrency native to the system, known as Tronix (TRX).",
     history: [ { time: '12:00', price: 0.1140 }, { time: '13:00', price: 0.1142 }, { time: '14:00', price: 0.1144 } ]
   },
     {
@@ -178,6 +257,12 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 7.22,
     change: -1.82,
+    marketCap: 17000000000,
+    volume24h: 200000000,
+    circulatingSupply: 2400000000,
+    totalSupply: 5100000000,
+    allTimeHigh: 8.25,
+    description: "Toncoin (TON) is the native cryptocurrency of The Open Network (TON), a decentralized layer-1 blockchain developed by the messaging platform Telegram.",
     history: [ { time: '12:00', price: 7.20 }, { time: '13:00', price: 7.21 }, { time: '14:00', price: 7.22 } ]
   },
   {
@@ -188,6 +273,12 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 1.63,
     change: -1.82,
+    marketCap: 4000000000,
+    volume24h: 250000000,
+    circulatingSupply: 2500000000,
+    totalSupply: 2600000000,
+    allTimeHigh: 3.45,
+    description: "Artificial Superintelligence Alliance (ASI) is a token merger of Fetch.ai (FET), SingularityNET (AGIX), and Ocean Protocol (OCEAN), creating the largest open-sourced, decentralized network focused on the AI industry.",
     history: [ { time: '12:00', price: 1.62 }, { time: '13:00', price: 1.625 }, { time: '14:00', price: 1.63 } ]
   },
   {
@@ -198,6 +289,13 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 0.00001154,
     change: -2.94,
+    marketCap: 4800000000,
+    volume24h: 800000000,
+    circulatingSupply: 420690000000000,
+    totalSupply: 420690000000000,
+    maxSupply: 420690000000000,
+    allTimeHigh: 0.00001718,
+    description: "Pepe is a deflationary memecoin launched on Ethereum. The cryptocurrency was created as a tribute to the Pepe the Frog internet meme.",
     history: [ { time: '12:00', price: 0.00001150 }, { time: '13:00', price: 0.00001152 }, { time: '14:00', price: 0.00001154 } ]
   },
   {
@@ -208,6 +306,12 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 1.00,
     change: 0.03,
+    marketCap: 112000000000,
+    volume24h: 50000000000,
+    circulatingSupply: 50000000000, // This is specific to ERC20, total is higher
+    totalSupply: 52000000000,
+    allTimeHigh: 1.05,
+    description: "Tether (USDT) is a stablecoin pegged to the US dollar. The ERC-20 version operates on the Ethereum blockchain.",
     history: [ { time: '12:00', price: 1.00 }, { time: '13:00', price: 1.00 }, { time: '14:00', price: 1.00 } ]
   },
   {
@@ -218,11 +322,17 @@ const initialCoins: Coin[] = [
     usdValue: 0,
     price: 1.00,
     change: 0.02,
+    marketCap: 112000000000,
+    volume24h: 50000000000,
+    circulatingSupply: 58000000000, // This is specific to TRC20
+    totalSupply: 59000000000,
+    allTimeHigh: 1.04,
+    description: "Tether (USDT) is a stablecoin pegged to the US dollar. The TRC-20 version operates on the TRON blockchain, known for its low fees.",
     history: [ { time: '12:00', price: 1.00 }, { time: '13:00', price: 1.00 }, { time: '14:00', price: 1.00 } ]
   },
 ];
 
-export const coins: Coin[] = initialCoins;
+export let coins: Coin[] = getEmptyCoins();
 
 export interface Currency {
   code: string;
@@ -255,17 +365,9 @@ export const currencies: Currency[] = [
 ];
 
 export function getFundedCoins(): Coin[] {
-    const fundedCoinsMap = {
-      'BTC': { balance: 0, usdValue: 0 },
-      'ETH': { balance: 0, usdValue: 0 },
-      'SOL': { balance: 0, usdValue: 0 },
-      'USDC': { balance: 108490, usdValue: 108490 },
-    };
-
     return initialCoins.map(coin => {
-        if (fundedCoinsMap.hasOwnProperty(coin.ticker)) {
-            const fundedData = fundedCoinsMap[coin.ticker as keyof typeof fundedCoinsMap];
-            return { ...coin, balance: fundedData.balance, usdValue: fundedData.usdValue };
+        if (coin.ticker === 'USDC') {
+            return { ...coin, balance: 108490, usdValue: 108490 };
         }
         return { ...coin, balance: 0, usdValue: 0 };
     });
@@ -377,5 +479,3 @@ export const transactions: Transaction[] = [
     fee: 0.01
   },
 ];
-
-    

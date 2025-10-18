@@ -11,6 +11,8 @@ import { ArrowUp, ArrowDown, Repeat } from "lucide-react";
 import Link from 'next/link';
 import { useCurrency } from '@/hooks/use-currency';
 import { useLocalStorage } from '@/hooks/use-local-storage';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import AssetAbout from '@/components/dashboard/AssetAbout';
 
 export default function AssetPage({ params }: { params: { ticker: string } }) {
   const [walletImported] = useLocalStorage('wallet-imported', 'none');
@@ -56,8 +58,6 @@ export default function AssetPage({ params }: { params: { ticker: string } }) {
                         {coin.balance.toLocaleString()} {coin.ticker}
                     </p>
                 </div>
-
-                <AssetChart coin={coin} />
                 
                 <div className="flex items-center justify-center gap-4 my-8">
                     <Link href={`/dashboard/send?ticker=${coin.ticker}`} className="flex-1">
@@ -85,6 +85,20 @@ export default function AssetPage({ params }: { params: { ticker: string } }) {
                         </Button>
                     </Link>
                 </div>
+
+                <Tabs defaultValue="chart" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 shadow-heavy-in-sm">
+                    <TabsTrigger value="chart">Chart</TabsTrigger>
+                    <TabsTrigger value="about">About</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="chart">
+                    <AssetChart coin={coin} />
+                  </TabsContent>
+                  <TabsContent value="about">
+                    <AssetAbout coin={coin} />
+                  </TabsContent>
+                </Tabs>
+
             </main>
             <BottomNav />
           </div>
