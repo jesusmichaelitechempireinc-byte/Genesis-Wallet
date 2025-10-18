@@ -45,7 +45,7 @@ export default function AssetPage({ params }: { params: { ticker: string } }) {
                 <AssetChart coin={coin} />
                 
                 <div className="flex items-center justify-center gap-4 my-8">
-                    <Link href="/dashboard/send" className="flex-1">
+                    <Link href={`/dashboard/send?ticker=${coin.ticker}`} className="flex-1">
                         <Button
                             size="lg"
                             className="w-full rounded-full bg-primary text-primary-foreground h-14 text-lg font-bold shadow-heavy-out-lg active:shadow-heavy-in-lg btn-glow"
@@ -54,7 +54,7 @@ export default function AssetPage({ params }: { params: { ticker: string } }) {
                             Send
                         </Button>
                     </Link>
-                    <Link href="/dashboard/receive" className="flex-1">
+                    <Link href={`/dashboard/receive?ticker=${coin.ticker}`} className="flex-1">
                         <Button
                             size="lg"
                             variant="secondary"
@@ -64,7 +64,7 @@ export default function AssetPage({ params }: { params: { ticker: string } }) {
                             Receive
                         </Button>
                     </Link>
-                     <Link href="/dashboard/swap" className="flex-1">
+                     <Link href={`/dashboard/swap?from=${coin.ticker}`} className="flex-1">
                         <Button variant="secondary" size="lg" className="w-full rounded-full h-14 text-lg font-bold bg-background text-foreground shadow-heavy-out-lg active:shadow-heavy-in-lg">
                             <Repeat className="h-6 w-6" />
                         </Button>

@@ -1,21 +1,30 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { ArrowDown, Loader2, AlertCircle } from "lucide-react";
+import { ArrowDown, Loader2, AlertCircle, Info } from "lucide-react";
 import { coins, Coin } from "@/lib/data";
 import Image from "next/image";
 import { useCurrency } from "@/hooks/use-currency";
-import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function TokenSwap() {
-  const [fromCoin, setFromCoin] = useState<Coin>(coins.find(c => c.ticker === 'USDC') || coins[0]);
+  const searchParams = useSearchParams();
+  const initialFromTicker = searchParams.get('from');
+
+  const [fromCoin, setFromCoin] = useState<Coin>(() => {
+    if(initialFromTicker) {
+        return coins.find(c => c.ticker === initialFromTicker) || coins.find(c => c.ticker === 'USDC') || coins[0]
+    }
+    return coins.find(c => c.ticker === 'USDC') || coins[0]
+  });
   const [toCoin, setToCoin] = useState<Coin>(coins.find(c => c.ticker === 'BTC') || coins[1]);
   const [fromAmount, setFromAmount] = useState<string>("1000.0");
   const [error, setError] = useState('');
@@ -23,7 +32,15 @@ export default function TokenSwap() {
   const [isConfirming, setIsConfirming] = useState(false);
   const [gasError, setGasError] = useState(false);
 
-  const { selectedCurrency } = useCurrency();
+  const { selectedCurrency, formatCurrency } = useCurrency();
+
+  useEffect(() => {
+    const fromTicker = searchParams.get('from');
+    if (fromTicker) {
+      const coin = coins.find((c) => c.ticker === fromTicker);
+      if (coin) setFromCoin(coin);
+    }
+  }, [searchParams]);
 
   const handleFromCoinChange = (ticker: string) => {
     const coin = coins.find((c) => c.ticker === ticker);
@@ -42,6 +59,9 @@ export default function TokenSwap() {
   
   const exchangeRate = fromPriceUsd > 0 && toPriceUsd > 0 ? fromPriceUsd / toPriceUsd : 0;
   const toAmount = parseFloat(fromAmount) * exchangeRate;
+  
+  const fromAmountUsd = parseFloat(fromAmount) * fromPriceUsd;
+  const networkFee = 15.73;
 
   const handleReviewSwap = () => {
     if (fromCoin.balance <= 0) {
@@ -170,30 +190,61 @@ export default function TokenSwap() {
         
         <Dialog open={showConfirmation} onOpenChange={setShowConfirmation}>
             <DialogContent className="shadow-heavy-out-lg">
-                <DialogHeader>
-                    <DialogTitle className="font-headline text-2xl">Confirm Swap</DialogTitle>
-                    <DialogDescription>
-                        Please review the details before confirming.
-                    </DialogDescription>
+                <DialogHeader className="text-center">
+                    <DialogTitle className="font-headline text-3xl">Swapping</DialogTitle>
+                    <div className="flex items-center justify-center gap-2">
+                        <h2 className="text-4xl font-bold font-mono">{parseFloat(fromAmount).toFixed(2)}</h2>
+                        <span className="text-xl text-muted-foreground font-mono">{fromCoin?.ticker}</span>
+                    </div>
+                    <p className="text-muted-foreground">{formatCurrency(fromAmountUsd)}</p>
                 </DialogHeader>
                 <div className="space-y-4 py-4">
-                    <div className="flex justify-between items-center p-3 rounded-lg shadow-heavy-in-sm">
-                        <span className="text-muted-foreground">From</span>
-                        <div className="font-bold text-lg font-mono flex items-center gap-2">
-                            {fromCoin.iconUrl ? <Image src={fromCoin.iconUrl} alt={fromCoin.name} width={20} height={20} /> : fromCoin.icon && <fromCoin.icon className="h-5 w-5" />}
-                            {fromAmount} {fromCoin?.ticker}
+                    <div className="p-4 rounded-lg shadow-heavy-in-sm space-y-3">
+                        <div className="flex justify-between items-center">
+                            <span className="text-muted-foreground">From</span>
+                            <div className="font-bold font-mono flex items-center gap-2">
+                                {fromCoin.iconUrl ? <Image src={fromCoin.iconUrl} alt={fromCoin.name} width={20} height={20} /> : fromCoin.icon && <fromCoin.icon className="h-5 w-5" />}
+                                {fromAmount} {fromCoin?.ticker}
+                            </div>
+                        </div>
+                        <div className="flex justify-center -my-1">
+                            <ArrowDown className="h-5 w-5 text-muted-foreground" />
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <span className="text-muted-foreground">To (Estimated)</span>
+                             <div className="font-bold font-mono flex items-center gap-2">
+                                {toCoin.iconUrl ? <Image src={toCoin.iconUrl} alt={toCoin.name} width={20} height={20} /> : toCoin.icon && <toCoin.icon className="h-5 w-5" />}
+                                {toAmount.toFixed(6)} {toCoin?.ticker}
+                            </div>
                         </div>
                     </div>
-                    <div className="flex justify-center -my-2 z-10">
-                        <ArrowDown className="h-5 w-5 text-muted-foreground" />
-                    </div>
-                    <div className="flex justify-between items-center p-3 rounded-lg shadow-heavy-in-sm">
-                        <span className="text-muted-foreground">To (Estimated)</span>
-                        <div className="font-bold text-lg font-mono flex items-center gap-2">
-                            {toCoin.iconUrl ? <Image src={toCoin.iconUrl} alt={toCoin.name} width={20} height={20} /> : toCoin.icon && <toCoin.icon className="h-5 w-5" />}
-                            {toAmount.toFixed(6)} {toCoin?.ticker}
+                     <div className="p-4 rounded-lg shadow-heavy-in-sm space-y-3">
+                        <div className="flex justify-between items-center">
+                            <div className="flex items-center gap-1.5 text-muted-foreground">
+                                <span>Network Fee</span>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Info className="h-4 w-4" />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Fee paid to the network validators.</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
+                            <div className="font-bold font-mono text-right">
+                                <p>{formatCurrency(networkFee)}</p>
+                            </div>
+                        </div>
+                         <div className="flex justify-between items-center text-lg">
+                            <span className="font-bold">Max Total</span>
+                            <div className="font-bold font-mono text-right">
+                                <p>{formatCurrency(fromAmountUsd + networkFee)}</p>
+                            </div>
                         </div>
                     </div>
+
                     {gasError && (
                         <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/50 flex gap-4 items-center animate-in fade-in">
                             <AlertCircle className="h-12 w-12 text-destructive" />
@@ -205,8 +256,8 @@ export default function TokenSwap() {
                     )}
                 </div>
                 <DialogFooter>
-                    <Button variant="outline" onClick={() => setShowConfirmation(false)} className="rounded-full shadow-heavy-out-sm">Cancel</Button>
-                    <Button onClick={handleConfirmSwap} disabled={isConfirming || gasError} className="rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg min-w-[120px]">
+                    <Button variant="outline" onClick={() => setShowConfirmation(false)} className="rounded-full shadow-heavy-out-sm flex-1">Cancel</Button>
+                    <Button onClick={handleConfirmSwap} disabled={isConfirming || gasError} className="rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg min-w-[120px] flex-1">
                         {isConfirming ? <Loader2 className="animate-spin" /> : 'Confirm Swap'}
                     </Button>
                 </DialogFooter>

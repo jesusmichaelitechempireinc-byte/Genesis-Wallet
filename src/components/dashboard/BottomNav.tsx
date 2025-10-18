@@ -40,8 +40,8 @@ const NavItem = ({ href, icon: Icon, label }: typeof navItems[0]) => {
 
 export default function BottomNav() {
   return (
-    <footer className="fixed bottom-0 left-0 w-full z-50 pointer-events-none">
-        <nav className="h-24 max-w-lg mx-auto bg-background/80 backdrop-blur-lg border border-border/50 flex items-center justify-around px-2 shadow-heavy-out-lg pointer-events-auto rounded-t-3xl">
+    <footer className="fixed bottom-0 left-0 w-full z-50 pointer-events-none p-4 pb-6">
+        <nav className="max-w-lg mx-auto bg-background/80 backdrop-blur-lg border border-border/50 flex items-center justify-around p-2 shadow-heavy-out-lg pointer-events-auto rounded-3xl">
             {navItems.map(item => <NavItem key={item.href} {...item} />)}
         </nav>
     </footer>

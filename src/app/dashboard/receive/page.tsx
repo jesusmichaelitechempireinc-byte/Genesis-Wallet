@@ -1,15 +1,17 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Header from "@/components/dashboard/Header";
 import BottomNav from "@/components/dashboard/BottomNav";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Copy, QrCode } from "lucide-react";
+import { Copy } from "lucide-react";
 import Image from "next/image";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { coins, type Coin } from "@/lib/data";
+import { toast } from '@/hooks/use-toast';
 
 const walletAddresses: Record<string, { address: string, network: string }> = {
     'BTC': { address: 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq', network: 'Bitcoin' },
@@ -23,7 +25,21 @@ const walletAddresses: Record<string, { address: string, network: string }> = {
 }
 
 export default function ReceivePage() {
-    const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
+    const searchParams = useSearchParams();
+    const initialTicker = searchParams.get('ticker');
+    
+    const [selectedCoin, setSelectedCoin] = useState<Coin | null>(() => {
+        if (!initialTicker) return null;
+        return coins.find((c) => c.ticker === initialTicker) || null;
+    });
+
+    useEffect(() => {
+        const ticker = searchParams.get('ticker');
+        if (ticker) {
+            const coin = coins.find((c) => c.ticker === ticker);
+            setSelectedCoin(coin || null);
+        }
+    }, [searchParams]);
     
     const handleCoinChange = (ticker: string) => {
         const coin = coins.find((c) => c.ticker === ticker);
@@ -31,6 +47,13 @@ export default function ReceivePage() {
     };
 
     const walletInfo = selectedCoin ? (walletAddresses[selectedCoin.ticker] || walletAddresses['Default']) : null;
+
+    const handleCopy = (text: string) => {
+        navigator.clipboard.writeText(text);
+        toast({
+            title: 'Copied to clipboard!',
+        });
+    };
 
   return (
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">
@@ -43,7 +66,7 @@ export default function ReceivePage() {
                     <CardDescription>Select an asset to view your address.</CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-6 items-center justify-center">
-                    <Select onValueChange={handleCoinChange}>
+                    <Select onValueChange={handleCoinChange} value={selectedCoin?.ticker}>
                         <SelectTrigger className="w-full shadow-heavy-in-sm">
                             <SelectValue placeholder="Select an asset..." />
                         </SelectTrigger>
@@ -75,7 +98,7 @@ export default function ReceivePage() {
                             </div>
                              <div className="flex items-center gap-4 p-4 rounded-lg shadow-heavy-in-sm w-full">
                                 <p className="font-mono text-muted-foreground text-sm flex-1 text-left truncate">{walletInfo.address}</p>
-                                <Button variant="ghost" size="icon" className="rounded-full shadow-heavy-out-sm text-primary">
+                                <Button variant="ghost" size="icon" className="rounded-full shadow-heavy-out-sm text-primary" onClick={() => handleCopy(walletInfo.address)}>
                                     <Copy className="h-5 w-5" />
                                 </Button>
                             </div>

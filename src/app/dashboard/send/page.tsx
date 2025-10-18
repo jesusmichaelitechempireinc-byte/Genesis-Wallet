@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Header from "@/components/dashboard/Header";
 import BottomNav from "@/components/dashboard/BottomNav";
 import { Button } from "@/components/ui/button";
@@ -12,19 +13,38 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { coins, type Coin } from "@/lib/data";
 import Image from "next/image";
-import { AlertCircle, Loader2 } from 'lucide-react';
+import { AlertCircle, Info, Loader2 } from 'lucide-react';
 import { useCurrency } from '@/hooks/use-currency';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function SendPage() {
+    const searchParams = useSearchParams();
+    const initialTicker = searchParams.get('ticker');
+
     const [recipient, setRecipient] = useState('');
     const [amount, setAmount] = useState('');
-    const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
+    const [selectedCoin, setSelectedCoin] = useState<Coin | null>(() => {
+        if (!initialTicker) return null;
+        return coins.find((c) => c.ticker === initialTicker) || null;
+    });
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [isConfirming, setIsConfirming] = useState(false);
     const [error, setError] = useState('');
     const [gasError, setGasError] = useState(false);
 
     const { formatCurrency } = useCurrency();
+
+    const networkFee = 15.73; // Simulated network fee
+    const amountAsNumber = parseFloat(amount) || 0;
+    const totalAmount = amountAsNumber + (selectedCoin ? (networkFee / selectedCoin.price) : 0);
+
+    useEffect(() => {
+        const ticker = searchParams.get('ticker');
+        if (ticker) {
+            const coin = coins.find((c) => c.ticker === ticker);
+            setSelectedCoin(coin || null);
+        }
+    }, [searchParams]);
 
     const handleAssetChange = (ticker: string) => {
         const coin = coins.find((c) => c.ticker === ticker);
@@ -85,7 +105,7 @@ export default function SendPage() {
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="asset">Asset</Label>
-                         <Select onValueChange={handleAssetChange}>
+                         <Select onValueChange={handleAssetChange} value={selectedCoin?.ticker}>
                             <SelectTrigger className="w-full shadow-heavy-in-sm">
                                 <SelectValue placeholder="Select an asset" />
                             </SelectTrigger>
@@ -114,20 +134,54 @@ export default function SendPage() {
             <BottomNav />
             <Dialog open={showConfirmation} onOpenChange={setShowConfirmation}>
                 <DialogContent className="shadow-heavy-out-lg">
-                    <DialogHeader>
-                        <DialogTitle className="font-headline text-2xl">Confirm Transaction</DialogTitle>
-                        <DialogDescription>
-                            Please review the details before confirming.
-                        </DialogDescription>
+                    <DialogHeader className="text-center">
+                        <DialogTitle className="font-headline text-3xl">Sending {selectedCoin?.ticker}</DialogTitle>
+                         <div className="flex items-center justify-center gap-2">
+                            <h2 className="text-4xl font-bold font-mono">{amount}</h2>
+                            <span className="text-xl text-muted-foreground font-mono">{selectedCoin?.ticker}</span>
+                         </div>
+                         <p className="text-muted-foreground">{formatCurrency(amountAsNumber * (selectedCoin?.price || 0))}</p>
                     </DialogHeader>
                     <div className="space-y-4 py-4">
-                        <div className="flex justify-between items-center p-3 rounded-lg shadow-heavy-in-sm">
-                            <span className="text-muted-foreground">Sending</span>
-                            <span className="font-bold text-lg font-mono">{amount} {selectedCoin?.ticker}</span>
+                        <div className="p-4 rounded-lg shadow-heavy-in-sm space-y-3">
+                            <div className="flex justify-between items-center">
+                                <span className="text-muted-foreground">Asset</span>
+                                <div className="font-bold font-mono flex items-center gap-2">
+                                    {selectedCoin?.iconUrl ? <Image src={selectedCoin.iconUrl} alt={selectedCoin.name} width={20} height={20} /> : selectedCoin?.icon && <selectedCoin.icon className="h-5 w-5" />}
+                                    {selectedCoin?.name}
+                                </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="text-muted-foreground">To</span>
+                                <span className="font-mono text-sm truncate max-w-[200px]">{recipient}</span>
+                            </div>
                         </div>
-                        <div className="flex justify-between items-center p-3 rounded-lg shadow-heavy-in-sm">
-                            <span className="text-muted-foreground">To</span>
-                            <span className="font-mono text-sm truncate max-w-[200px]">{recipient}</span>
+
+                         <div className="p-4 rounded-lg shadow-heavy-in-sm space-y-3">
+                            <div className="flex justify-between items-center">
+                                <div className="flex items-center gap-1.5 text-muted-foreground">
+                                    <span>Network Fee</span>
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger>
+                                                <Info className="h-4 w-4" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>Fee paid to the network validators.</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </div>
+                                <div className="font-bold font-mono text-right">
+                                    <p>{formatCurrency(networkFee)}</p>
+                                </div>
+                            </div>
+                            <div className="flex justify-between items-center text-lg">
+                                <span className="font-bold">Max Total</span>
+                                <div className="font-bold font-mono text-right">
+                                    <p>{formatCurrency(amountAsNumber * (selectedCoin?.price || 0) + networkFee)}</p>
+                                </div>
+                            </div>
                         </div>
                          {gasError && (
                             <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/50 flex gap-4 items-center animate-in fade-in">
@@ -140,8 +194,8 @@ export default function SendPage() {
                         )}
                     </div>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setShowConfirmation(false)} className="rounded-full shadow-heavy-out-sm">Cancel</Button>
-                        <Button onClick={handleConfirm} disabled={isConfirming || gasError} className="rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg min-w-[120px]">
+                        <Button variant="outline" onClick={() => setShowConfirmation(false)} className="rounded-full shadow-heavy-out-sm flex-1">Cancel</Button>
+                        <Button onClick={handleConfirm} disabled={isConfirming || gasError} className="rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg min-w-[120px] flex-1">
                             {isConfirming ? <Loader2 className="animate-spin" /> : 'Confirm'}
                         </Button>
                     </DialogFooter>
