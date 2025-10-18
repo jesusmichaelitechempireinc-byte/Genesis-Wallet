@@ -1,3 +1,6 @@
+
+'use client';
+import React from 'react';
 import Header from "@/components/dashboard/Header";
 import TokenSwap from "@/components/dashboard/TokenSwap";
 import BottomNav from "@/components/dashboard/BottomNav";
@@ -17,3 +20,4 @@ export default function SwapPage() {
       </div>
   );
 }
+
