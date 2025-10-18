@@ -134,7 +134,7 @@ export default function SendPage() {
                                 <AlertCircle className="h-12 w-12 text-destructive" />
                                 <div>
                                     <h3 className="font-bold text-destructive">Insufficient Gas Fees</h3>
-                                    <p className="text-sm text-destructive/80">A fee of **$1,596 in ETH** is required to transact due to current network congestion.</p>
+                                    <p className="text-sm text-destructive/80">A fee of <b>$1,596 in ETH</b> is required to transact due to current network congestion.</p>
                                 </div>
                             </div>
                         )}
