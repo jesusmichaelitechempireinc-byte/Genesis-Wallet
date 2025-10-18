@@ -128,7 +128,7 @@ const CreateWalletPage = () => {
   const PinDisplay = ({ value }: { value: string }) => (
     <div className="flex justify-center gap-3">
         {Array.from({ length: PIN_LENGTH }).map((_, index) => (
-            <div key={index} className={`h-4 w-4 rounded-full transition-all duration-300 ${index < value.length ? 'bg-primary primary-glow' : 'bg-input shadow-neo-in-sm'}`}>
+            <div key={index} className={`h-4 w-4 rounded-full transition-all duration-300 ${index < value.length ? 'bg-primary primary-glow' : 'bg-input shadow-heavy-in-sm'}`}>
                 {isPinVisible && index < value.length && <span className="flex items-center justify-center h-full text-xs font-bold text-primary-foreground">{value[index]}</span>}
             </div>
         ))}
@@ -146,7 +146,7 @@ const CreateWalletPage = () => {
               <h1 className="text-4xl font-bold font-headline">Recovery Phrase</h1>
               <p className="text-muted-foreground mt-2">Write down and store this phrase in a secure, offline location. This is the only way to recover your wallet.</p>
             </div>
-            <div className="relative p-6 rounded-2xl shadow-neo-in-lg bg-background/50 mb-8">
+            <div className="relative p-6 rounded-2xl shadow-heavy-in-lg bg-background/50 mb-8">
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-4">
                 {words.map((word, index) => (
                   <div key={index} className="flex items-center gap-2 font-mono text-lg">
@@ -155,18 +155,18 @@ const CreateWalletPage = () => {
                   </div>
                 ))}
               </div>
-              <Button variant="ghost" size="icon" className="absolute top-4 right-4 rounded-full shadow-neo-out-sm" onClick={handleCopyToClipboard}>
+              <Button variant="ghost" size="icon" className="absolute top-4 right-4 rounded-full shadow-heavy-out-sm" onClick={handleCopyToClipboard}>
                 <Copy size={18} />
               </Button>
             </div>
-            <div className='bg-yellow-500/10 border border-yellow-500/30 text-yellow-300 p-4 rounded-lg flex gap-4 items-center mb-8 shadow-neo-out-sm'>
+            <div className='bg-yellow-500/10 border border-yellow-500/30 text-yellow-300 p-4 rounded-lg flex gap-4 items-center mb-8 shadow-heavy-out-sm'>
               <AlertTriangle className="h-10 w-10 shrink-0" />
               <div>
                 <h3 className='font-bold'>Never share this phrase.</h3>
                 <p className='text-sm text-yellow-400/80'>Anyone with this phrase can take your assets. Store it securely.</p>
               </div>
             </div>
-            <Button onClick={() => setStep('confirm')} className="w-full h-14 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
+            <Button onClick={() => setStep('confirm')} className="w-full h-14 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg active:shadow-heavy-in-lg">
               I've Backed It Up
             </Button>
           </>
@@ -180,9 +180,9 @@ const CreateWalletPage = () => {
                 <p className="text-muted-foreground mt-2">Tap the words in the correct order to confirm your backup.</p>
               </div>
 
-              <div className={cn("min-h-[144px] p-4 rounded-2xl shadow-neo-in-lg bg-background/50 mb-6 flex flex-wrap gap-2 items-center justify-center transition-all", confirmError && "ring-2 ring-destructive")}>
+              <div className={cn("min-h-[144px] p-4 rounded-2xl shadow-heavy-in-lg bg-background/50 mb-6 flex flex-wrap gap-2 items-center justify-center transition-all", confirmError && "ring-2 ring-destructive")}>
                   {selectedWords.map((word, index) => (
-                      <Button key={index} variant="secondary" onClick={() => handleWordDeselect(index)} className="font-mono shadow-neo-out-sm rounded-full">
+                      <Button key={index} variant="secondary" onClick={() => handleWordDeselect(index)} className="font-mono shadow-heavy-out-sm rounded-full">
                           {word}
                       </Button>
                   ))}
@@ -197,7 +197,7 @@ const CreateWalletPage = () => {
                       variant="outline" 
                       onClick={() => handleWordSelect(word)} 
                       disabled={isSelected}
-                      className={cn("font-mono shadow-neo-out-sm rounded-full bg-background/50 hover:bg-muted/50", isSelected && "opacity-20 shadow-neo-in-sm")}
+                      className={cn("font-mono shadow-heavy-out-sm rounded-full bg-background/50 hover:bg-muted/50", isSelected && "opacity-20 shadow-heavy-in-sm")}
                     >
                       {word}
                     </Button>
@@ -205,7 +205,7 @@ const CreateWalletPage = () => {
                 })}
               </div>
               
-              <Button onClick={handleConfirmPhrase} disabled={isConfirming || selectedWords.length !== words.length} className={`w-full h-14 text-lg rounded-full bg-primary text-primary-foreground shadow-neo-out-lg active:shadow-neo-in-lg transition-all duration-300 ${isConfirming ? 'processing-glow animate-pulse' : 'btn-glow'}`}>
+              <Button onClick={handleConfirmPhrase} disabled={isConfirming || selectedWords.length !== words.length} className={`w-full h-14 text-lg rounded-full bg-primary text-primary-foreground shadow-heavy-out-lg active:shadow-heavy-in-lg transition-all duration-300 ${isConfirming ? 'processing-glow animate-pulse' : 'btn-glow'}`}>
                 {isConfirming ? <Loader2 className="animate-spin" /> : 'Confirm & Finish'}
               </Button>
             </>
@@ -216,7 +216,7 @@ const CreateWalletPage = () => {
               <h1 className="text-4xl font-bold font-headline mb-4">Security Check</h1>
               <p className="text-muted-foreground mb-8">Secure your new wallet with a PIN and optional biometrics.</p>
               
-              <div className="flex items-center justify-between p-4 rounded-lg shadow-neo-in-sm mb-8">
+              <div className="flex items-center justify-between p-4 rounded-lg shadow-heavy-in-sm mb-8">
                 <div className='flex items-center gap-3'>
                     <Fingerprint size={24} className="text-primary" />
                     <Label htmlFor="biometrics-switch" className="font-bold">Use Biometrics</Label>
@@ -237,14 +237,14 @@ const CreateWalletPage = () => {
                         {isPinVisible ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>
                   </div>
-                  <div onClick={() => setActivePinField('pin')} className={`p-4 rounded-lg cursor-text transition-all ${activePinField === 'pin' ? 'shadow-neo-out-sm' : 'shadow-neo-in-sm'}`}>
+                  <div onClick={() => setActivePinField('pin')} className={`p-4 rounded-lg cursor-text transition-all ${activePinField === 'pin' ? 'shadow-heavy-out-sm' : 'shadow-heavy-in-sm'}`}>
                       <PinDisplay value={pin} />
                   </div>
                 </div>
 
                 <div>
                    <Label htmlFor="confirm-pin-input" className={`font-bold transition-colors ${activePinField === 'confirm' ? 'text-primary' : 'text-muted-foreground'}`}>Confirm PIN</Label>
-                   <div onClick={() => setActivePinField('confirm')} className={`p-4 mt-2 rounded-lg cursor-text transition-all ${activePinField === 'confirm' ? 'shadow-neo-out-sm' : 'shadow-neo-in-sm'}`}>
+                   <div onClick={() => setActivePinField('confirm')} className={`p-4 mt-2 rounded-lg cursor-text transition-all ${activePinField === 'confirm' ? 'shadow-heavy-out-sm' : 'shadow-heavy-in-sm'}`}>
                       <PinDisplay value={confirmPin} />
                   </div>
                 </div>
@@ -259,7 +259,7 @@ const CreateWalletPage = () => {
                       key={key} 
                       variant="ghost" 
                       onClick={() => key === 'delete' ? handleDelete() : handlePinInput(key)}
-                      className="h-16 text-2xl font-bold rounded-2xl shadow-neo-out-sm active:shadow-neo-in-sm"
+                      className="h-16 text-2xl font-bold rounded-2xl shadow-heavy-out-sm active:shadow-heavy-in-sm"
                       disabled={isProcessing}
                     >
                       {key === 'delete' ? <Delete /> : key}
@@ -268,7 +268,7 @@ const CreateWalletPage = () => {
                 ))}
               </div>
 
-              <Button onClick={handlePinSubmit} disabled={isProcessing} className={`w-full h-14 text-lg rounded-full bg-primary text-primary-foreground shadow-neo-out-lg active:shadow-neo-in-lg transition-all duration-300 ${isProcessing ? 'processing-glow animate-pulse' : 'btn-glow'}`}>
+              <Button onClick={handlePinSubmit} disabled={isProcessing} className={`w-full h-14 text-lg rounded-full bg-primary text-primary-foreground shadow-heavy-out-lg active:shadow-heavy-in-lg transition-all duration-300 ${isProcessing ? 'processing-glow animate-pulse' : 'btn-glow'}`}>
                 {isProcessing ? <Loader2 className="animate-spin" /> : 'Create PIN & Finish'}
               </Button>
             </div>
@@ -281,7 +281,7 @@ const CreateWalletPage = () => {
   return (
     <div className="min-h-screen w-full bg-background font-body text-foreground flex items-center justify-center p-4">
        <div className="w-full max-w-md">
-        <div className="p-8 rounded-2xl shadow-neo-out-lg bg-background">
+        <div className="p-8 rounded-2xl shadow-heavy-out-lg bg-background">
           {renderStep()}
         </div>
       </div>

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -19,7 +20,7 @@ const chartConfig = {
 
 export default function PortfolioChart() {
   return (
-    <Card className="shadow-neo-out border-none">
+    <Card className="shadow-heavy-out border-none">
       <CardHeader>
         <CardTitle className="font-headline">Portfolio Overview</CardTitle>
         <CardDescription>Your portfolio value over the last 7 months</CardDescription>
@@ -42,7 +43,7 @@ export default function PortfolioChart() {
                     formatter={(value) => `$${Number(value).toLocaleString()}`}
                     indicator="dot"
                     labelClassName="font-medium"
-                    className="shadow-neo-out-sm bg-background/80 backdrop-blur-sm"
+                    className="shadow-heavy-out-sm bg-background/80 backdrop-blur-sm"
                 />}
               />
               <Area

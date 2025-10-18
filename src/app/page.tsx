@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -11,7 +12,7 @@ import Image from 'next/image';
 const FeatureCard = ({ icon: Icon, title, description, delay = 0 }: { icon: React.ElementType, title: string, description: string, delay?: number }) => (
     <div className="flex flex-col items-center text-center p-4 fade-in opacity-0" style={{ animationDelay: `${delay}ms` }}>
         <div className="relative mb-6 group">
-            <div className="w-24 h-24 rounded-full bg-background shadow-neo-in-lg flex items-center justify-center transition-all duration-300 ease-in-out group-hover:shadow-neo-out-lg">
+            <div className="w-24 h-24 rounded-full bg-background shadow-heavy-in-lg flex items-center justify-center transition-all duration-300 ease-in-out group-hover:shadow-heavy-out-lg">
                 <Icon className="h-10 w-10 text-primary transition-all duration-300 ease-in-out group-hover:scale-110 group-hover:text-[hsl(var(--primary)/0.8)]" />
             </div>
             <div className="absolute inset-0 rounded-full primary-glow opacity-50 blur-lg -z-10 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:blur-xl"></div>
@@ -74,7 +75,7 @@ const tokenAssets = [
 const GetStartedStep = ({ icon: Icon, title, description, delay = 0 }: { icon: React.ElementType, title: string, description: string, delay?: number }) => (
     <div className="flex flex-col items-center text-center fade-in opacity-0" style={{ animationDelay: `${delay}ms` }}>
         <div className="relative mb-6">
-            <div className="p-6 rounded-full shadow-neo-in-lg bg-background">
+            <div className="p-6 rounded-full shadow-heavy-in-lg bg-background">
                 <Icon className="h-10 w-10 text-primary" />
             </div>
             <div className="absolute inset-0 rounded-full primary-glow opacity-30 blur-lg -z-10"></div>
@@ -108,7 +109,7 @@ export default function LandingPage() {
           <Link href="#faq" className="hover:text-primary transition-colors">FAQ</Link>
         </nav>
         <Link href="/wallet-setup">
-            <Button size="default" className="rounded-full bg-foreground text-background font-bold hover:bg-foreground/80 shadow-neo-out-sm active:shadow-neo-in-sm transition-all duration-300">
+             <Button size="default" className="rounded-full bg-slate-200 text-black font-bold hover:bg-white shadow-heavy-out-sm active:shadow-heavy-in-sm transition-all duration-300">
               Launch App
             </Button>
           </Link>
@@ -126,12 +127,12 @@ export default function LandingPage() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 fade-in opacity-0 animate-delay-400">
                   <Link href="/wallet-setup">
-                      <Button size="lg" className="h-14 px-10 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
+                      <Button size="lg" className="h-14 px-10 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg active:shadow-heavy-in-lg">
                        Launch Web Wallet
                       </Button>
                   </Link>
                   <Link href="#features">
-                      <Button size="lg" variant="outline" className="h-14 px-10 text-lg rounded-full shadow-neo-out-sm active:shadow-neo-in-sm border-border bg-background/50 hover:bg-muted/50 hover:text-foreground">
+                      <Button size="lg" variant="outline" className="h-14 px-10 text-lg rounded-full shadow-heavy-out-sm active:shadow-heavy-in-sm border-border bg-background/50 hover:bg-muted/50 hover:text-foreground">
                         Discover Features
                       </Button>
                   </Link>
@@ -159,7 +160,7 @@ export default function LandingPage() {
                 {tokenAssets.slice(0, 12).map((token, i) => (
                     <div
                         key={token.name}
-                        className="group flex items-center justify-center h-20 w-20 rounded-full bg-background shadow-neo-in transition-all duration-300 ease-in-out hover:shadow-neo-out hover:-translate-y-2 fade-in opacity-0"
+                        className="group flex items-center justify-center h-20 w-20 rounded-full bg-background shadow-heavy-in transition-all duration-300 ease-in-out hover:shadow-heavy-out hover:-translate-y-2 fade-in opacity-0"
                         style={{ animationDelay: `${200 + i * 80}ms` }}
                     >
                         <Image
@@ -222,7 +223,7 @@ export default function LandingPage() {
         </section>
         
         <section className="w-full max-w-6xl mx-auto py-24 fade-in opacity-0">
-             <div className="relative group p-8 rounded-3xl shadow-neo-out-xl">
+             <div className="relative group p-8 rounded-3xl shadow-heavy-out-xl">
                 <Image 
                     src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760740595/kerfin7_nea_2783_gjrktr.png" 
                     width={1000} 
@@ -232,11 +233,11 @@ export default function LandingPage() {
                     data-ai-hint="digital wallet security" 
                 />
                 <div className="absolute inset-0 flex items-center justify-start p-16">
-                    <div className="max-w-md text-left bg-background/50 backdrop-blur-md p-8 rounded-2xl shadow-neo-out-lg">
+                    <div className="max-w-md text-left bg-background/50 backdrop-blur-md p-8 rounded-2xl shadow-heavy-out-lg">
                         <h3 className="text-4xl font-bold font-headline mb-4">Your Digital Fortress</h3>
                         <p className="text-lg text-muted-foreground mb-6">Built on a foundation of cryptographic excellence, Genesis Vault employs multi-layered security protocols to ensure your assets are impenetrable.</p>
                         <Link href="/wallet-setup">
-                          <Button size="lg" className="h-12 px-8 text-base rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
+                          <Button size="lg" className="h-12 px-8 text-base rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg active:shadow-heavy-in-lg">
                            Launch Web Wallet
                           </Button>
                         </Link>
@@ -323,7 +324,7 @@ export default function LandingPage() {
             </div>
              <div className="mt-16 fade-in opacity-0" style={{ animationDelay: '800ms' }}>
                 <Link href="/wallet-setup">
-                    <Button size="lg" className="h-14 px-10 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg active:shadow-neo-in-lg">
+                    <Button size="lg" className="h-14 px-10 text-lg rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg active:shadow-heavy-in-lg">
                         Begin Your Journey
                     </Button>
                 </Link>
@@ -336,7 +337,7 @@ export default function LandingPage() {
             </div>
             <Accordion type="single" collapsible className="w-full space-y-4">
                 {faqItems.map((item, index) => (
-                    <AccordionItem key={index} value={`item-${index}`} className="border-none rounded-2xl shadow-neo-out-lg bg-background p-2">
+                    <AccordionItem key={index} value={`item-${index}`} className="border-none rounded-2xl shadow-heavy-out-lg bg-background p-2">
                         <AccordionTrigger className="text-lg font-bold px-6 hover:no-underline">
                             {item.question}
                         </AccordionTrigger>

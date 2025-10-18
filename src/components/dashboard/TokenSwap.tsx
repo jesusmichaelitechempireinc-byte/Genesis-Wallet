@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -28,14 +29,14 @@ export default function TokenSwap() {
   const toAmount = parseFloat(fromAmount) * exchangeRate;
 
   return (
-    <Card className="shadow-neo-out-lg border-none h-full w-full">
+    <Card className="shadow-heavy-out-lg border-none h-full w-full">
       <CardHeader>
         <CardTitle className="font-headline text-3xl">Token Swap</CardTitle>
         <CardDescription>Instantly swap between assets.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col h-[calc(100%-88px)]">
         <div className="space-y-4 flex-grow">
-          <div className="p-4 rounded-lg shadow-neo-in-sm bg-background">
+          <div className="p-4 rounded-lg shadow-heavy-in-sm bg-background">
             <Label htmlFor="from-amount">You Pay</Label>
             <div className="flex items-center gap-2 mt-1">
               <Input
@@ -46,7 +47,7 @@ export default function TokenSwap() {
                 className="text-2xl font-mono border-0 bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-auto"
               />
               <Select value={fromCoin.ticker} onValueChange={handleFromCoinChange}>
-                <SelectTrigger className="w-[120px] rounded-full shadow-neo-out-sm border-none">
+                <SelectTrigger className="w-[120px] rounded-full shadow-heavy-out-sm border-none">
                   <SelectValue>
                     <div className="flex items-center gap-2">
                       <fromCoin.icon className="h-5 w-5" />
@@ -54,7 +55,7 @@ export default function TokenSwap() {
                     </div>
                   </SelectValue>
                 </SelectTrigger>
-                <SelectContent className="shadow-neo-out-sm">
+                <SelectContent className="shadow-heavy-out-sm">
                   {coins.map((c) => (
                     <SelectItem key={c.ticker} value={c.ticker}>
                       <div className="flex items-center gap-2">
@@ -72,12 +73,12 @@ export default function TokenSwap() {
           </div>
           
           <div className="flex justify-center -my-2 z-10">
-            <Button variant="ghost" size="icon" className="rounded-full shadow-neo-out-sm bg-background hover:bg-background active:shadow-neo-in-sm text-primary hover:text-primary transition-all duration-300">
+            <Button variant="ghost" size="icon" className="rounded-full shadow-heavy-out-sm bg-background hover:bg-background active:shadow-heavy-in-sm text-primary hover:text-primary transition-all duration-300">
               <ArrowDown className="h-5 w-5" />
             </Button>
           </div>
 
-          <div className="p-4 rounded-lg shadow-neo-in-sm bg-background">
+          <div className="p-4 rounded-lg shadow-heavy-in-sm bg-background">
             <Label htmlFor="to-amount">You Get</Label>
             <div className="flex items-center gap-2 mt-1">
               <Input
@@ -87,7 +88,7 @@ export default function TokenSwap() {
                 className="text-2xl font-mono border-0 bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-auto"
               />
               <Select value={toCoin.ticker} onValueChange={handleToCoinChange}>
-                <SelectTrigger className="w-[120px] rounded-full shadow-neo-out-sm border-none">
+                <SelectTrigger className="w-[120px] rounded-full shadow-heavy-out-sm border-none">
                   <SelectValue>
                     <div className="flex items-center gap-2">
                       <toCoin.icon className="h-5 w-5" />
@@ -95,7 +96,7 @@ export default function TokenSwap() {
                     </div>
                   </SelectValue>
                 </SelectTrigger>
-                <SelectContent className="shadow-neo-out-sm">
+                <SelectContent className="shadow-heavy-out-sm">
                   {coins.map((c) => (
                     <SelectItem key={c.ticker} value={c.ticker}>
                       <div className="flex items-center gap-2">
@@ -115,7 +116,7 @@ export default function TokenSwap() {
         <div className="text-center text-sm text-muted-foreground font-mono mt-6">
           1 {fromCoin.ticker} ≈ {exchangeRate.toFixed(4)} {toCoin.ticker}
         </div>
-        <Button size="lg" className="w-full mt-2 rounded-full bg-primary text-primary-foreground btn-glow shadow-neo-out-lg">
+        <Button size="lg" className="w-full mt-2 rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg">
           Swap Tokens
         </Button>
       </CardContent>

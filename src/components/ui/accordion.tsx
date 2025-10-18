@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -34,7 +35,7 @@ const AccordionTrigger = React.forwardRef<
       {...props}
     >
       {children}
-      <div className="p-2 rounded-full shadow-neo-out-sm">
+      <div className="p-2 rounded-full shadow-heavy-out-sm">
         <Plus className="h-5 w-5 shrink-0 transition-transform duration-200 plus-icon" />
         <Minus className="h-5 w-5 shrink-0 transition-transform duration-200 minus-icon" />
       </div>

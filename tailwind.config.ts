@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -16,6 +17,20 @@ export default {
       },
     },
     extend: {
+      boxShadow: {
+        'neo-out': '5px 5px 10px #1a1a1a, -5px -5px 10px #2a2a2a',
+        'neo-in': 'inset 5px 5px 10px #1a1a1a, inset -5px -5px 10px #2a2a2a',
+        'neo-out-sm': '3px 3px 6px #1a1a1a, -3px -3px 6px #2a2a2a',
+        'neo-in-sm': 'inset 3px 3px 6px #1a1a1a, inset -3px -3px 6px #2a2a2a',
+        'neo-out-lg': '8px 8px 16px #1a1a1a, -8px -8px 16px #2a2a2a',
+        'neo-in-lg': 'inset 8px 8px 16px #1a1a1a, inset -8px -8px 16px #2a2a2a',
+        'heavy-out': '12px 12px 24px #161616, -12px -12px 24px #2e2e2e',
+        'heavy-in': 'inset 12px 12px 24px #161616, inset -12px -12px 24px #2e2e2e',
+        'heavy-out-sm': '6px 6px 12px #161616, -6px -6px 12px #2e2e2e',
+        'heavy-in-sm': 'inset 6px 6px 12px #161616, inset -6px -6px 12px #2e2e2e',
+        'heavy-out-lg': '20px 20px 40px #161616, -20px -20px 40px #2e2e2e',
+        'heavy-in-lg': 'inset 20px 20px 40px #161616, inset -20px -20px 40px #2e2e2e',
+      },
       fontFamily: {
         body: ['Inter', 'sans-serif'],
         headline: ['DM Sans', 'sans-serif'],

@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -12,8 +13,8 @@ export default function WalletSetupPage() {
       <main className="relative z-10 flex flex-col items-center text-center">
 
         <Link href="/" className="mb-12">
-          <div className="inline-block p-6 rounded-full shadow-neo-out mb-4">
-            <div className="p-6 rounded-full shadow-neo-in">
+          <div className="inline-block p-6 rounded-full shadow-heavy-out mb-4">
+            <div className="p-6 rounded-full shadow-heavy-in">
               <GenesisVaultLogo />
             </div>
           </div>
@@ -28,8 +29,8 @@ export default function WalletSetupPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-2xl">
           <Link href="/create-wallet" className="w-full">
-            <div className="p-10 rounded-2xl shadow-neo-out border-none flex flex-col items-center text-center h-full transition-shadow duration-300 hover:shadow-neo-in">
-                <div className="p-6 rounded-full shadow-neo-in bg-background mb-6">
+            <div className="p-10 rounded-2xl shadow-heavy-out border-none flex flex-col items-center text-center h-full transition-shadow duration-300 hover:shadow-heavy-in">
+                <div className="p-6 rounded-full shadow-heavy-in bg-background mb-6">
                     <PlusCircle className="h-12 w-12 text-primary [filter:drop-shadow(0_0_5px_hsl(var(--primary)/0.7))]" />
                 </div>
                 <h2 className="text-2xl font-bold font-headline mb-2">Create New Wallet</h2>
@@ -37,8 +38,8 @@ export default function WalletSetupPage() {
             </div>
           </Link>
           <Link href="/import-wallet" className="w-full">
-            <div className="p-10 rounded-2xl shadow-neo-out border-none flex flex-col items-center text-center h-full transition-shadow duration-300 hover:shadow-neo-in">
-                <div className="p-6 rounded-full shadow-neo-in bg-background mb-6">
+            <div className="p-10 rounded-2xl shadow-heavy-out border-none flex flex-col items-center text-center h-full transition-shadow duration-300 hover:shadow-heavy-in">
+                <div className="p-6 rounded-full shadow-heavy-in bg-background mb-6">
                     <Download className="h-12 w-12 text-primary [filter:drop-shadow(0_0_5px_hsl(var(--primary)/0.7))]" />
                 </div>
                 <h2 className="text-2xl font-bold font-headline mb-2">Import Wallet</h2>

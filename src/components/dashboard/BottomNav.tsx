@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -23,8 +24,8 @@ const NavItem = ({ href, icon: Icon, label }: typeof navItems[0]) => {
     return (
         <Link href={href} className="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary transition-colors group w-full">
             <div className={cn(
-                "p-3 rounded-full shadow-neo-out-sm transition-all duration-300",
-                isActive ? "shadow-neo-in-sm bg-primary/10" : "bg-background",
+                "p-3 rounded-full shadow-heavy-out-sm transition-all duration-300",
+                isActive ? "shadow-heavy-in-sm bg-primary/10" : "bg-background",
                 isGenesis && "genesis-icon-glow"
             )}>
               <Icon className={cn(
@@ -40,7 +41,7 @@ const NavItem = ({ href, icon: Icon, label }: typeof navItems[0]) => {
 export default function BottomNav() {
   return (
     <footer className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-md z-50">
-        <nav className="h-24 w-full bg-background/80 backdrop-blur-lg border border-border/50 rounded-3xl flex items-center justify-around px-2 shadow-neo-out-lg">
+        <nav className="h-24 w-full bg-background/80 backdrop-blur-lg border border-border/50 rounded-3xl flex items-center justify-around px-2 shadow-heavy-out-lg">
             {navItems.map(item => <NavItem key={item.href} {...item} />)}
         </nav>
     </footer>

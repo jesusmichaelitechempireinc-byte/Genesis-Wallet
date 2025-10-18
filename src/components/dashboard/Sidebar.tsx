@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import {
   AreaChart,
@@ -41,12 +42,12 @@ export default function Sidebar() {
         ))}
       </nav>
        <div className="mt-auto space-y-2">
-        <Card className="bg-card border-none">
+        <Card className="bg-card border-none shadow-heavy-out">
             <CardContent className="p-4 flex flex-col items-center text-center">
                 <HelpCircle className="h-8 w-8 text-primary mb-2"/>
                 <h3 className="font-semibold">Need help?</h3>
                 <p className="text-xs text-muted-foreground mt-1 mb-3">Contact our support team for any assistance.</p>
-                <Button size="sm" className="w-full rounded-full bg-primary text-primary-foreground">Contact Support</Button>
+                <Button size="sm" className="w-full rounded-full bg-primary text-primary-foreground shadow-heavy-out active:shadow-heavy-in">Contact Support</Button>
             </CardContent>
         </Card>
       </div>
