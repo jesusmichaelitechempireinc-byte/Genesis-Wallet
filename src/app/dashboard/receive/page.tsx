@@ -17,13 +17,22 @@ import { getFundedCoins, getEmptyCoins } from '@/lib/data';
 
 
 const walletAddresses: Record<string, { address: string, network: string }> = {
-    'BTC': { address: 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq', network: 'Bitcoin' },
-    'ETH': { address: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', network: 'Ethereum (ERC20)' },
-    'USDC': { address: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', network: 'Ethereum (ERC20)' },
-    'USDT-ERC20': { address: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', network: 'Ethereum (ERC20)' },
-    'SOL': { address: 'So11111111111111111111111111111111111111112', network: 'Solana' },
-    'USDT-TRC20': { address: 'TXYZopYRdj2D9XRtbG411XZZ3kM5xV3FpS', network: 'Tron (TRC20)' },
-    'TRX': { address: 'TXYZopYRdj2D9XRtbG411XZZ3kM5xV3FpS', network: 'Tron (TRC20)' },
+    'BTC': { address: 'bc1qjhcx29cr4dfwc70t9gqjk3eqhg2rq84qr58prg', network: 'Bitcoin' },
+    'ETH': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)' },
+    'USDC': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)' },
+    'USDT-ERC20': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)' },
+    'SOL': { address: '3XWgGUgRjkC6fjemjzRBTqeccbjpACYPbkecjr7hswYK', network: 'Solana' },
+    'USDT-TRC20': { address: 'TU39dHkCpcHe1sCeU3Sek48ZMqpQEeqHKT', network: 'Tron (TRC20)' },
+    'TRX': { address: 'TU39dHkCpcHe1sCeU3Sek48ZMqpQEeqHKT', network: 'Tron (TRC20)' },
+    'DOGE': { address: 'DHFwA7Qn6hThauKoGPyisQkkxPCkAQp1zi', network: 'Dogecoin' },
+    'ADA': { address: 'addr1qyy2wtmf2rucpgqcz6lsawhjt4t7cz8m06rtw6nuux782ppdgq76u42zgh58w8x33yntz6245jw45vw25j45hvyuaqwszq7r8u', network: 'Cardano' },
+    'XRP': { address: 'rKcgzQZtpg3sr79ukpndEXeXQppoHGxCEs', network: 'Ripple' },
+    'AVAX': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Avalanche C-Chain' },
+    'SUI': { address: '0x591555f1fe130f5db3ae8044399215eba25e78b71aa5623d0ce0b7d5dc92784d', network: 'Sui' },
+    'BNB': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'BNB Smart Chain (BEP20)' },
+    'TON': { address: 'UQCqdQtedAyjxaA_uTmdh_w5Ql8jXuKdvtypJeyK8h65pgdV', network: 'The Open Network' },
+    'FET': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)' },
+    'PEPE': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)' },
     'Default': { address: 'genesis-vault-main-0x...a4b8', network: 'Genesis Chain' }
 }
 
@@ -135,3 +144,5 @@ export default function ReceivePage() {
       </div>
   );
 }
+
+    

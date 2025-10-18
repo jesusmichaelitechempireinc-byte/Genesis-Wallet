@@ -170,6 +170,16 @@ const initialCoins: Coin[] = [
     change: -1.96,
     history: [ { time: '12:00', price: 0.1140 }, { time: '13:00', price: 0.1142 }, { time: '14:00', price: 0.1144 } ]
   },
+    {
+    name: "The Open Network",
+    ticker: "TON",
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760815152/ton_token_icon_vyrkou.png',
+    balance: 0,
+    usdValue: 0,
+    price: 7.22,
+    change: -1.82,
+    history: [ { time: '12:00', price: 7.20 }, { time: '13:00', price: 7.21 }, { time: '14:00', price: 7.22 } ]
+  },
   {
     name: "ASI",
     ticker: "FET",
@@ -367,3 +377,5 @@ export const transactions: Transaction[] = [
     fee: 0.01
   },
 ];
+
+    
