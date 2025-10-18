@@ -17,7 +17,7 @@ export default function SecurityPage() {
                     </Button>
                 </Link>
             </header>
-            <main className="flex-1 p-4 md:p-6 lg:p-8 pb-36">
+            <main className="flex-1 p-4 md:p-6 lg:p-8 pb-28">
               <Card className="shadow-none border-none bg-transparent">
                 <CardHeader>
                     <CardTitle className="font-headline text-3xl">Security & Privacy</CardTitle>

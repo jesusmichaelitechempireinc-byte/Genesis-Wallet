@@ -62,7 +62,7 @@ export default function TransactionDetailPage() {
           <div className="w-10"></div>
         </header>
 
-        <main className="flex-1 p-4 md:p-6 lg:p-8 pb-36">
+        <main className="flex-1 p-4 md:p-6 lg:p-8 pb-28">
           <Card className="w-full max-w-2xl mx-auto shadow-heavy-out-lg border-none">
             <CardHeader className="text-center">
               <div className="flex justify-center items-center gap-4 mb-4">

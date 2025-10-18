@@ -18,7 +18,7 @@ export default function AssetPage({ params }: { params: { ticker: string } }) {
     return (
         <div className="flex min-h-screen w-full bg-background font-body text-foreground">
           
-            <main className="flex-1 p-4 md:p-6 lg:p-8 flex items-center justify-center pb-36">
+            <main className="flex-1 p-4 md:p-6 lg:p-8 flex items-center justify-center pb-28">
               <p>Token not found.</p>
             </main>
             <BottomNav />
@@ -34,7 +34,7 @@ export default function AssetPage({ params }: { params: { ticker: string } }) {
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">
           <div className="flex flex-1 flex-col relative">
             <AssetHeader coin={coin} />
-            <main className="flex-1 p-4 md:p-6 lg:p-8 pb-36">
+            <main className="flex-1 p-4 md:p-6 lg:p-8 pb-28">
                 <div className="text-center my-4">
                     <h1 className="text-5xl font-bold tracking-tight">{formattedBalance}</h1>
                     <p className="text-muted-foreground text-lg mt-1">

@@ -10,7 +10,7 @@ export default function SwapPage() {
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">
           <div className="flex flex-1 flex-col relative">
             <Header />
-            <main className="flex-1 p-4 md:p-6 lg:p-8 flex items-center justify-center pb-36">
+            <main className="flex-1 p-4 md:p-6 lg:p-8 flex items-center justify-center pb-28">
               <div className="w-full max-w-md">
                 <TokenSwap />
               </div>
