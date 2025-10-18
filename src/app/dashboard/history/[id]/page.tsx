@@ -1,6 +1,7 @@
 
 'use client';
 
+import React from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { transactions } from '@/lib/data';
 import BottomNav from '@/components/dashboard/BottomNav';
