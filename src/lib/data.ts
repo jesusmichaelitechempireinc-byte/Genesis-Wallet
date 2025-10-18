@@ -259,8 +259,12 @@ export interface Transaction {
   coin: Coin;
   amount: number;
   usdValue: number;
-  date: string;
-  address: string;
+  timestamp: number;
+  fromAddress: string;
+  toAddress: string;
+  hash: string;
+  block: number;
+  fee: number;
 }
 
 export const transactions: Transaction[] = [
@@ -268,51 +272,85 @@ export const transactions: Transaction[] = [
     id: "txn1",
     type: "Receive",
     status: "Completed",
-    coin: coins[1],
-    amount: 2.5,
-    usdValue: 8700.0,
-    date: "2024-07-20",
-    address: "0x...a1b2",
+    coin: coins.find(c => c.ticker === 'USDC')!,
+    amount: 50000.00,
+    usdValue: 50000.00,
+    timestamp: 1721484000000, // July 20, 2024 10:00:00 AM UTC
+    fromAddress: "0x3a...b4c5",
+    toAddress: "genesis-vault-main-0x...a4b8",
+    hash: "0x123...abc",
+    block: 15203040,
+    fee: 5.21
   },
   {
     id: "txn2",
-    type: "Send",
+    type: "Receive",
     status: "Completed",
-    coin: coins[0],
-    amount: 0.1,
-    usdValue: 6781.9,
-    date: "2024-07-19",
-    address: "bc1...y3z4",
+    coin: coins.find(c => c.ticker === 'USDC')!,
+    amount: 25000.00,
+    usdValue: 25000.00,
+    timestamp: 1721397600000, // July 19, 2024 10:00:00 AM UTC
+    fromAddress: "0x9d...e5f6",
+    toAddress: "genesis-vault-main-0x...a4b8",
+    hash: "0x456...def",
+    block: 15198765,
+    fee: 4.88
   },
   {
     id: "txn3",
-    type: "Receive",
-    status: "Pending",
-    coin: coins[2],
-    amount: 50,
-    usdValue: 8560.0,
-    date: "2024-07-18",
-    address: "addr1...k7l8",
+    type: "Send",
+    status: "Completed",
+    coin: coins.find(c => c.ticker === 'ETH')!,
+    amount: 1.5,
+    usdValue: 5220,
+    timestamp: 1721311200000, // July 18, 2024 10:00:00 AM UTC
+    fromAddress: "genesis-vault-main-0x...a4b8",
+    toAddress: "0x7g...h8i9",
+    hash: "0x789...ghi",
+    block: 15194321,
+    fee: 2.15
   },
   {
     id: "txn4",
-    type: "Send",
-    status: "Failed",
-    coin: coins[1],
-    amount: 1.0,
-    usdValue: 3480.0,
-    date: "2024-07-17",
-    address: "0x...c3d4",
-  },
-    {
-    id: "txn5",
     type: "Receive",
     status: "Completed",
-    coin: coins[0],
-    amount: 0.05,
-    usdValue: 3390.95,
-    date: "2024-07-16",
-    address: "bc1...w5x6",
+    coin: coins.find(c => c.ticker === 'USDC')!,
+    amount: 33490.00,
+    usdValue: 33490.00,
+    timestamp: 1721224800000, // July 17, 2024 10:00:00 AM UTC
+    fromAddress: "0x2b...c3d4",
+    toAddress: "genesis-vault-main-0x...a4b8",
+    hash: "0xabc...jkl",
+    block: 15189987,
+    fee: 3.97
+  },
+  {
+    id: "txn5",
+    type: "Send",
+    status: "Pending",
+    coin: coins.find(c => c.ticker === 'BTC')!,
+    amount: 0.02,
+    usdValue: 1356.38,
+    timestamp: 1721138400000, // July 16, 2024 10:00:00 AM UTC
+    fromAddress: "genesis-vault-main-0x...a4b8",
+    toAddress: "bc1...q5r6",
+    hash: "0xdef...mno",
+    block: 800543,
+    fee: 1.02
+  },
+   {
+    id: "txn6",
+    type: "Receive",
+    status: "Failed",
+    coin: coins.find(c => c.ticker === 'SOL')!,
+    amount: 10,
+    usdValue: 1712,
+    timestamp: 1721052000000, // July 15, 2024 10:00:00 AM UTC
+    fromAddress: "sol1...tuv",
+    toAddress: "genesis-vault-main-0x...a4b8",
+    hash: "0xghi...pqr",
+    block: 250123456,
+    fee: 0.01
   },
 ];
 
