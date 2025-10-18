@@ -2,23 +2,55 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, Bell, Settings, X, ChevronDown } from "lucide-react";
+import { Search, Bell, Settings, X, ChevronDown, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const walletName = "Primary Wallet";
+  const [walletName, setWalletName] = useState("Primary Wallet");
+  const [editingWalletName, setEditingWalletName] = useState(walletName);
+
+  const handleSaveWalletName = () => {
+    setWalletName(editingWalletName);
+    // Here you would typically also save to a persistent store
+  }
 
   return (
     <header className="sticky top-0 z-20 flex h-20 items-center justify-between px-4 md:px-6 transition-all duration-300">
       <div className={cn("flex items-center gap-3 transition-all duration-300", isSearchOpen && 'opacity-0 pointer-events-none')}>
-         <Button variant="ghost" className="flex items-center gap-2 rounded-full shadow-heavy-out-sm active:shadow-heavy-in-sm p-3 h-auto">
-            <span className="font-bold text-lg">{walletName}</span>
-            <ChevronDown className="h-5 w-5 text-muted-foreground" />
-        </Button>
+         <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="flex items-center gap-2 rounded-full shadow-heavy-out-sm active:shadow-heavy-in-sm p-3 h-auto">
+                    <span className="font-bold text-base">{walletName}</span>
+                    <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56 shadow-heavy-out-lg border-none" align="start">
+                <DropdownMenuLabel>Rename Wallet</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <div className="p-2 space-y-2">
+                    <Input 
+                        placeholder="New wallet name" 
+                        className="shadow-heavy-in-sm" 
+                        value={editingWalletName}
+                        onChange={(e) => setEditingWalletName(e.target.value)}
+                    />
+                    <DropdownMenuItem asChild>
+                        <Button 
+                            className="w-full btn-glow"
+                            onClick={handleSaveWalletName}
+                        >
+                            <Check className="mr-2 h-4 w-4" />
+                            Save Name
+                        </Button>
+                    </DropdownMenuItem>
+                </div>
+            </DropdownMenuContent>
+         </DropdownMenu>
       </div>
 
       <div className={cn("flex items-center gap-2 transition-all duration-300", isSearchOpen && 'opacity-0 pointer-events-none')}>
