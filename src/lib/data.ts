@@ -212,7 +212,7 @@ const initialCoins: Coin[] = [
   },
 ];
 
-export const coins = getEmptyCoins();
+export const coins: Coin[] = initialCoins;
 
 export interface Currency {
   code: string;
@@ -367,3 +367,5 @@ export const transactions: Transaction[] = [
     fee: 0.01
   },
 ];
+
+    

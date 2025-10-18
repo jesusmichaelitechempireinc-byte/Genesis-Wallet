@@ -1,29 +1,30 @@
 
 'use client';
 
-import { useMemo } from 'react';
-import { coins } from "@/lib/data";
+import { useMemo, useState, useEffect } from 'react';
 import { useCurrency } from "@/hooks/use-currency";
 import { useLocalStorage } from '@/hooks/use-local-storage';
-import { getFundedCoins, getEmptyCoins } from '@/lib/data';
+import { getFundedCoins, getEmptyCoins, Coin } from '@/lib/data';
 
 export default function TotalBalance() {
   const { selectedCurrency, formatCurrency } = useCurrency();
   const [walletImported] = useLocalStorage('wallet-imported', 'none');
+  const [coins, setCoins] = useState<Coin[]>([]);
 
-  const currentCoins = useMemo(() => {
+  useEffect(() => {
     if (walletImported === 'funded') {
-        return getFundedCoins();
+        setCoins(getFundedCoins());
+    } else if (walletImported === 'empty') {
+        setCoins(getEmptyCoins());
+    } else {
+        // Default to empty if no state is set
+        setCoins(getEmptyCoins());
     }
-    if (walletImported === 'empty') {
-        return getEmptyCoins();
-    }
-    return coins;
   }, [walletImported]);
 
   const totalBalance = useMemo(() => {
-    return currentCoins.reduce((acc, coin) => acc + coin.usdValue, 0);
-  }, [currentCoins]);
+    return coins.reduce((acc, coin) => acc + coin.usdValue, 0);
+  }, [coins]);
 
   const convertedBalance = totalBalance * (selectedCurrency.rate || 1);
   const formattedBalance = formatCurrency(convertedBalance);
@@ -35,3 +36,5 @@ export default function TotalBalance() {
     </div>
   );
 }
+
+    
