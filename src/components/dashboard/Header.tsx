@@ -10,6 +10,10 @@ import { cn } from '@/lib/utils';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '@/components/ui/dropdown-menu';
 import { currencies } from '@/lib/data';
 import { useCurrency } from '@/hooks/use-currency';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { useLocalStorage } from '@/hooks/use-local-storage';
+import { avatars } from '@/lib/avatars';
+import Image from 'next/image';
 
 const notifications = [
     {
@@ -28,8 +32,10 @@ const notifications = [
 
 export default function Header({ onSearchChange }: { onSearchChange?: (term: string) => void }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [walletName, setWalletName] = useState("Primary Wallet");
+  const [walletName, setWalletName] = useLocalStorage("walletName", "Primary Wallet");
   const [editingWalletName, setEditingWalletName] = useState(walletName);
+  const [selectedAvatar, setSelectedAvatar] = useLocalStorage('selectedAvatar', avatars[0].url);
+
   const { selectedCurrency, setSelectedCurrency } = useCurrency();
 
   const handleSaveWalletName = () => {
@@ -45,6 +51,30 @@ export default function Header({ onSearchChange }: { onSearchChange?: (term: str
   return (
     <header className="sticky top-0 z-20 flex h-20 items-center justify-between px-4 md:px-6 transition-all duration-300">
       <div className={cn("flex items-center gap-3 transition-all duration-300", isSearchOpen && 'opacity-0 pointer-events-none')}>
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <div className='p-1 rounded-full shadow-heavy-out-sm cursor-pointer'>
+                    <Avatar className='h-10 w-10'>
+                        <AvatarImage src={selectedAvatar} />
+                        <AvatarFallback>GV</AvatarFallback>
+                    </Avatar>
+                </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-64 shadow-heavy-out-lg border-none" align="start">
+                <DropdownMenuLabel>Choose Avatar</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <div className="grid grid-cols-4 gap-2 p-2">
+                    {avatars.map(avatar => (
+                        <DropdownMenuItem key={avatar.id} onSelect={() => setSelectedAvatar(avatar.url)} className='p-0 cursor-pointer'>
+                           <div className={cn('w-full h-full p-1 rounded-md transition-all', selectedAvatar === avatar.url && 'ring-2 ring-primary')}>
+                             <Image src={avatar.url} alt={`Avatar ${avatar.id}`} width={48} height={48} className='rounded-md' data-ai-hint={avatar.hint} />
+                           </div>
+                        </DropdownMenuItem>
+                    ))}
+                </div>
+            </DropdownMenuContent>
+        </DropdownMenu>
+
          <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center gap-2 rounded-full shadow-heavy-out-sm active:shadow-heavy-in-sm p-3 h-auto text-lg">
