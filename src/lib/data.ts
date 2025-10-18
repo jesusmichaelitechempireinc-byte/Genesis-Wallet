@@ -1,3 +1,4 @@
+
 import { CircleDollarSign } from 'lucide-react';
 import type { ComponentType } from "react";
 
@@ -120,10 +121,18 @@ export const coins: Coin[] = [
   {
     name: "Tether USD (ERC20)",
     ticker: "USDT-ERC20",
-    icon: CircleDollarSign,
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688489/USDT-ERC20_zylqxi.png',
     balance: 0,
     usdValue: 0.00,
     change: 0.03,
+  },
+  {
+    name: "Tether USD (TRC20)",
+    ticker: "USDT-TRC20",
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688695/USDT-TRC20_mautso.png',
+    balance: 0,
+    usdValue: 0.00,
+    change: 0.02,
   },
 ];
 
