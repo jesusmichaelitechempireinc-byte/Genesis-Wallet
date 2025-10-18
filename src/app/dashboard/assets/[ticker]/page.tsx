@@ -1,6 +1,5 @@
 
 import AssetHeader from "@/components/dashboard/AssetHeader";
-import { Sidebar, SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 import BottomNav from "@/components/dashboard/BottomNav";
 import { coins } from "@/lib/data";
 import AssetChart from "@/components/dashboard/AssetChart";
@@ -13,17 +12,14 @@ export default function AssetPage({ params }: { params: { ticker: string } }) {
 
   if (!coin) {
     return (
-      <SidebarProvider>
         <div className="flex min-h-screen w-full bg-background font-body text-foreground">
-          <Sidebar />
-          <SidebarInset>
+          
             <main className="flex-1 p-4 md:p-6 lg:p-8 flex items-center justify-center pb-36">
               <p>Token not found.</p>
             </main>
             <BottomNav />
-          </SidebarInset>
+          
         </div>
-      </SidebarProvider>
     );
   }
 
@@ -35,10 +31,7 @@ export default function AssetPage({ params }: { params: { ticker: string } }) {
   }).format(coin.usdValue);
 
   return (
-    <SidebarProvider>
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">
-        <Sidebar />
-        <SidebarInset>
           <div className="flex flex-1 flex-col relative">
             <AssetHeader coin={coin} />
             <main className="flex-1 p-4 md:p-6 lg:p-8 pb-36">
@@ -80,8 +73,6 @@ export default function AssetPage({ params }: { params: { ticker: string } }) {
             </main>
             <BottomNav />
           </div>
-        </SidebarInset>
       </div>
-    </SidebarProvider>
   );
 }

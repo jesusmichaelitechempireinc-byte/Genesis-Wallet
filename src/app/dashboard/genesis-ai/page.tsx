@@ -10,7 +10,6 @@ import { GenesisAILogo } from '@/components/icons/GenesisAILogo';
 import Link from 'next/link';
 import Image from 'next/image';
 import BottomNav from '@/components/dashboard/BottomNav';
-import { Sidebar, SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 
 const recentChats = [
     { id: '1', title: 'Market analysis for Q3' },
@@ -27,10 +26,7 @@ const chatMessages = [
 
 export default function GenesisAIPage() {
   return (
-    <SidebarProvider>
       <div className="flex h-screen w-full bg-background font-body text-foreground">
-        <Sidebar />
-        <SidebarInset>
           {/* Main Chat Panel */}
           <div className="flex flex-1 flex-col relative">
             <header className="sticky top-0 z-10 flex h-20 items-center justify-between border-b bg-background/80 px-8 backdrop-blur-sm">
@@ -80,8 +76,6 @@ export default function GenesisAIPage() {
             </footer>
             <BottomNav />
           </div>
-        </SidebarInset>
       </div>
-    </SidebarProvider>
   );
 }

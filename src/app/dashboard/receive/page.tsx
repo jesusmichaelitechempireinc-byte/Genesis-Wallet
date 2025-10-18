@@ -1,6 +1,5 @@
 
 import Header from "@/components/dashboard/Header";
-import { Sidebar, SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import BottomNav from "@/components/dashboard/BottomNav";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,10 +9,7 @@ import Image from "next/image";
 export default function ReceivePage() {
     const walletAddress = 'genesis-vault-main-0x...a4b8';
   return (
-    <SidebarProvider>
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">
-        <Sidebar />
-        <SidebarInset>
           <div className="flex flex-1 flex-col relative">
             <Header />
             <main className="flex-1 p-4 md:p-6 lg:p-8 flex items-center justify-center pb-36">
@@ -37,8 +33,6 @@ export default function ReceivePage() {
             </main>
             <BottomNav />
           </div>
-        </SidebarInset>
       </div>
-    </SidebarProvider>
   );
 }
