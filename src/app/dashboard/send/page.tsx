@@ -25,11 +25,14 @@ export default function SendPage() {
     const [coins, setCoins] = useState<Coin[]>([]);
     
     useEffect(() => {
-        if (walletImported === 'funded') {
-            setCoins(getFundedCoins());
-        } else if (walletImported === 'empty') {
-            setCoins(getEmptyCoins());
-        }
+        const loadCoins = async () => {
+            if (walletImported === 'funded') {
+                setCoins(await getFundedCoins());
+            } else if (walletImported === 'empty') {
+                setCoins(await getEmptyCoins());
+            }
+        };
+        loadCoins();
     }, [walletImported]);
 
     const [recipient, setRecipient] = useState('');
