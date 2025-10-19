@@ -72,7 +72,7 @@ export const coins: Coin[] = [
   {
     name: 'USD Coin',
     ticker: 'USDC',
-    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675612/usd-coin-usdc-logo_s3o4g0.png',
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760678111/usd-coin-usdc-logo_isqxlb.png',
     balance: 108490,
     usdValue: 108490,
     price: 1.00,
@@ -89,7 +89,7 @@ export const coins: Coin[] = [
     name: 'Tether',
     ticker: 'USDT-ERC20',
     network: 'Ethereum (ERC20)',
-    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675620/tether-usdt-logo_mucvzl.png',
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688489/USDT-ERC20_zylqxi.png',
     balance: 0,
     usdValue: 0,
     price: 1.00,
@@ -122,7 +122,7 @@ export const coins: Coin[] = [
     name: 'Tether',
     ticker: 'USDT-TRC20',
     network: 'Tron (TRC20)',
-    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675620/tether-usdt-logo_mucvzl.png',
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688695/USDT-TRC20_mautso.png',
     balance: 0,
     usdValue: 0,
     price: 1.00,
@@ -303,36 +303,9 @@ export const coins: Coin[] = [
   }
 ];
 
-
-export interface Currency {
-  code: string;
-  name: string;
-  symbol: string;
-  rate?: number;
+export async function getCoins(): Promise<Coin[]> {
+    return coins;
 }
-
-export const currencies: Currency[] = [
-    { code: 'USD', name: 'United States Dollar', symbol: '$', rate: 1 },
-    { code: 'EUR', name: 'Euro', symbol: '€', rate: 0.93 },
-    { code: 'JPY', name: 'Japanese Yen', symbol: '¥', rate: 159.81 },
-    { code: 'GBP', name: 'British Pound Sterling', symbol: '£', rate: 0.79 },
-    { code: 'AUD', name: 'Australian Dollar', symbol: 'A$', rate: 1.50 },
-    { code: 'CAD', name: 'Canadian Dollar', symbol: 'C$', rate: 1.37 },
-    { code: 'CHF', name: 'Swiss Franc', symbol: 'CHF', rate: 0.90 },
-    { code: 'CNY', name: 'Chinese Yuan', symbol: '¥', rate: 7.26 },
-    { code: 'SEK', name: 'Swedish Krona', symbol: 'kr', rate: 10.55 },
-    { code: 'NZD', name: 'New Zealand Dollar', symbol: 'NZ$', rate: 1.64 },
-    { code: 'MXN', name: 'Mexican Peso', symbol: '$', rate: 18.11 },
-    { code: 'SGD', name: 'Singapore Dollar', symbol: 'S$', rate: 1.35 },
-    { code: 'HKD', name: 'Hong Kong Dollar', symbol: 'HK$', rate: 7.81 },
-    { code: 'NOK', name: 'Norwegian Krone', symbol: 'kr', rate: 10.63 },
-    { code: 'KRW', name: 'South Korean Won', symbol: '₩', rate: 1388.55 },
-    { code: 'TRY', name: 'Turkish Lira', symbol: '₺', rate: 32.95 },
-    { code: 'RUB', name: 'Russian Ruble', symbol: '₽', rate: 88.22 },
-    { code: 'INR', name: 'Indian Rupee', symbol: '₹', rate: 83.45 },
-    { code: 'BRL', name: 'Brazilian Real', symbol: 'R$', rate: 5.44 },
-    { code: 'ZAR', name: 'South African Rand', symbol: 'R', rate: 18.23 },
-];
 
 export async function getFundedCoins(): Promise<Coin[]> {
     return coins.map(coin => {
@@ -452,3 +425,44 @@ export const getTransactions = async (): Promise<Transaction[]> => {
       },
     ];
 }
+
+
+export interface Currency {
+  code: string;
+  name: string;
+  symbol: string;
+  rate?: number;
+}
+
+export const currencies: Currency[] = [
+    { code: 'USD', name: 'United States Dollar', symbol: '$', rate: 1 },
+    { code: 'EUR', name: 'Euro', symbol: '€', rate: 0.93 },
+    { code: 'JPY', name: 'Japanese Yen', symbol: '¥', rate: 159.81 },
+    { code: 'GBP', name: 'British Pound Sterling', symbol: '£', rate: 0.79 },
+    { code: 'AUD', name: 'Australian Dollar', symbol: 'A$', rate: 1.50 },
+    { code: 'CAD', name: 'Canadian Dollar', symbol: 'C$', rate: 1.37 },
+    { code: 'CHF', name: 'Swiss Franc', symbol: 'CHF', rate: 0.90 },
+    { code: 'CNY', name: 'Chinese Yuan', symbol: '¥', rate: 7.26 },
+    { code: 'SEK', name: 'Swedish Krona', symbol: 'kr', rate: 10.55 },
+    { code: 'NZD', name: 'New Zealand Dollar', symbol: 'NZ$', rate: 1.64 },
+    { code: 'MXN', name: 'Mexican Peso', symbol: '$', rate: 18.11 },
+    { code: 'SGD', name: 'Singapore Dollar', symbol: 'S$', rate: 1.35 },
+    { code: 'HKD', name: 'Hong Kong Dollar', symbol: 'HK$', rate: 7.81 },
+    { code: 'NOK', name: 'Norwegian Krone', symbol: 'kr', rate: 10.63 },
+    { code: 'KRW', name: 'South Korean Won', symbol: '₩', rate: 1388.55 },
+    { code: 'TRY', name: 'Turkish Lira', symbol: '₺', rate: 32.95 },
+    { code: 'RUB', name: 'Russian Ruble', symbol: '₽', rate: 88.22 },
+    { code: 'INR', name: 'Indian Rupee', symbol: '₹', rate: 83.45 },
+    { code: 'BRL', name: 'Brazilian Real', symbol: 'R$', rate: 5.44 },
+    { code: 'ZAR', name: 'South African Rand', symbol: 'R', rate: 18.23 },
+];
+
+export const portfolioData = [
+    { date: "Jan 24", balance: 50000 },
+    { date: "Feb 24", balance: 52000 },
+    { date: "Mar 24", balance: 60000 },
+    { date: "Apr 24", balance: 58000 },
+    { date: "May 24", balance: 75000 },
+    { date: "Jun 24", balance: 72000 },
+    { date: "Jul 24", balance: 85000 },
+];
