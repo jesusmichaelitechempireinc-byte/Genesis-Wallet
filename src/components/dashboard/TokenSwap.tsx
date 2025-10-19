@@ -23,7 +23,10 @@ export default function TokenSwap({ initialFromTicker, initialCoins }: { initial
       if (coins.length > 0) {
         let initialFrom = coins.find(c => c.ticker === 'USDC') || coins[0];
         if (initialFromTicker) {
-            initialFrom = coins.find(c => c.ticker === initialFromTicker) || initialFrom;
+            const foundCoin = coins.find(c => c.ticker === initialFromTicker);
+            if (foundCoin) {
+              initialFrom = foundCoin;
+            }
         }
         setFromCoin(initialFrom);
 
@@ -137,7 +140,7 @@ export default function TokenSwap({ initialFromTicker, initialCoins }: { initial
                     </SelectTrigger>
                     <SelectContent className="shadow-heavy-out-sm">
                     {coins.map((c) => (
-                        <SelectItem key={c.ticker} value={c.ticker}>
+                        <SelectItem key={c.ticker} value={c.ticker} disabled={c.ticker === toCoin.ticker}>
                         <div className="flex items-center gap-2">
                             {c.iconUrl ? <Image src={c.iconUrl} alt={c.name} width={20} height={20} /> : c.icon && <c.icon className="h-5 w-5" />}
                             {c.ticker}
@@ -178,7 +181,7 @@ export default function TokenSwap({ initialFromTicker, initialCoins }: { initial
                     </SelectTrigger>
                     <SelectContent className="shadow-heavy-out-sm">
                     {coins.map((c) => (
-                        <SelectItem key={c.ticker} value={c.ticker}>
+                        <SelectItem key={c.ticker} value={c.ticker} disabled={c.ticker === fromCoin.ticker}>
                         <div className="flex items-center gap-2">
                             {c.iconUrl ? <Image src={c.iconUrl} alt={c.name} width={20} height={20} /> : c.icon && <c.icon className="h-5 w-5" />}
                             {c.ticker}
