@@ -14,6 +14,7 @@ import { Coin } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useCurrency } from "@/hooks/use-currency";
+import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
   price: {
@@ -28,6 +29,29 @@ export default function AssetChart({ coin }: { coin: Coin }) {
   const [activeRange, setActiveRange] = useState('1D');
   const { selectedCurrency, formatCurrency } = useCurrency();
   
+  if (!coin || !coin.history || coin.history.length === 0) {
+     return (
+      <Card className="shadow-heavy-out-lg border-none bg-transparent">
+        <CardContent className="p-4 md:p-6">
+          <div className="px-2 mb-4">
+            <Skeleton className="h-9 w-48 mb-2" />
+            <Skeleton className="h-7 w-40" />
+          </div>
+          <div className="h-[250px] w-full flex items-center justify-center">
+            <p className="text-muted-foreground">Chart data not available.</p>
+          </div>
+          <div className="flex justify-center gap-1 mt-4">
+            {timeRanges.map(range => (
+              <Button key={range} variant="ghost" disabled className="rounded-full shadow-heavy-out-sm">
+                {range}
+              </Button>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   const chartData = coin.history.map(h => ({
       ...h,
       price: h.price * (selectedCurrency.rate || 1)
