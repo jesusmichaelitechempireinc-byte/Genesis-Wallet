@@ -14,7 +14,8 @@ import { useLocalStorage } from '@/hooks/use-local-storage';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import AssetAbout from '@/components/dashboard/AssetAbout';
 
-export default function AssetPage({ params: { ticker } }: { params: { ticker: string } }) {
+export default function AssetPage({ params }: { params: Promise<{ ticker: string }> }) {
+  const { ticker } = React.use(params);
   const [walletImported] = useLocalStorage('wallet-imported', 'none');
   const [coins, setCoins] = useState<Coin[]>([]);
   
