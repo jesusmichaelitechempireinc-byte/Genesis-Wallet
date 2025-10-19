@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from "@/components/dashboard/Header";
 import BottomNav from "@/components/dashboard/BottomNav";
@@ -17,21 +17,21 @@ import { getFundedCoins, getEmptyCoins } from '@/lib/data';
 
 
 const walletAddresses: Record<string, { address: string, network: string, qrCodeUrl: string }> = {
-    'BTC': { address: 'bc1qjhcx29cr4dfwc70t9gqjk3eqhg2rq84qr58prg', network: 'Bitcoin', qrCodeUrl: '/qrcodes/btc-qr.png' },
-    'ETH': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/eth-qr.png' },
-    'USDC': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/usdc-qr.png' },
+    'BTC': { address: 'bc1qjhcx29cr4dfwc70t9gqjk3eqhg2rq84qr58prg', network: 'Bitcoin', qrCodeUrl: '/qrcodes/bitcoin-qr.png' },
+    'ETH': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/ethereum-qr.png' },
+    'USDC': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/usdc-erc20-qr.png' },
     'USDT-ERC20': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/usdt-erc20-qr.png' },
-    'SOL': { address: '3XWgGUgRjkC6fjemjzRBTqeccbjpACYPbkecjr7hswYK', network: 'Solana', qrCodeUrl: '/qrcodes/sol-qr.png' },
+    'SOL': { address: '3XWgGUgRjkC6fjemjzRBTqeccbjpACYPbkecjr7hswYK', network: 'Solana', qrCodeUrl: '/qrcodes/solana-qr.png' },
     'USDT-TRC20': { address: 'TU39dHkCpcHe1sCeU3Sek48ZMqpQEeqHKT', network: 'Tron (TRC20)', qrCodeUrl: '/qrcodes/usdt-trc20-qr.png' },
-    'TRX': { address: 'TU39dHkCpcHe1sCeU3Sek48ZMqpQEeqHKT', network: 'Tron (TRC20)', qrCodeUrl: '/qrcodes/trx-qr.png' },
-    'DOGE': { address: 'DHFwA7Qn6hThauKoGPyisQkkxPCkAQp1zi', network: 'Dogecoin', qrCodeUrl: '/qrcodes/doge-qr.png' },
-    'ADA': { address: 'addr1qyy2wtmf2rucpgqcz6lsawhjt4t7cz8m06rtw6nuux782ppdgq76u42zgh58w8x33yntz6245jw45vw25j45hvyuaqwszq7r8u', network: 'Cardano', qrCodeUrl: '/qrcodes/ada-qr.png' },
+    'TRX': { address: 'TU39dHkCpcHe1sCeU3Sek48ZMqpQEeqHKT', network: 'Tron (TRC20)', qrCodeUrl: '/qrcodes/tron-qr.png' },
+    'DOGE': { address: 'DHFwA7Qn6hThauKoGPyisQkkxPCkAQp1zi', network: 'Dogecoin', qrCodeUrl: '/qrcodes/dogecoin-qr.png' },
+    'ADA': { address: 'addr1qyy2wtmf2rucpgqcz6lsawhjt4t7cz8m06rtw6nuux782ppdgq76u42zgh58w8x33yntz6245jw45vw25j45hvyuaqwszq7r8u', network: 'Cardano', qrCodeUrl: '/qrcodes/cardano-qr.png' },
     'XRP': { address: 'rKcgzQZtpg3sr79ukpndEXeXQppoHGxCEs', network: 'Ripple', qrCodeUrl: '/qrcodes/xrp-qr.png' },
-    'AVAX': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Avalanche C-Chain', qrCodeUrl: '/qrcodes/avax-qr.png' },
+    'AVAX': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Avalanche C-Chain', qrCodeUrl: '/qrcodes/avalanche-qr.png' },
     'SUI': { address: '0x591555f1fe130f5db3ae8044399215eba25e78b71aa5623d0ce0b7d5dc92784d', network: 'Sui', qrCodeUrl: '/qrcodes/sui-qr.png' },
     'BNB': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'BNB Smart Chain (BEP20)', qrCodeUrl: '/qrcodes/bnb-qr.png' },
-    'TON': { address: 'UQCqdQtedAyjxaA_uTmdh_w5Ql8jXuKdvtypJeyK8h65pgdV', network: 'The Open Network', qrCodeUrl: '/qrcodes/ton-qr.png' },
-    'FET': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/fet-qr.png' },
+    'TON': { address: 'UQCqdQtedAyjxaA_uTmdh_w5Ql8jXuKdvtypJeyK8h65pgdV', network: 'Toncoin', qrCodeUrl: '/qrcodes/toncoin-qr.png' },
+    'FET': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/asi-qr.png' },
     'PEPE': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/pepe-qr.png' },
     'Default': { address: 'genesis-vault-main-0x...a4b8', network: 'Genesis Chain', qrCodeUrl: '/qrcodes/default-qr.png' }
 }
