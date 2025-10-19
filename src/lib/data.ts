@@ -250,9 +250,9 @@ const initialCoins: Coin[] = [
     history: [ { time: '12:00', price: 0.1140 }, { time: '13:00', price: 0.1142 }, { time: '14:00', price: 0.1144 } ]
   },
     {
-    name: "The Open Network",
+    name: "Toncoin",
     ticker: "TON",
-    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760815152/ton_token_icon_vyrkou.png',
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675862/toncoin-ton-logo_yhokxq.png',
     balance: 0,
     usdValue: 0,
     price: 7.22,
