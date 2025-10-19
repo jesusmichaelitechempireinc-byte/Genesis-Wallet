@@ -1,8 +1,8 @@
 
 "use client";
 
-import { useMemo } from 'react';
-import { transactions as initialTransactions, type Transaction } from "@/lib/data";
+import { useMemo, useState, useEffect } from 'react';
+import { type Transaction, getTransactions } from "@/lib/data";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ArrowUpRight, ArrowDownLeft } from "lucide-react";
 import Image from "next/image";
@@ -21,13 +21,19 @@ export default function TransactionHistory() {
   const router = useRouter();
   const { formatCurrency } = useCurrency();
   const [walletImported] = useLocalStorage('wallet-imported', 'none');
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  const transactions = useMemo(() => {
-    if (walletImported === 'funded') {
-        return initialTransactions;
-    }
-    return [];
+  useEffect(() => {
+    const loadTransactions = async () => {
+      if (walletImported === 'funded') {
+        setTransactions(await getTransactions());
+      } else {
+        setTransactions([]);
+      }
+    };
+    loadTransactions();
   }, [walletImported]);
+
 
   const handleTransactionClick = (id: string) => {
     router.push(`/dashboard/history/${id}`);

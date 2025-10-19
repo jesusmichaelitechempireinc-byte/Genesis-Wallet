@@ -1,42 +1,40 @@
 
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import { useState, useEffect, createContext, useContext, useMemo, useCallback } from 'react';
+import { currencies as currencyData, Currency, Coin, getFundedCoins, getEmptyCoins } from '@/lib/data';
 import { useLocalStorage } from './use-local-storage';
-import { currencies, Currency } from '@/lib/data';
-
-const defaultCurrency = currencies.find(c => c.code === 'USD') || currencies[0];
 
 interface CurrencyContextType {
-    selectedCurrency: Currency;
-    setSelectedCurrency: (currency: Currency) => void;
-    formatCurrency: (value: number, options?: Intl.NumberFormatOptions) => string;
+  selectedCurrency: Currency;
+  setSelectedCurrency: (currency: Currency) => void;
+  formatCurrency: (value: number, options?: Intl.NumberFormatOptions) => string;
 }
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
 
-export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
-  const [storedCurrencyCode, setStoredCurrencyCode] = useLocalStorage('selectedCurrency', defaultCurrency.code);
-  
-  const currentCurrency = currencies.find(c => c.code === storedCurrencyCode) || defaultCurrency;
-  
-  const [selectedCurrency, setSelectedCurrency] = useState<Currency>(currentCurrency);
+export const CurrencyProvider = ({ children }: { children: React.ReactNode }) => {
+  const [selectedCurrency, setSelectedCurrency] = useLocalStorage<Currency>('selectedCurrency', currencyData[0]);
 
-  const handleSetSelectedCurrency = (currency: Currency) => {
-      setSelectedCurrency(currency);
-      setStoredCurrencyCode(currency.code);
-  }
-
-  const formatCurrency = useCallback((value: number, options?: Intl.NumberFormatOptions) => {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: selectedCurrency.code,
-        ...options,
+  const formatCurrency = useCallback((value: number, options: Intl.NumberFormatOptions = {}) => {
+    return new Intl.NumberFormat(undefined, {
+      style: 'currency',
+      currency: selectedCurrency.code,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      ...options,
     }).format(value);
   }, [selectedCurrency]);
 
+
+  const value = {
+    selectedCurrency,
+    setSelectedCurrency,
+    formatCurrency,
+  };
+
   return (
-    <CurrencyContext.Provider value={{ selectedCurrency, setSelectedCurrency: handleSetSelectedCurrency, formatCurrency }}>
+    <CurrencyContext.Provider value={value}>
       {children}
     </CurrencyContext.Provider>
   );

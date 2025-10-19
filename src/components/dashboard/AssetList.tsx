@@ -8,7 +8,7 @@ import {
   TableCell,
   TableRow,
 } from "@/components/ui/table";
-import { coins as initialCoins, type Coin, getFundedCoins, getEmptyCoins } from "@/lib/data";
+import { type Coin, getFundedCoins, getEmptyCoins } from "@/lib/data";
 import { ChevronDown, SlidersHorizontal, ArrowUp, ArrowDown } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
@@ -29,16 +29,17 @@ const PriceChange = ({ change }: { change: number }) => {
 export default function AssetList({ searchTerm }: { searchTerm?: string }) {
   const { selectedCurrency, formatCurrency } = useCurrency();
   const [walletImported] = useLocalStorage('wallet-imported', 'none');
-  const [coins, setCoins] = useState<Coin[]>(initialCoins);
+  const [coins, setCoins] = useState<Coin[]>([]);
 
   useEffect(() => {
-    if (walletImported === 'funded') {
-      setCoins(getFundedCoins());
-    } else if (walletImported === 'empty') {
-      setCoins(getEmptyCoins());
-    } else {
-      setCoins(initialCoins);
+    const loadCoins = async () => {
+        if (walletImported === 'funded') {
+          setCoins(await getFundedCoins());
+        } else {
+          setCoins(await getEmptyCoins());
+        }
     }
+    loadCoins();
   }, [walletImported]);
 
   const filteredAssets = useMemo(() => {

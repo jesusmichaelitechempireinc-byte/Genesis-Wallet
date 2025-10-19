@@ -1,9 +1,9 @@
 
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { transactions as initialTransactions, type Transaction } from '@/lib/data';
+import { getTransactions, type Transaction } from '@/lib/data';
 import BottomNav from '@/components/dashboard/BottomNav';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,15 +20,18 @@ export default function TransactionDetailPage() {
   const { id } = params;
   const { formatCurrency } = useCurrency();
   const [walletImported] = useLocalStorage('wallet-imported', 'none');
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  const transactions = useMemo(() => {
-    if (walletImported === 'funded') {
-        return initialTransactions;
-    }
-    return [];
+  useEffect(() => {
+    const loadTransactions = async () => {
+      if (walletImported === 'funded') {
+        setTransactions(await getTransactions());
+      }
+    };
+    loadTransactions();
   }, [walletImported]);
 
-  const transaction = transactions.find((tx) => tx.id === id);
+  const transaction = useMemo(() => transactions.find((tx) => tx.id === id), [transactions, id]);
 
   if (!transaction) {
     return (

@@ -10,19 +10,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Copy, AlertTriangle } from "lucide-react";
 import Image from "next/image";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { coins as initialCoins, type Coin } from "@/lib/data";
+import { type Coin } from "@/lib/data";
 import { toast } from '@/hooks/use-toast';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { getFundedCoins, getEmptyCoins } from '@/lib/data';
 
 
 const walletAddresses: Record<string, { address: string, network: string, qrCodeUrl: string }> = {
-    'BTC': { address: 'bc1qjhcx29cr4dfwc70t9gqjk3eqhg2rq84qr58prg', network: 'Bitcoin', qrCodeUrl: '/qrcodes/Bitcoin .jpg' },
+    'BTC': { address: 'bc1qjhcx29cr4dfwc70t9gqjk3eqhg2rq84qr58prg', network: 'Bitcoin', qrCodeUrl: '/qrcodes/Bitcoin%20.jpg' },
     'ETH': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/Ethereum~2.jpg' },
     'USDC': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/USDC~2.jpg' },
-    'USDT-ERC20': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/USDT Erc20~2.jpg' },
+    'USDT-ERC20': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/USDT%20Erc20~2.jpg' },
     'SOL': { address: '3XWgGUgRjkC6fjemjzRBTqeccbjpACYPbkecjr7hswYK', network: 'Solana', qrCodeUrl: '/qrcodes/Solana~2.jpg' },
-    'USDT-TRC20': { address: 'TU39dHkCpcHe1sCeU3Sek48ZMqpQEeqHKT', network: 'Tron (TRC20)', qrCodeUrl: '/qrcodes/USDT Trc20~2.jpg' },
+    'USDT-TRC20': { address: 'TU39dHkCpcHe1sCeU3Sek48ZMqpQEeqHKT', network: 'Tron (TRC20)', qrCodeUrl: '/qrcodes/USDT%20Trc20~2.jpg' },
     'TRX': { address: 'TU39dHkCpcHe1sCeU3Sek48ZMqpQEeqHKT', network: 'Tron (TRC20)', qrCodeUrl: '/qrcodes/TRON~2.jpg' },
     'DOGE': { address: 'DHFwA7Qn6hThauKoGPyisQkkxPCkAQp1zi', network: 'Dogecoin', qrCodeUrl: '/qrcodes/Doge~2.jpg' },
     'ADA': { address: 'addr1qyy2wtmf2rucpgqcz6lsawhjt4t7cz8m06rtw6nuux782ppdgq76u42zgh58w8x33yntz6245jw45vw25j45hvyuaqwszq7r8u', network: 'Cardano', qrCodeUrl: '/qrcodes/Cardano~2.jpg' },
@@ -40,28 +40,28 @@ export default function ReceivePage() {
     const searchParams = useSearchParams();
     const initialTicker = searchParams.get('ticker');
     const [walletImported] = useLocalStorage('wallet-imported', 'none');
-    const [coins, setCoins] = useState<Coin[]>(initialCoins);
+    const [coins, setCoins] = useState<Coin[]>([]);
 
     useEffect(() => {
-        if (walletImported === 'funded') {
-            setCoins(getFundedCoins());
-        } else if (walletImported === 'empty') {
-            setCoins(getEmptyCoins());
-        } else {
-            setCoins(initialCoins);
+        const loadCoins = async () => {
+            if (walletImported === 'funded') {
+                setCoins(await getFundedCoins());
+            } else if (walletImported === 'empty') {
+                setCoins(await getEmptyCoins());
+            }
         }
+        loadCoins();
     }, [walletImported]);
     
-    const [selectedCoin, setSelectedCoin] = useState<Coin | null>(() => {
-        if (!initialTicker) return null;
-        return coins.find((c) => c.ticker === initialTicker) || null;
-    });
+    const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
 
     useEffect(() => {
-        const ticker = searchParams.get('ticker');
-        if (ticker) {
-            const coin = coins.find((c) => c.ticker === ticker);
-            setSelectedCoin(coin || null);
+        if (coins.length > 0) {
+            const ticker = searchParams.get('ticker');
+            if (ticker) {
+                const coin = coins.find((c) => c.ticker === ticker);
+                setSelectedCoin(coin || null);
+            }
         }
     }, [searchParams, coins]);
     
