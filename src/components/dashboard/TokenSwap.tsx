@@ -9,24 +9,13 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { ArrowDown, Loader2, AlertCircle, Info } from "lucide-react";
-import { Coin, getFundedCoins, getEmptyCoins } from "@/lib/data";
+import { Coin } from "@/lib/data";
 import Image from "next/image";
 import { useCurrency } from "@/hooks/use-currency";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useLocalStorage } from "@/hooks/use-local-storage";
 
-export default function TokenSwap({ initialFromTicker }: { initialFromTicker: string | null }) {
-  const [walletImported] = useLocalStorage('wallet-imported', 'none');
-  const [coins, setCoins] = useState<Coin[]>([]);
-  
-  useEffect(() => {
-    if (walletImported === 'funded') {
-      setCoins(getFundedCoins());
-    } else if (walletImported === 'empty') {
-      setCoins(getEmptyCoins());
-    }
-  }, [walletImported]);
-
+export default function TokenSwap({ initialFromTicker, initialCoins }: { initialFromTicker: string | null, initialCoins: Coin[] }) {
+  const coins = initialCoins;
   const [fromCoin, setFromCoin] = useState<Coin | undefined>(undefined);
   const [toCoin, setToCoin] = useState<Coin | undefined>(undefined);
   
@@ -39,7 +28,7 @@ export default function TokenSwap({ initialFromTicker }: { initialFromTicker: st
         setFromCoin(initialFrom);
 
         let initialTo = coins.find(c => c.ticker === 'BTC') || coins[1];
-        if (initialFrom.ticker === initialTo.ticker) {
+        if (initialFrom && initialTo && initialFrom.ticker === initialTo.ticker) {
             initialTo = coins.find(c => c.ticker !== initialFrom.ticker) || coins[1];
         }
         setToCoin(initialTo);
