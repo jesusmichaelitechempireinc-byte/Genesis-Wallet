@@ -16,14 +16,15 @@ import AssetAbout from '@/components/dashboard/AssetAbout';
 
 export default function AssetPage({ params }: { params: { ticker: string } }) {
   const [walletImported] = useLocalStorage('wallet-imported', 'none');
-  const [coins, setCoins] = useState<Coin[]>([]);
   
-  useEffect(() => {
+  const coins: Coin[] = useMemo(() => {
     if (walletImported === 'funded') {
-      setCoins(getFundedCoins());
-    } else if (walletImported === 'empty') {
-      setCoins(getEmptyCoins());
+      return getFundedCoins();
     }
+    if (walletImported === 'empty') {
+      return getEmptyCoins();
+    }
+    return getEmptyCoins();
   }, [walletImported]);
 
   const coin = useMemo(() => coins.find((c) => c.ticker === params.ticker.toUpperCase()), [coins, params.ticker]);
