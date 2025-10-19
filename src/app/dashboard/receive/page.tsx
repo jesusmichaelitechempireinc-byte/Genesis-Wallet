@@ -17,22 +17,22 @@ import { getFundedCoins, getEmptyCoins } from '@/lib/data';
 
 
 const walletAddresses: Record<string, { address: string, network: string, qrCodeUrl: string }> = {
-    'BTC': { address: 'bc1qjhcx29cr4dfwc70t9gqjk3eqhg2rq84qr58prg', network: 'Bitcoin', qrCodeUrl: '/qrcodes/bitcoin-qr.png' },
-    'ETH': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/ethereum-qr.png' },
-    'USDC': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/usdc-erc20-qr.png' },
-    'USDT-ERC20': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/usdt-erc20-qr.png' },
-    'SOL': { address: '3XWgGUgRjkC6fjemjzRBTqeccbjpACYPbkecjr7hswYK', network: 'Solana', qrCodeUrl: '/qrcodes/solana-qr.png' },
-    'USDT-TRC20': { address: 'TU39dHkCpcHe1sCeU3Sek48ZMqpQEeqHKT', network: 'Tron (TRC20)', qrCodeUrl: '/qrcodes/usdt-trc20-qr.png' },
-    'TRX': { address: 'TU39dHkCpcHe1sCeU3Sek48ZMqpQEeqHKT', network: 'Tron (TRC20)', qrCodeUrl: '/qrcodes/tron-qr.png' },
-    'DOGE': { address: 'DHFwA7Qn6hThauKoGPyisQkkxPCkAQp1zi', network: 'Dogecoin', qrCodeUrl: '/qrcodes/dogecoin-qr.png' },
-    'ADA': { address: 'addr1qyy2wtmf2rucpgqcz6lsawhjt4t7cz8m06rtw6nuux782ppdgq76u42zgh58w8x33yntz6245jw45vw25j45hvyuaqwszq7r8u', network: 'Cardano', qrCodeUrl: '/qrcodes/cardano-qr.png' },
-    'XRP': { address: 'rKcgzQZtpg3sr79ukpndEXeXQppoHGxCEs', network: 'Ripple', qrCodeUrl: '/qrcodes/xrp-qr.png' },
-    'AVAX': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Avalanche C-Chain', qrCodeUrl: '/qrcodes/avalanche-qr.png' },
-    'SUI': { address: '0x591555f1fe130f5db3ae8044399215eba25e78b71aa5623d0ce0b7d5dc92784d', network: 'Sui', qrCodeUrl: '/qrcodes/sui-qr.png' },
-    'BNB': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'BNB Smart Chain (BEP20)', qrCodeUrl: '/qrcodes/bnb-qr.png' },
-    'TON': { address: 'UQCqdQtedAyjxaA_uTmdh_w5Ql8jXuKdvtypJeyK8h65pgdV', network: 'Toncoin', qrCodeUrl: '/qrcodes/toncoin-qr.png' },
-    'FET': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/asi-qr.png' },
-    'PEPE': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/pepe-qr.png' },
+    'BTC': { address: 'bc1qjhcx29cr4dfwc70t9gqjk3eqhg2rq84qr58prg', network: 'Bitcoin', qrCodeUrl: '/qrcodes/Bitcoin .jpg' },
+    'ETH': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/Ethereum~2.jpg' },
+    'USDC': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/USDC~2.jpg' },
+    'USDT-ERC20': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/USDT Erc20~2.jpg' },
+    'SOL': { address: '3XWgGUgRjkC6fjemjzRBTqeccbjpACYPbkecjr7hswYK', network: 'Solana', qrCodeUrl: '/qrcodes/Solana~2.jpg' },
+    'USDT-TRC20': { address: 'TU39dHkCpcHe1sCeU3Sek48ZMqpQEeqHKT', network: 'Tron (TRC20)', qrCodeUrl: '/qrcodes/USDT Trc20~2.jpg' },
+    'TRX': { address: 'TU39dHkCpcHe1sCeU3Sek48ZMqpQEeqHKT', network: 'Tron (TRC20)', qrCodeUrl: '/qrcodes/TRON~2.jpg' },
+    'DOGE': { address: 'DHFwA7Qn6hThauKoGPyisQkkxPCkAQp1zi', network: 'Dogecoin', qrCodeUrl: '/qrcodes/Doge~2.jpg' },
+    'ADA': { address: 'addr1qyy2wtmf2rucpgqcz6lsawhjt4t7cz8m06rtw6nuux782ppdgq76u42zgh58w8x33yntz6245jw45vw25j45hvyuaqwszq7r8u', network: 'Cardano', qrCodeUrl: '/qrcodes/Cardano~2.jpg' },
+    'XRP': { address: 'rKcgzQZtpg3sr79ukpndEXeXQppoHGxCEs', network: 'Ripple', qrCodeUrl: '/qrcodes/XRP~2.jpg' },
+    'AVAX': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Avalanche C-Chain', qrCodeUrl: '/qrcodes/Avalanche~2.jpg' },
+    'SUI': { address: '0x591555f1fe130f5db3ae8044399215eba25e78b71aa5623d0ce0b7d5dc92784d', network: 'Sui', qrCodeUrl: '/qrcodes/SUI~2.jpg' },
+    'BNB': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'BNB Smart Chain (BEP20)', qrCodeUrl: '/qrcodes/BNB~2.jpg' },
+    'TON': { address: 'UQCqdQtedAyjxaA_uTmdh_w5Ql8jXuKdvtypJeyK8h65pgdV', network: 'Toncoin', qrCodeUrl: '/qrcodes/TON~2.jpg' },
+    'FET': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/asi-qr.png' }, // Assuming a generic QR for FET/ASI
+    'PEPE': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Ethereum (ERC20)', qrCodeUrl: '/qrcodes/PEPE.jpg' },
     'Default': { address: 'genesis-vault-main-0x...a4b8', network: 'Genesis Chain', qrCodeUrl: '/qrcodes/default-qr.png' }
 }
 
