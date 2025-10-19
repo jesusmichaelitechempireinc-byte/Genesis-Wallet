@@ -17,6 +17,10 @@ export const CurrencyProvider = ({ children }: { children: React.ReactNode }) =>
   const [selectedCurrency, setSelectedCurrency] = useLocalStorage<Currency>('selectedCurrency', currencyData[0]);
 
   const formatCurrency = useCallback((value: number, options: Intl.NumberFormatOptions = {}) => {
+    if (!selectedCurrency || !selectedCurrency.code) {
+      // Return a placeholder or empty string if currency is not yet loaded
+      return '';
+    }
     return new Intl.NumberFormat(undefined, {
       style: 'currency',
       currency: selectedCurrency.code,
