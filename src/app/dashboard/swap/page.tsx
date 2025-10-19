@@ -1,5 +1,4 @@
 
-'use client';
 import React, { Suspense } from 'react';
 import Header from "@/components/dashboard/Header";
 import TokenSwap from "@/components/dashboard/TokenSwap";
@@ -8,7 +7,9 @@ import { Loader2 } from 'lucide-react';
 
 // The page now accepts searchParams as a prop, provided by Next.js
 export default function SwapPage({ searchParams }: { searchParams: { from?: string } }) {
-  const initialFromTicker = searchParams.from || null;
+  // searchParams is a promise-like object and must be unwrapped with React.use()
+  const { from } = React.use(searchParams) ?? {};
+  const initialFromTicker = from || null;
 
   return (
     // The Suspense boundary is at the top level
