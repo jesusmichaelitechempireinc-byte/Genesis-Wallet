@@ -2,7 +2,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,9 +15,7 @@ import { useCurrency } from "@/hooks/use-currency";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
-export default function TokenSwap() {
-  const searchParams = useSearchParams();
-  const initialFromTicker = searchParams.get('from');
+export default function TokenSwap({ initialFromTicker }: { initialFromTicker: string | null }) {
   const [walletImported] = useLocalStorage('wallet-imported', 'none');
   const [coins, setCoins] = useState<Coin[]>([]);
   
