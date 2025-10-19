@@ -14,20 +14,27 @@ import { useLocalStorage } from '@/hooks/use-local-storage';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import AssetAbout from '@/components/dashboard/AssetAbout';
 
-export default function AssetPage({ params }: { params: { ticker: string } }) {
+export default function AssetPage({ params: { ticker } }: { params: { ticker: string } }) {
   const [walletImported] = useLocalStorage('wallet-imported', 'none');
+  const [coins, setCoins] = useState<Coin[]>([]);
   
-  const coins: Coin[] = useMemo(() => {
-    if (walletImported === 'funded') {
-      return getFundedCoins();
+  useEffect(() => {
+    const loadCoins = async () => {
+        if (walletImported === 'funded') {
+          const fundedCoins = await getFundedCoins();
+          setCoins(fundedCoins);
+        } else if (walletImported === 'empty') {
+          const emptyCoins = await getEmptyCoins();
+          setCoins(emptyCoins);
+        } else {
+            const emptyCoins = await getEmptyCoins();
+            setCoins(emptyCoins);
+        }
     }
-    if (walletImported === 'empty') {
-      return getEmptyCoins();
-    }
-    return getEmptyCoins();
+    loadCoins();
   }, [walletImported]);
 
-  const coin = useMemo(() => coins.find((c) => c.ticker === params.ticker.toUpperCase()), [coins, params.ticker]);
+  const coin = useMemo(() => coins.find((c) => c.ticker === ticker.toUpperCase()), [coins, ticker]);
   
   const { selectedCurrency, formatCurrency } = useCurrency();
 
