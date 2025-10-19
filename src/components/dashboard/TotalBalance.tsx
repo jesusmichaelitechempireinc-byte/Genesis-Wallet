@@ -12,14 +12,20 @@ export default function TotalBalance() {
   const [coins, setCoins] = useState<Coin[]>([]);
 
   useEffect(() => {
-    if (walletImported === 'funded') {
-        setCoins(getFundedCoins());
-    } else if (walletImported === 'empty') {
-        setCoins(getEmptyCoins());
-    } else {
-        // Default to empty if no state is set
-        setCoins(getEmptyCoins());
-    }
+    const loadCoins = async () => {
+      if (walletImported === 'funded') {
+          const fundedCoins = await getFundedCoins();
+          setCoins(fundedCoins);
+      } else if (walletImported === 'empty') {
+          const emptyCoins = await getEmptyCoins();
+          setCoins(emptyCoins);
+      } else {
+          const emptyCoins = await getEmptyCoins();
+          setCoins(emptyCoins);
+      }
+    };
+
+    loadCoins();
   }, [walletImported]);
 
   const totalBalance = useMemo(() => {
