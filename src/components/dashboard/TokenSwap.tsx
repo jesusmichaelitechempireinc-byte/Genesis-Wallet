@@ -30,14 +30,12 @@ export default function TokenSwap({ allCoins, initialFromCoin, initialToCoin }: 
     // This effect ensures that when the initial coin data is passed down from the server (with correct balances),
     // the component's internal state is updated to reflect it.
     if (initialFromCoin) {
-      const updatedFromCoin = allCoins.find(c => c.ticker === initialFromCoin.ticker);
-      if(updatedFromCoin) setFromCoin(updatedFromCoin);
+      setFromCoin(initialFromCoin);
     }
     if (initialToCoin) {
-      const updatedToCoin = allCoins.find(c => c.ticker === initialToCoin.ticker);
-      if(updatedToCoin) setToCoin(updatedToCoin);
+      setToCoin(initialToCoin);
     }
-  }, [allCoins, initialFromCoin, initialToCoin]);
+  }, [initialFromCoin, initialToCoin]);
 
   const handleFromCoinChange = (ticker: string) => {
     const coin = allCoins.find((c) => c.ticker === ticker);
