@@ -27,9 +27,11 @@ export default function SendPage() {
     useEffect(() => {
         const loadCoins = async () => {
             if (walletImported === 'funded') {
-                setCoins(await getFundedCoins());
+                const fundedCoins = await getFundedCoins();
+                setCoins(fundedCoins);
             } else if (walletImported === 'empty') {
-                setCoins(await getEmptyCoins());
+                const emptyCoins = await getEmptyCoins();
+                setCoins(emptyCoins);
             }
         };
         loadCoins();
@@ -75,6 +77,7 @@ export default function SendPage() {
     };
 
     const handleReview = () => {
+        setError('');
         if (!selectedCoin || !amount || !recipient) {
             setError("Please fill in all fields.");
             return;
@@ -87,7 +90,6 @@ export default function SendPage() {
             setError("Amount exceeds your balance.");
             return;
         }
-        setError('');
         setShowConfirmation(true);
     };
 
@@ -106,8 +108,6 @@ export default function SendPage() {
             setIsConfirming(false);
         }, 2500);
     };
-
-    const isReviewDisabled = !selectedCoin || !amount || !recipient || selectedCoin.balance <= 0;
 
   return (
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">
@@ -148,7 +148,7 @@ export default function SendPage() {
                         <Input id="amount" type="number" placeholder="0.00" className="shadow-heavy-in-sm" value={amount} onChange={(e) => setAmount(e.target.value)} />
                     </div>
                     {error && <p className="text-destructive text-sm font-bold text-center">{error}</p>}
-                    <Button size="lg" className="w-full rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg" onClick={handleReview} disabled={isReviewDisabled}>Review Transaction</Button>
+                    <Button size="lg" className="w-full rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg" onClick={handleReview}>Review Transaction</Button>
                 </CardContent>
               </Card>
             </main>

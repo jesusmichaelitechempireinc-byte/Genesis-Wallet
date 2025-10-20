@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,6 +25,19 @@ export default function TokenSwap({ allCoins, initialFromCoin, initialToCoin }: 
   const [gasError, setGasError] = useState(false);
 
   const { formatCurrency } = useCurrency();
+
+  useEffect(() => {
+    // This effect ensures that when the initial coin data is passed down from the server (with correct balances),
+    // the component's internal state is updated to reflect it.
+    if (initialFromCoin) {
+      const updatedFromCoin = allCoins.find(c => c.ticker === initialFromCoin.ticker);
+      if(updatedFromCoin) setFromCoin(updatedFromCoin);
+    }
+    if (initialToCoin) {
+      const updatedToCoin = allCoins.find(c => c.ticker === initialToCoin.ticker);
+      if(updatedToCoin) setToCoin(updatedToCoin);
+    }
+  }, [allCoins, initialFromCoin, initialToCoin]);
 
   const handleFromCoinChange = (ticker: string) => {
     const coin = allCoins.find((c) => c.ticker === ticker);
@@ -72,12 +85,15 @@ export default function TokenSwap({ allCoins, initialFromCoin, initialToCoin }: 
   const totalAmountUsd = fromAmountUsd + networkFee;
 
   const handleReviewSwap = () => {
-    if (!fromCoin) return;
+    setError('');
+    if (!fromCoin || !fromAmount || parseFloat(fromAmount) <= 0) {
+      setError('Please enter an amount to swap.');
+      return;
+    }
     if (parseFloat(fromAmount) > fromCoin.balance) {
         setError('Amount exceeds your balance.');
         return;
     }
-    setError('');
     setShowConfirmation(true);
   };
 
@@ -95,8 +111,6 @@ export default function TokenSwap({ allCoins, initialFromCoin, initialToCoin }: 
     }, 2500);
   };
   
-  const isSwapDisabled = !fromCoin || fromCoin.balance <= 0 || !fromAmount || parseFloat(fromAmount) <= 0 || parseFloat(fromAmount) > fromCoin.balance;
-
   if (!fromCoin || !toCoin) {
     return <div className="flex items-center justify-center h-full w-full"><Loader2 className="animate-spin"/></div>
   }
@@ -191,7 +205,7 @@ export default function TokenSwap({ allCoins, initialFromCoin, initialToCoin }: 
             <div className="text-center text-sm text-muted-foreground font-mono mt-6">
             1 {fromCoin.ticker} ≈ {exchangeRate.toFixed(4)} {toCoin.ticker}
             </div>
-            <Button size="lg" className="w-full mt-2 rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg" onClick={handleReviewSwap} disabled={isSwapDisabled}>
+            <Button size="lg" className="w-full mt-2 rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg" onClick={handleReviewSwap}>
             Swap Tokens
             </Button>
         </CardContent>
