@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from "@/components/dashboard/Header";
 import BottomNav from "@/components/dashboard/BottomNav";
@@ -12,9 +12,7 @@ import Image from "next/image";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { type Coin } from "@/lib/data";
 import { toast } from '@/hooks/use-toast';
-import { useLocalStorage } from '@/hooks/use-local-storage';
-import { getWalletCoins } from '@/lib/data';
-
+import { useCoinDataContext } from '@/hooks/use-coin-data-provider';
 
 const walletAddresses: Record<string, { address: string, network: string, qrCodeUrl: string }> = {
     'BTC': { address: 'bc1qjhcx29cr4dfwc70t9gqjk3eqhg2rq84qr58prg', network: 'Bitcoin', qrCodeUrl: '/qrcodes/Bitcoin%20.jpg' },
@@ -38,13 +36,7 @@ const walletAddresses: Record<string, { address: string, network: string, qrCode
 
 export default function ReceivePage() {
     const searchParams = useSearchParams();
-    const [walletImported] = useLocalStorage('wallet-imported', 'none');
-    const [coins, setCoins] = useState<Coin[]>([]);
-
-    useEffect(() => {
-        setCoins(getWalletCoins(walletImported));
-    }, [walletImported]);
-    
+    const { coins } = useCoinDataContext();
     const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
 
     useEffect(() => {

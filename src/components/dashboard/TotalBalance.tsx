@@ -1,22 +1,15 @@
 
 'use client';
 
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useCurrency } from "@/hooks/use-currency";
-import { useLocalStorage } from '@/hooks/use-local-storage';
-import { getWalletCoins, Coin } from '@/lib/data';
+import { useCoinDataContext } from '@/hooks/use-coin-data-provider';
 
 export default function TotalBalance() {
   const { selectedCurrency, formatCurrency } = useCurrency();
-  const [walletImported] = useLocalStorage('wallet-imported', 'none');
-  const [coins, setCoins] = useState<Coin[]>([]);
-
-  useEffect(() => {
-    setCoins(getWalletCoins(walletImported));
-  }, [walletImported]);
+  const { coins } = useCoinDataContext();
 
   const totalBalance = useMemo(() => {
-    // Calculate total balance from all coins
     return coins.reduce((acc, coin) => acc + coin.usdValue, 0);
   }, [coins]);
 

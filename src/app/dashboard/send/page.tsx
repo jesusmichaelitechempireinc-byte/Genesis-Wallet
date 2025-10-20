@@ -11,12 +11,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { type Coin, getWalletCoins } from "@/lib/data";
+import { type Coin } from "@/lib/data";
 import Image from "next/image";
 import { AlertCircle, Info, Loader2 } from 'lucide-react';
 import { useCurrency } from '@/hooks/use-currency';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useLocalStorage } from '@/hooks/use-local-storage';
+import { useCoinDataContext } from '@/hooks/use-coin-data-provider';
 
 // Basic regex for common crypto address formats
 const CRYPTO_ADDRESS_REGEX = /^(0x[a-fA-F0-9]{40})|(bc1[a-zA-Z0-9]{25,39})|([13][a-km-zA-HJ-NP-Z1-9]{25,34})|([LM3][a-km-zA-HJ-NP-Z1-9]{25,34})|(D[a-km-zA-HJ-NP-Z1-9]{33})|([4][a-km-zA-HJ-NP-Z1-9]{94})|(addr1[a-zA-Z0-9]+)|(r[a-zA-Z0-9]{24,34})|(T[a-zA-Z0-9]{33})|([a-zA-Z0-9]{47,48})|(U[a-zA-Z0-9]{63})|(0x[a-fA-F0-9]{64})$/;
@@ -24,14 +24,8 @@ const CRYPTO_ADDRESS_REGEX = /^(0x[a-fA-F0-9]{40})|(bc1[a-zA-Z0-9]{25,39})|([13]
 
 export default function SendPage() {
     const searchParams = useSearchParams();
-    const initialTicker = searchParams.get('ticker');
-    const [walletImported] = useLocalStorage('wallet-imported', 'none');
-    const [coins, setCoins] = useState<Coin[]>([]);
+    const { coins } = useCoinDataContext();
     
-    useEffect(() => {
-        setCoins(getWalletCoins(walletImported));
-    }, [walletImported]);
-
     const [recipient, setRecipient] = useState('');
     const [amount, setAmount] = useState('');
     const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);

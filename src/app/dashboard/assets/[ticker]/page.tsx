@@ -1,38 +1,74 @@
 
 'use client';
 
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import AssetHeader from "@/components/dashboard/AssetHeader";
 import BottomNav from "@/components/dashboard/BottomNav";
-import { type Coin, getWalletCoins } from "@/lib/data";
+import { type Coin } from "@/lib/data";
 import AssetChart from "@/components/dashboard/AssetChart";
 import { Button } from "@/components/ui/button";
-import { ArrowUp, ArrowDown, Repeat } from "lucide-react";
+import { ArrowUp, ArrowDown, Repeat, AlertTriangle } from "lucide-react";
 import Link from 'next/link';
 import { useCurrency } from '@/hooks/use-currency';
-import { useLocalStorage } from '@/hooks/use-local-storage';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import AssetAbout from '@/components/dashboard/AssetAbout';
+import { useCoinDataContext } from '@/hooks/use-coin-data-provider';
+import { Skeleton } from '@/components/ui/skeleton';
+
+const AssetPageSkeleton = () => (
+    <div className="flex min-h-screen w-full bg-background font-body text-foreground">
+      <div className="flex flex-1 flex-col relative">
+        <header className="sticky top-0 z-10 flex h-20 items-center justify-between px-4 md:px-6">
+            <Skeleton className="h-10 w-10 rounded-full" />
+            <div className="flex items-center gap-3">
+                <Skeleton className="h-8 w-8 rounded-full" />
+                <Skeleton className="h-6 w-24" />
+            </div>
+            <Skeleton className="h-10 w-10 rounded-full" />
+        </header>
+        <main className="flex-1 p-4 md:p-6 lg:p-8 pb-32">
+            <div className="text-center my-4">
+                <Skeleton className="h-14 w-64 mx-auto mb-2" />
+                <Skeleton className="h-7 w-32 mx-auto" />
+            </div>
+            <div className="flex items-center justify-center gap-4 my-8">
+                <Skeleton className="h-14 flex-1 rounded-full" />
+                <Skeleton className="h-14 flex-1 rounded-full" />
+                <Skeleton className="h-14 w-14 rounded-full" />
+            </div>
+            <Skeleton className="h-[400px] w-full" />
+        </main>
+        <BottomNav />
+      </div>
+    </div>
+);
+
 
 export default function AssetPage({ params }: { params: Promise<{ ticker: string }> }) {
   const { ticker } = React.use(params);
-  const [walletImported] = useLocalStorage('wallet-imported', 'none');
-  const [coins, setCoins] = useState<Coin[]>([]);
+  const { coins, loading } = useCoinDataContext();
   
-  useEffect(() => {
-    setCoins(getWalletCoins(walletImported));
-  }, [walletImported]);
-
   const coin = useMemo(() => coins.find((c) => c.ticker === ticker.toUpperCase()), [coins, ticker]);
   
   const { selectedCurrency, formatCurrency } = useCurrency();
+
+  if (loading) {
+    return <AssetPageSkeleton />;
+  }
 
   if (!coin) {
     return (
         <div className="flex min-h-screen w-full bg-background font-body text-foreground">
           
             <main className="flex-1 p-4 md:p-6 lg:p-8 flex items-center justify-center pb-32">
-              <p>Token not found.</p>
+              <div className="text-center">
+                <AlertTriangle className="mx-auto h-12 w-12 text-destructive" />
+                <h1 className="mt-4 text-2xl font-bold">Token Not Found</h1>
+                <p className="mt-2 text-muted-foreground">The token with ticker '{ticker}' could not be found.</p>
+                <Link href="/dashboard" className="mt-6">
+                    <Button>Back to Wallet</Button>
+                </Link>
+              </div>
             </main>
             <BottomNav />
           

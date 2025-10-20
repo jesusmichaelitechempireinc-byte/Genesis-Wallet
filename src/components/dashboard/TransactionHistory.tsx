@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useCurrency } from "@/hooks/use-currency";
-import { useLocalStorage } from '@/hooks/use-local-storage';
+import { useCoinDataContext } from '@/hooks/use-coin-data-provider';
 
 const statusClasses = {
   Completed: "text-green-400",
@@ -20,16 +20,17 @@ const statusClasses = {
 export default function TransactionHistory() {
   const router = useRouter();
   const { formatCurrency } = useCurrency();
-  const [walletImported] = useLocalStorage('wallet-imported', 'none');
+  const { coins } = useCoinDataContext();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
     const loadTransactions = async () => {
-      // The getTransactions function now depends on wallet state
-      setTransactions(await getTransactions());
+      if (coins.length > 0) {
+        setTransactions(await getTransactions(coins));
+      }
     };
     loadTransactions();
-  }, [walletImported]);
+  }, [coins]);
 
 
   const handleTransactionClick = (id: string) => {

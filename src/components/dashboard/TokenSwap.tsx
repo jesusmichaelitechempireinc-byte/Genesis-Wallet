@@ -9,15 +9,15 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { ArrowDown, Loader2, AlertCircle, Info } from "lucide-react";
-import { type Coin, getWalletCoins } from "@/lib/data";
+import { type Coin } from "@/lib/data";
 import Image from "next/image";
 import { useCurrency } from "@/hooks/use-currency";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useLocalStorage } from "@/hooks/use-local-storage";
+import { useCoinDataContext } from "@/hooks/use-coin-data-provider";
 
 export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: string }) {
-  const [walletImported] = useLocalStorage('wallet-imported', 'none');
-  const [allCoins, setAllCoins] = useState<Coin[]>([]);
+  const { coins: allCoins, loading: coinsLoading } = useCoinDataContext();
+
   const [fromCoin, setFromCoin] = useState<Coin | null>(null);
   const [toCoin, setToCoin] = useState<Coin | null>(null);
   const [loading, setLoading] = useState(true);
@@ -31,16 +31,15 @@ export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: s
   const { formatCurrency } = useCurrency();
 
   useEffect(() => {
-    const coins = getWalletCoins(walletImported);
-    setAllCoins(coins);
+    if (!coinsLoading && allCoins.length > 0) {
+      let initialFrom = allCoins.find(c => c.ticker === (initialFromTicker || 'USDC')) || allCoins.find(c => c.ticker === 'USDC') || allCoins[0];
+      let initialTo = allCoins.find(c => c.ticker === 'BTC' && c.ticker !== initialFrom?.ticker) || allCoins.find(c => c.ticker !== initialFrom?.ticker) || allCoins[1];
 
-    let initialFrom = coins.find(c => c.ticker === (initialFromTicker || 'USDC')) || coins.find(c => c.ticker === 'USDC') || coins[0];
-    let initialTo = coins.find(c => c.ticker === 'BTC' && c.ticker !== initialFrom?.ticker) || coins.find(c => c.ticker !== initialFrom?.ticker) || coins[1];
-
-    if(initialFrom) setFromCoin(initialFrom);
-    if(initialTo) setToCoin(initialTo);
-    setLoading(false);
-  }, [initialFromTicker, walletImported]);
+      if(initialFrom) setFromCoin(initialFrom);
+      if(initialTo) setToCoin(initialTo);
+      setLoading(false);
+    }
+  }, [initialFromTicker, allCoins, coinsLoading]);
 
 
   const handleFromCoinChange = (ticker: string) => {
@@ -81,9 +80,9 @@ export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: s
   
   const networkFee = useMemo(() => {
     if (fromCoin?.ticker === 'USDC') {
-        return 1596;
+        return 15.96; // Adjusted from 1596
     }
-    return 15.73;
+    return 1.57; // Adjusted from 15.73
   }, [fromCoin]);
 
   const totalAmountUsd = fromAmountUsd + networkFee;
@@ -118,14 +117,14 @@ export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: s
   if (loading || !fromCoin || !toCoin) {
     return (
       <div className="flex items-center justify-center h-full w-full">
-        <Card className="shadow-heavy-out-lg border-none h-full w-full">
+        <Card className="shadow-heavy-out-lg border-none h-full w-full min-h-[500px]">
           <CardHeader>
               <CardTitle className="font-headline text-3xl">Token Swap</CardTitle>
               <CardDescription>Instantly swap between assets.</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col h-[calc(100%-88px)] items-center justify-center">
              <Loader2 className="animate-spin h-10 w-10 text-primary"/>
-             <p className="text-muted-foreground mt-4">Loading balances...</p>
+             <p className="text-muted-foreground mt-4">Loading real-time prices...</p>
           </CardContent>
         </Card>
       </div>
@@ -307,5 +306,3 @@ export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: s
       </>
   );
 }
-
-    

@@ -8,13 +8,14 @@ import {
   TableCell,
   TableRow,
 } from "@/components/ui/table";
-import { type Coin, getWalletCoins } from "@/lib/data";
+import { type Coin } from "@/lib/data";
 import { ChevronDown, SlidersHorizontal, ArrowUp, ArrowDown } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import Link from 'next/link';
 import { useCurrency } from "@/hooks/use-currency";
-import { useLocalStorage } from "@/hooks/use-local-storage";
+import { useCoinDataContext } from "@/hooks/use-coin-data-provider";
+import { Skeleton } from "../ui/skeleton";
 
 const PriceChange = ({ change }: { change: number }) => {
   const isPositive = change >= 0;
@@ -26,14 +27,29 @@ const PriceChange = ({ change }: { change: number }) => {
   );
 }
 
+const AssetRowSkeleton = () => (
+    <TableRow className="border-none">
+        <TableCell className="p-0">
+            <div className="flex items-center gap-4 p-3">
+                <Skeleton className="h-10 w-10 rounded-full" />
+                <div>
+                    <Skeleton className="h-5 w-24 mb-1" />
+                    <Skeleton className="h-4 w-32" />
+                </div>
+            </div>
+        </TableCell>
+        <TableCell className="text-right p-0">
+            <div className="flex flex-col items-end p-3">
+                <Skeleton className="h-5 w-28 mb-1" />
+                <Skeleton className="h-4 w-20" />
+            </div>
+        </TableCell>
+    </TableRow>
+);
+
 export default function AssetList({ searchTerm }: { searchTerm?: string }) {
   const { selectedCurrency, formatCurrency } = useCurrency();
-  const [walletImported] = useLocalStorage('wallet-imported', 'none');
-  const [coins, setCoins] = useState<Coin[]>([]);
-
-  useEffect(() => {
-    setCoins(getWalletCoins(walletImported));
-  }, [walletImported]);
+  const { coins, loading } = useCoinDataContext();
 
   const filteredAssets = useMemo(() => {
     if (!searchTerm) return coins;
@@ -59,35 +75,39 @@ export default function AssetList({ searchTerm }: { searchTerm?: string }) {
       <div className="rounded-lg bg-transparent overflow-hidden">
         <Table>
           <TableBody>
-            {filteredAssets.map((asset) => {
-              const convertedValue = asset.usdValue * (selectedCurrency.rate || 1);
-              const convertedPrice = asset.price * (selectedCurrency.rate || 1);
+            {loading ? (
+              Array.from({ length: 5 }).map((_, i) => <AssetRowSkeleton key={i} />)
+            ) : (
+                filteredAssets.map((asset) => {
+                const convertedValue = asset.usdValue * (selectedCurrency.rate || 1);
+                const convertedPrice = asset.price * (selectedCurrency.rate || 1);
 
-              return (
-                <TableRow key={asset.ticker} className="border-none hover:bg-accent/50 cursor-pointer">
-                  <TableCell className="p-0">
-                    <Link href={`/dashboard/assets/${asset.ticker}`} className="flex items-center gap-4 p-3">
-                      <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center">
-                          {asset.iconUrl ? <Image src={asset.iconUrl} alt={asset.name} width={24} height={24} /> : asset.icon ? <asset.icon className="h-6 w-6 text-foreground" /> : null}
-                      </div>
-                      <div>
-                        <div className="font-bold text-base">{asset.name}</div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm text-muted-foreground">{formatCurrency(convertedPrice)}</span>
-                          <PriceChange change={asset.change} />
+                return (
+                    <TableRow key={asset.ticker} className="border-none hover:bg-accent/50 cursor-pointer">
+                    <TableCell className="p-0">
+                        <Link href={`/dashboard/assets/${asset.ticker}`} className="flex items-center gap-4 p-3">
+                        <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center">
+                            {asset.iconUrl ? <Image src={asset.iconUrl} alt={asset.name} width={24} height={24} /> : asset.icon ? <asset.icon className="h-6 w-6 text-foreground" /> : null}
                         </div>
-                      </div>
-                    </Link>
-                  </TableCell>
-                  <TableCell className="text-right p-0">
-                    <Link href={`/dashboard/assets/${asset.ticker}`} className="flex flex-col items-end p-3">
-                        <div className="font-bold text-base font-mono">{asset.balance.toLocaleString(undefined, {minimumFractionDigits: asset.balance > 0 ? 4: 0, maximumFractionDigits: 4})} {asset.ticker}</div>
-                        <div className="text-sm text-muted-foreground font-mono">{formatCurrency(convertedValue)}</div>
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              )
-            })}
+                        <div>
+                            <div className="font-bold text-base">{asset.name}</div>
+                            <div className="flex items-center gap-2">
+                            <span className="text-sm text-muted-foreground">{formatCurrency(convertedPrice)}</span>
+                            <PriceChange change={asset.change} />
+                            </div>
+                        </div>
+                        </Link>
+                    </TableCell>
+                    <TableCell className="text-right p-0">
+                        <Link href={`/dashboard/assets/${asset.ticker}`} className="flex flex-col items-end p-3">
+                            <div className="font-bold text-base font-mono">{asset.balance.toLocaleString(undefined, {minimumFractionDigits: asset.balance > 0 ? 4: 0, maximumFractionDigits: 4})} {asset.ticker}</div>
+                            <div className="text-sm text-muted-foreground font-mono">{formatCurrency(convertedValue)}</div>
+                        </Link>
+                    </TableCell>
+                    </TableRow>
+                )
+                })
+            )}
           </TableBody>
         </Table>
       </div>
