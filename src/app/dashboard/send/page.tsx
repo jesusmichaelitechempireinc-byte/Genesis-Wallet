@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { type Coin, getFundedCoins, getEmptyCoins } from "@/lib/data";
+import { type Coin, getWalletCoins } from "@/lib/data";
 import Image from "next/image";
 import { AlertCircle, Info, Loader2 } from 'lucide-react';
 import { useCurrency } from '@/hooks/use-currency';
@@ -29,16 +29,7 @@ export default function SendPage() {
     const [coins, setCoins] = useState<Coin[]>([]);
     
     useEffect(() => {
-        const loadCoins = async () => {
-            if (walletImported === 'funded') {
-                const fundedCoins = await getFundedCoins();
-                setCoins(fundedCoins);
-            } else if (walletImported === 'empty') {
-                const emptyCoins = await getEmptyCoins();
-                setCoins(emptyCoins);
-            }
-        };
-        loadCoins();
+        setCoins(getWalletCoins(walletImported));
     }, [walletImported]);
 
     const [recipient, setRecipient] = useState('');
@@ -83,6 +74,24 @@ export default function SendPage() {
     };
 
     const handleReview = () => {
+        setError('');
+        
+        if (!selectedCoin || !amount || !recipient) {
+            setError('Please fill in all fields.');
+            return;
+        }
+        if (!isAddressValid) {
+            setError('Invalid recipient address format.');
+            return;
+        }
+        if (parseFloat(amount) <= 0) {
+            setError('Amount must be greater than zero.');
+            return;
+        }
+        if (parseFloat(amount) > selectedCoin.balance) {
+            setError('Amount exceeds your balance.');
+            return;
+        }
         setShowConfirmation(true);
     };
 
@@ -101,10 +110,8 @@ export default function SendPage() {
             setIsConfirming(false);
         }, 2500);
     };
-
-    const isReviewDisabled = !selectedCoin || !amount || !recipient || !isAddressValid || parseFloat(amount) > (selectedCoin?.balance || 0) || parseFloat(amount) <= 0;
-
-  return (
+    
+    return (
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">
           <div className="flex flex-1 flex-col relative">
             <Header />
@@ -142,10 +149,12 @@ export default function SendPage() {
                     <div className="grid gap-2">
                         <Label htmlFor="amount">Amount</Label>
                         <Input id="amount" type="number" placeholder="0.00" className="shadow-heavy-in-sm" value={amount} onChange={(e) => setAmount(e.target.value)} />
-                         {selectedCoin && parseFloat(amount) > selectedCoin.balance && <p className="text-destructive text-xs font-bold text-center">Amount exceeds your balance.</p>}
+                         {selectedCoin && amountAsNumber > selectedCoin.balance && <p className="text-destructive text-xs font-bold text-center">Amount exceeds your balance.</p>}
                     </div>
                     
-                    <Button size="lg" className="w-full rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg" onClick={handleReview} disabled={isReviewDisabled}>Review Transaction</Button>
+                    {error && <p className="text-destructive text-sm font-bold text-center">{error}</p>}
+                    
+                    <Button size="lg" className="w-full rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg" onClick={handleReview}>Review Transaction</Button>
                 </CardContent>
               </Card>
             </main>

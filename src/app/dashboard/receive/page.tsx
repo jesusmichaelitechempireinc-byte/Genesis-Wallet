@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { type Coin } from "@/lib/data";
 import { toast } from '@/hooks/use-toast';
 import { useLocalStorage } from '@/hooks/use-local-storage';
-import { getFundedCoins, getEmptyCoins } from '@/lib/data';
+import { getWalletCoins } from '@/lib/data';
 
 
 const walletAddresses: Record<string, { address: string, network: string, qrCodeUrl: string }> = {
@@ -38,19 +38,11 @@ const walletAddresses: Record<string, { address: string, network: string, qrCode
 
 export default function ReceivePage() {
     const searchParams = useSearchParams();
-    const initialTicker = searchParams.get('ticker');
     const [walletImported] = useLocalStorage('wallet-imported', 'none');
     const [coins, setCoins] = useState<Coin[]>([]);
 
     useEffect(() => {
-        const loadCoins = async () => {
-            if (walletImported === 'funded') {
-                setCoins(await getFundedCoins());
-            } else if (walletImported === 'empty') {
-                setCoins(await getEmptyCoins());
-            }
-        }
-        loadCoins();
+        setCoins(getWalletCoins(walletImported));
     }, [walletImported]);
     
     const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);

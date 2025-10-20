@@ -8,7 +8,7 @@ import {
   TableCell,
   TableRow,
 } from "@/components/ui/table";
-import { type Coin, getFundedCoins, getEmptyCoins } from "@/lib/data";
+import { type Coin, getWalletCoins } from "@/lib/data";
 import { ChevronDown, SlidersHorizontal, ArrowUp, ArrowDown } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
@@ -32,14 +32,7 @@ export default function AssetList({ searchTerm }: { searchTerm?: string }) {
   const [coins, setCoins] = useState<Coin[]>([]);
 
   useEffect(() => {
-    const loadCoins = async () => {
-        if (walletImported === 'funded') {
-          setCoins(await getFundedCoins());
-        } else {
-          setCoins(await getEmptyCoins());
-        }
-    }
-    loadCoins();
+    setCoins(getWalletCoins(walletImported));
   }, [walletImported]);
 
   const filteredAssets = useMemo(() => {

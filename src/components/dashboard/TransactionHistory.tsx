@@ -25,11 +25,8 @@ export default function TransactionHistory() {
 
   useEffect(() => {
     const loadTransactions = async () => {
-      if (walletImported === 'funded') {
-        setTransactions(await getTransactions());
-      } else {
-        setTransactions([]);
-      }
+      // The getTransactions function now depends on wallet state
+      setTransactions(await getTransactions());
     };
     loadTransactions();
   }, [walletImported]);

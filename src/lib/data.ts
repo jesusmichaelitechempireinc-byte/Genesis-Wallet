@@ -73,8 +73,8 @@ export const coins: Coin[] = [
     name: 'USD Coin',
     ticker: 'USDC',
     iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760678111/usd-coin-usdc-logo_isqxlb.png',
-    balance: 108490,
-    usdValue: 108490,
+    balance: 0, // Base balance is 0
+    usdValue: 0, // Base value is 0
     price: 1.00,
     change: 0.0,
     history: [ { time: '12:00', price: 1.00 }, { time: '13:00', price: 1.00 }, { time: '14:00', price: 1.00 }, { time: '15:00', price: 1.00 } ],
@@ -303,22 +303,29 @@ export const coins: Coin[] = [
   }
 ];
 
-export async function getCoins(): Promise<Coin[]> {
-    return coins;
-}
+// Memoized cache for coin data
+let cachedCoins: Coin[] | null = null;
+let lastWalletState: string | null = null;
 
-export async function getFundedCoins(): Promise<Coin[]> {
-    return coins.map(coin => {
+export const getWalletCoins = (walletState: string | null): Coin[] => {
+  if (cachedCoins && lastWalletState === walletState) {
+    return cachedCoins;
+  }
+
+  if (walletState === 'funded') {
+    cachedCoins = coins.map(coin => {
         if (coin.ticker === 'USDC') {
             return { ...coin, balance: 108490, usdValue: 108490 };
         }
         return { ...coin, balance: 0, usdValue: 0 };
     });
-}
+  } else {
+    cachedCoins = coins.map(c => ({ ...c, balance: 0, usdValue: 0 }));
+  }
 
-export async function getEmptyCoins(): Promise<Coin[]> {
-    return coins.map(c => ({ ...c, balance: 0, usdValue: 0 }));
-}
+  lastWalletState = walletState;
+  return cachedCoins;
+};
 
 export interface Transaction {
     id: string;
@@ -336,7 +343,8 @@ export interface Transaction {
 }
 
 export const getTransactions = async (): Promise<Transaction[]> => {
-    const findCoin = (ticker: string) => coins.find(c => c.ticker === ticker)!;
+    const walletCoins = getWalletCoins(typeof window !== 'undefined' ? window.localStorage.getItem('wallet-imported') : 'empty');
+    const findCoin = (ticker: string) => walletCoins.find(c => c.ticker === ticker)!;
 
     return [
       {

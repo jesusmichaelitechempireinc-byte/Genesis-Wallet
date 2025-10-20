@@ -9,14 +9,18 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { ArrowDown, Loader2, AlertCircle, Info } from "lucide-react";
-import { Coin } from "@/lib/data";
+import { Coin, getWalletCoins } from "@/lib/data";
 import Image from "next/image";
 import { useCurrency } from "@/hooks/use-currency";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
-export default function TokenSwap({ allCoins, initialFromCoin, initialToCoin }: { allCoins: Coin[], initialFromCoin: Coin, initialToCoin: Coin }) {
-  const [fromCoin, setFromCoin] = useState<Coin>(initialFromCoin);
-  const [toCoin, setToCoin] = useState<Coin>(initialToCoin);
+export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: string }) {
+  const [walletImported] = useLocalStorage('wallet-imported', 'none');
+  const [allCoins, setAllCoins] = useState<Coin[]>([]);
+  
+  const [fromCoin, setFromCoin] = useState<Coin | null>(null);
+  const [toCoin, setToCoin] = useState<Coin | null>(null);
   
   const [fromAmount, setFromAmount] = useState<string>("1000.0");
   const [error, setError] = useState('');
@@ -27,19 +31,20 @@ export default function TokenSwap({ allCoins, initialFromCoin, initialToCoin }: 
   const { formatCurrency } = useCurrency();
 
   useEffect(() => {
-    // This effect ensures that when the initial coin data is passed down from the server (with correct balances),
-    // the component's internal state is updated to reflect it.
-    if (initialFromCoin) {
-      setFromCoin(initialFromCoin);
-    }
-    if (initialToCoin) {
-      setToCoin(initialToCoin);
-    }
-  }, [initialFromCoin, initialToCoin]);
+    const coins = getWalletCoins(walletImported);
+    setAllCoins(coins);
+
+    let initialFrom = coins.find(c => c.ticker === (initialFromTicker || 'USDC')) || coins[0];
+    let initialTo = coins.find(c => c.ticker === 'BTC' && c.ticker !== initialFrom.ticker) || coins.find(c => c.ticker !== initialFrom.ticker) || coins[1];
+    
+    setFromCoin(initialFrom);
+    setToCoin(initialTo);
+  }, [walletImported, initialFromTicker]);
+
 
   const handleFromCoinChange = (ticker: string) => {
     const coin = allCoins.find((c) => c.ticker === ticker);
-    if (coin) {
+    if (coin && toCoin) {
       if(coin.ticker === toCoin.ticker){
         setToCoin(fromCoin);
       }
@@ -51,7 +56,7 @@ export default function TokenSwap({ allCoins, initialFromCoin, initialToCoin }: 
 
   const handleToCoinChange = (ticker: string) => {
     const coin = allCoins.find((c) => c.ticker === ticker);
-    if (coin) {
+    if (coin && fromCoin) {
       if(coin.ticker === fromCoin.ticker){
         setFromCoin(toCoin);
       }
@@ -251,8 +256,7 @@ export default function TokenSwap({ allCoins, initialFromCoin, initialToCoin }: 
                                         <TooltipContent>
                                             <p>Fee paid to the network validators.</p>
                                         </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
+                                    </TooltipProvider>
                             </div>
                             <div className="font-bold font-mono text-right">
                                 <p>{formatCurrency(networkFee)}</p>

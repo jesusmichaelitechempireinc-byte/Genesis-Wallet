@@ -4,7 +4,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import AssetHeader from "@/components/dashboard/AssetHeader";
 import BottomNav from "@/components/dashboard/BottomNav";
-import { type Coin, getFundedCoins, getEmptyCoins } from "@/lib/data";
+import { type Coin, getWalletCoins } from "@/lib/data";
 import AssetChart from "@/components/dashboard/AssetChart";
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown, Repeat } from "lucide-react";
@@ -20,19 +20,7 @@ export default function AssetPage({ params }: { params: Promise<{ ticker: string
   const [coins, setCoins] = useState<Coin[]>([]);
   
   useEffect(() => {
-    const loadCoins = async () => {
-        if (walletImported === 'funded') {
-          const fundedCoins = await getFundedCoins();
-          setCoins(fundedCoins);
-        } else if (walletImported === 'empty') {
-          const emptyCoins = await getEmptyCoins();
-          setCoins(emptyCoins);
-        } else {
-            const emptyCoins = await getEmptyCoins();
-            setCoins(emptyCoins);
-        }
-    }
-    loadCoins();
+    setCoins(getWalletCoins(walletImported));
   }, [walletImported]);
 
   const coin = useMemo(() => coins.find((c) => c.ticker === ticker.toUpperCase()), [coins, ticker]);
