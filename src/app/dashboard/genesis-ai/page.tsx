@@ -5,7 +5,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { BrainCircuit, MessageSquare, Plus, Send, Settings2, Trash2, MoreVertical, Edit, Check } from 'lucide-react';
+import { BrainCircuit, Loader2, MessageSquare, Plus, Send, Settings2, Trash2, MoreVertical, Edit, Check } from 'lucide-react';
 import { GenesisAILogo } from '@/components/icons/GenesisAILogo';
 import { GenesisVaultLogo } from '@/components/icons';
 import Image from 'next/image';
@@ -18,9 +18,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { chat as chatFlow } from '@/ai/flows/chat';
+import type { MessageData } from 'genkit/ai';
+
 
 interface Message {
-  from: 'ai' | 'user';
+  role: 'user' | 'model';
   text: string;
 }
 
@@ -35,19 +38,20 @@ const initialChats: Chat[] = [
         id: '1',
         title: 'Market analysis for Q3',
         messages: [
-             { from: 'ai', text: 'Hello! I am Genesis, your personal crypto assistant. How can I help you unlock the potential of your digital assets today?' },
-             { from: 'user', text: 'Can you analyze the current sentiment for Ethereum?' },
-             { from: 'ai', text: 'Of course. Analyzing market sentiment for Ethereum... The current sentiment is cautiously optimistic. There is strong support around the $3,400 mark, with significant developer activity on Layer 2 solutions. However, macroeconomic factors could introduce volatility. Would you like a more detailed breakdown?' },
+             { role: 'model', text: 'Hello! I am Genesis, your personal crypto assistant. How can I help you unlock the potential of your digital assets today?' },
+             { role: 'user', text: 'Can you analyze the current sentiment for Ethereum?' },
+             { role: 'model', text: 'Of course. Analyzing market sentiment for Ethereum... The current sentiment is cautiously optimistic. There is strong support around the $3,400 mark, with significant developer activity on Layer 2 solutions. However, macroeconomic factors could introduce volatility. Would you like a more detailed breakdown?' },
         ]
     },
-    { id: '2', title: 'Security audit simulation', messages: [{ from: 'ai', text: 'Ready to begin security audit simulation. What is our first scenario?' }] },
-    { id: '3', title: 'Bitcoin price prediction', messages: [{ from: 'ai', text: 'Let\'s look at the Bitcoin price predictions. What timeframe are you interested in?' }] },
+    { id: '2', title: 'Security audit simulation', messages: [{ role: 'model', text: 'Ready to begin security audit simulation. What is our first scenario?' }] },
+    { id: '3', title: 'Bitcoin price prediction', messages: [{ role: 'model', text: 'Let\'s look at the Bitcoin price predictions. What timeframe are you interested in?' }] },
 ];
 
 export default function GenesisAIPage() {
   const [chats, setChats] = useState<Chat[]>(initialChats);
   const [activeChatId, setActiveChatId] = useState<string | null>('1');
   const [inputText, setInputText] = useState('');
+  const [isResponding, setIsResponding] = useState(false);
   
   const [renamingChatId, setRenamingChatId] = useState<string | null>(null);
   const [renamingTitle, setRenamingTitle] = useState('');
@@ -62,44 +66,48 @@ export default function GenesisAIPage() {
     if (mainContentRef.current) {
         mainContentRef.current.scrollTop = mainContentRef.current.scrollHeight;
     }
-  }, [activeChat?.messages]);
+  }, [activeChat?.messages, isResponding]);
   
   const handleNewChat = () => {
     const newChat: Chat = {
         id: Date.now().toString(),
         title: 'New Chat',
-        messages: [{ from: 'ai', text: 'Hello! How may I assist you today?' }]
+        messages: [{ role: 'model', text: 'Hello! How may I assist you today?' }]
     };
     setChats([newChat, ...chats]);
     setActiveChatId(newChat.id);
   };
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputText.trim() || !activeChatId) return;
+    if (!inputText.trim() || !activeChatId || isResponding) return;
 
-    const userMessage: Message = { from: 'user', text: inputText };
-    const updatedChats = chats.map(chat => {
-      if (chat.id === activeChatId) {
-        return { ...chat, messages: [...chat.messages, userMessage] };
-      }
-      return chat;
-    });
-
-    setChats(updatedChats);
+    const userMessage: Message = { role: 'user', text: inputText };
+    const history: MessageData[] = activeChat?.messages.map(m => ({ role: m.role, content: [{ text: m.text }] })) || [];
+    
+    // Add user message to UI immediately
+    setChats(currentChats => currentChats.map(chat => 
+      chat.id === activeChatId ? { ...chat, messages: [...chat.messages, userMessage] } : chat
+    ));
     setInputText('');
+    setIsResponding(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-        const aiResponse: Message = { from: 'ai', text: `I've received your message: "${inputText}". As an AI, I'm processing this request.`};
-        const finalChats = updatedChats.map(chat => {
-            if (chat.id === activeChatId) {
-                return { ...chat, messages: [...chat.messages, aiResponse]};
-            }
-            return chat;
-        });
-        setChats(finalChats);
-    }, 1000);
+    try {
+      const response = await chatFlow({ history, prompt: userMessage.text });
+      const aiResponse: Message = { role: 'model', text: response };
+
+      setChats(currentChats => currentChats.map(chat => 
+        chat.id === activeChatId ? { ...chat, messages: [...chat.messages, aiResponse] } : chat
+      ));
+    } catch (error) {
+      console.error("AI Error:", error);
+      const errorResponse: Message = { role: 'model', text: "I'm sorry, I encountered an error while processing your request. Please try again." };
+       setChats(currentChats => currentChats.map(chat => 
+        chat.id === activeChatId ? { ...chat, messages: [...chat.messages, errorResponse] } : chat
+      ));
+    } finally {
+      setIsResponding(false);
+    }
   };
   
   const startRename = (chat: Chat) => {
@@ -207,16 +215,16 @@ export default function GenesisAIPage() {
                 {activeChat ? (
                     <div className="space-y-8 max-w-4xl mx-auto">
                         {activeChat.messages.map((message, index) => (
-                            <div key={index} className={`flex items-start gap-4 ${message.from === 'user' ? 'justify-end' : ''}`}>
-                                {message.from === 'ai' && (
+                            <div key={index} className={`flex items-start gap-4 ${message.role === 'user' ? 'justify-end' : ''}`}>
+                                {message.role === 'model' && (
                                     <div className="p-2 rounded-full shadow-heavy-out bg-background">
                                         <GenesisAILogo className="h-8 w-8" />
                                     </div>
                                 )}
-                                <div className={`max-w-xl p-5 rounded-2xl ${message.from === 'user' ? 'bg-primary text-primary-foreground shadow-heavy-out-lg rounded-br-none' : 'bg-background shadow-heavy-in-lg rounded-bl-none'}`}>
-                                    <p className="text-base">{message.text}</p>
+                                <div className={`max-w-xl p-5 rounded-2xl ${message.role === 'user' ? 'bg-primary text-primary-foreground shadow-heavy-out-lg rounded-br-none' : 'bg-background shadow-heavy-in-lg rounded-bl-none'}`}>
+                                    <p className="text-base whitespace-pre-wrap">{message.text}</p>
                                 </div>
-                                {message.from === 'user' && (
+                                {message.role === 'user' && (
                                 <Avatar className="h-12 w-12 shadow-heavy-out-sm">
                                         <Image src="https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760722677/wallet-2_z7psdg.png" alt="User Avatar" layout="fill" data-ai-hint="avatar user" />
                                         <AvatarFallback>U</AvatarFallback>
@@ -224,6 +232,19 @@ export default function GenesisAIPage() {
                                 )}
                             </div>
                         ))}
+                         {isResponding && (
+                           <div className="flex items-start gap-4">
+                                <div className="p-2 rounded-full shadow-heavy-out bg-background">
+                                    <GenesisAILogo className="h-8 w-8 animate-pulse" />
+                                </div>
+                                <div className="max-w-xl p-5 rounded-2xl bg-background shadow-heavy-in-lg rounded-bl-none">
+                                    <div className="flex items-center gap-2">
+                                       <Loader2 className="h-5 w-5 animate-spin" />
+                                       <p className="text-base text-muted-foreground">Genesis is thinking...</p>
+                                    </div>
+                                </div>
+                           </div>
+                        )}
                     </div>
                 ) : (
                     <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground">
@@ -242,9 +263,10 @@ export default function GenesisAIPage() {
                           onChange={(e) => setInputText(e.target.value)}
                           placeholder="Ask Genesis anything..."
                           className="h-14 pl-6 pr-16 text-base rounded-full shadow-heavy-in-lg border-transparent focus:shadow-heavy-out-lg transition-shadow"
+                          disabled={isResponding}
                       />
-                      <Button type="submit" size="icon" className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-sm">
-                          <Send className="h-5 w-5" />
+                      <Button type="submit" size="icon" className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-sm" disabled={isResponding || !inputText.trim()}>
+                          {isResponding ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
                       </Button>
                   </form>
               </footer>
