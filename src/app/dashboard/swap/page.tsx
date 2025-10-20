@@ -18,20 +18,15 @@ export default async function SwapPage({ searchParams }: { searchParams?: { from
     coins = await getEmptyCoins();
   }
 
-  // --- Start of Corrected Logic ---
-  // Reliably find the initial "from" coin. Default to USDC if no ticker is provided or if the provided ticker is not found.
   let initialFromCoin = coins.find(c => c.ticker === initialFromTicker);
   if (!initialFromCoin) {
     initialFromCoin = coins.find(c => c.ticker === 'USDC') || coins[0];
   }
 
-  // Find the initial "to" coin, ensuring it's not the same as the "from" coin.
   let initialToCoin = coins.find(c => c.ticker === 'BTC');
   if (!initialToCoin || initialToCoin.ticker === initialFromCoin.ticker) {
-    // If BTC is not available or is the same as the fromCoin, find the first available different coin.
     initialToCoin = coins.find(c => c.ticker !== initialFromCoin!.ticker) || coins[1];
   }
-  // --- End of Corrected Logic ---
 
   return (
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">

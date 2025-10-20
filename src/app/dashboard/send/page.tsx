@@ -18,6 +18,10 @@ import { useCurrency } from '@/hooks/use-currency';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 
+// Basic regex for common crypto address formats
+const CRYPTO_ADDRESS_REGEX = /^(0x[a-fA-F0-9]{40})|(bc1[a-zA-Z0-9]{25,39})|([13][a-km-zA-HJ-NP-Z1-9]{25,34})|([LM3][a-km-zA-HJ-NP-Z1-9]{25,34})|(D[a-km-zA-HJ-NP-Z1-9]{33})|([4][a-km-zA-HJ-NP-Z1-9]{94})|(addr1[a-zA-Z0-9]+)|(r[a-zA-Z0-9]{24,34})|(T[a-zA-Z0-9]{33})|([a-zA-Z0-9]{47,48})|(U[a-zA-Z0-9]{63})|(0x[a-fA-F0-9]{64})$/;
+
+
 export default function SendPage() {
     const searchParams = useSearchParams();
     const initialTicker = searchParams.get('ticker');
@@ -46,6 +50,8 @@ export default function SendPage() {
     const [gasError, setGasError] = useState(false);
 
     const { formatCurrency } = useCurrency();
+
+    const isAddressValid = useMemo(() => recipient.length === 0 || CRYPTO_ADDRESS_REGEX.test(recipient), [recipient]);
 
     const networkFee = useMemo(() => {
         if (selectedCoin?.ticker === 'USDC') {
@@ -77,19 +83,6 @@ export default function SendPage() {
     };
 
     const handleReview = () => {
-        setError('');
-        if (!selectedCoin || !amount || !recipient) {
-            setError("Please fill in all fields.");
-            return;
-        }
-        if (selectedCoin.balance <= 0) {
-            setError("You have no balance for this asset.");
-            return;
-        }
-        if (parseFloat(amount) > selectedCoin.balance) {
-            setError("Amount exceeds your balance.");
-            return;
-        }
         setShowConfirmation(true);
     };
 
@@ -109,6 +102,8 @@ export default function SendPage() {
         }, 2500);
     };
 
+    const isReviewDisabled = !selectedCoin || !amount || !recipient || !isAddressValid || parseFloat(amount) > (selectedCoin?.balance || 0) || parseFloat(amount) <= 0;
+
   return (
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">
           <div className="flex flex-1 flex-col relative">
@@ -123,6 +118,7 @@ export default function SendPage() {
                     <div className="grid gap-2">
                         <Label htmlFor="recipient">Recipient Address</Label>
                         <Input id="recipient" placeholder="0x..." className="shadow-heavy-in-sm" value={recipient} onChange={(e) => setRecipient(e.target.value)} />
+                        {!isAddressValid && recipient.length > 0 && <p className="text-destructive text-xs font-bold text-center">Invalid address format.</p>}
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="asset">Asset</Label>
@@ -146,9 +142,10 @@ export default function SendPage() {
                     <div className="grid gap-2">
                         <Label htmlFor="amount">Amount</Label>
                         <Input id="amount" type="number" placeholder="0.00" className="shadow-heavy-in-sm" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                         {selectedCoin && parseFloat(amount) > selectedCoin.balance && <p className="text-destructive text-xs font-bold text-center">Amount exceeds your balance.</p>}
                     </div>
-                    {error && <p className="text-destructive text-sm font-bold text-center">{error}</p>}
-                    <Button size="lg" className="w-full rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg" onClick={handleReview}>Review Transaction</Button>
+                    
+                    <Button size="lg" className="w-full rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg" onClick={handleReview} disabled={isReviewDisabled}>Review Transaction</Button>
                 </CardContent>
               </Card>
             </main>
