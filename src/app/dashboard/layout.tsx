@@ -1,3 +1,5 @@
+
+import { CoinDataProvider } from "@/hooks/use-coin-data-provider";
 import { CurrencyProvider } from "@/hooks/use-currency";
 
 export default function DashboardLayout({
@@ -7,7 +9,9 @@ export default function DashboardLayout({
 }) {
   return (
     <CurrencyProvider>
+      <CoinDataProvider>
         <div className="h-full w-full">{children}</div>
+      </CoinDataProvider>
     </CurrencyProvider>
   );
 }

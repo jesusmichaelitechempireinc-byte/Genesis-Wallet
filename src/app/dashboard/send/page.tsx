@@ -11,18 +11,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { getWalletCoins, type Coin } from "@/lib/data";
+import { type Coin } from "@/lib/data";
 import Image from "next/image";
 import { AlertCircle, Info, Loader2 } from 'lucide-react';
 import { useCurrency } from '@/hooks/use-currency';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useCoinData } from '@/hooks/use-coin-data';
 
 const CRYPTO_ADDRESS_REGEX = /^(0x[a-fA-F0-9]{40})|(bc1[a-zA-Z0-9]{25,39})|([13][a-km-zA-HJ-NP-Z1-9]{25,34})|([LM3][a-km-zA-HJ-NP-Z1-9]{25,34})|(D[a-km-zA-HJ-NP-Z1-9]{33})|([4][a-km-zA-HJ-NP-Z1-9]{94})|(addr1[a-zA-Z0-9]+)|(r[a-zA-Z0-9]{24,34})|(T[a-zA-Z0-9]{33})|([a-zA-Z0-9]{47,48})|(U[a-zA-Z0-9]{63})|(0x[a-fA-F0-9]{64})$/;
 
 
 export default function SendPage() {
     const searchParams = useSearchParams();
-    const [coins, setCoins] = useState<Coin[]>([]);
+    const { coins } = useCoinData();
     
     const [recipient, setRecipient] = useState('');
     const [amount, setAmount] = useState('');
@@ -49,19 +50,16 @@ export default function SendPage() {
     const isReviewDisabled = !recipient || !amount || !selectedCoin || !isAddressValid || amountAsNumber <= 0 || amountAsNumber > (selectedCoin?.balance ?? 0);
 
     useEffect(() => {
-        const fetchCoins = async () => {
-          const walletCoins = await getWalletCoins();
-          setCoins(walletCoins);
+        if (coins.length > 0) {
           const ticker = searchParams.get('ticker');
           if (ticker) {
-              const coin = walletCoins.find((c) => c.ticker === ticker);
+              const coin = coins.find((c) => c.ticker === ticker);
               setSelectedCoin(coin || null);
-          } else if (!selectedCoin && walletCoins.length > 0) {
-              setSelectedCoin(walletCoins[0]);
+          } else if (!selectedCoin) {
+              setSelectedCoin(coins[0]);
           }
-        };
-        fetchCoins();
-    }, [searchParams, selectedCoin]);
+        }
+    }, [searchParams, selectedCoin, coins]);
 
     const handleAssetChange = (ticker: string) => {
         const coin = coins.find((c) => c.ticker === ticker);

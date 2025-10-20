@@ -1,18 +1,19 @@
 
 'use client';
 
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import AssetHeader from "@/components/dashboard/AssetHeader";
 import BottomNav from "@/components/dashboard/BottomNav";
-import { getWalletCoins, type Coin } from "@/lib/data";
+import { type Coin } from "@/lib/data";
 import AssetChart from "@/components/dashboard/AssetChart";
 import { Button } from "@/components/ui/button";
-import { ArrowUp, ArrowDown, Repeat, AlertTriangle } from "lucide-react";
+import { ArrowUp, ArrowDown, Repeat, AlertTriangle, Loader2 } from "lucide-react";
 import Link from 'next/link';
 import { useCurrency } from '@/hooks/use-currency';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import AssetAbout from '@/components/dashboard/AssetAbout';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useCoinData } from '@/hooks/use-coin-data';
 
 const AssetPageSkeleton = () => (
     <div className="flex min-h-screen w-full bg-background font-body text-foreground">
@@ -45,62 +46,13 @@ const AssetPageSkeleton = () => (
 
 export default function AssetPage({ params }: { params: Promise<{ ticker: string }> }) {
   const { ticker } = React.use(params);
-  const [coin, setCoin] = useState<Coin | null | undefined>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchAndAugmentCoin = async () => {
-        setLoading(true);
-        // Phase 1: Load base data with correct balances immediately
-        const baseCoins = await getWalletCoins();
-        const baseCoin = baseCoins.find((c) => c.ticker === ticker.toUpperCase());
-
-        if (!baseCoin) {
-            setCoin(null);
-            setLoading(false);
-            return;
-        }
-
-        setCoin(baseCoin);
-        setLoading(false);
-
-        // Phase 2: Augment with live data
-        try {
-            const response = await fetch(`/api/coin-data?ids=${baseCoin.coingeckoId}`);
-            if (!response.ok) {
-                console.error("Failed to fetch live coin data, using static data.");
-                return; // Keep baseCoin with static price
-            }
-            const liveData = await response.json();
-            const liveCoinData = liveData[0];
-
-            if (liveCoinData) {
-                 setCoin(prevCoin => {
-                    if (!prevCoin) return null; // Should not happen
-                    return {
-                        ...prevCoin,
-                        price: liveCoinData.current_price,
-                        change: liveCoinData.price_change_percentage_24h,
-                        usdValue: prevCoin.balance * liveCoinData.current_price,
-                        history: liveCoinData.sparkline_in_7d.price.map((price: number, index: number) => ({ time: `Day ${index}`, price: price })),
-                        marketCap: liveCoinData.market_cap,
-                        volume24h: liveCoinData.total_volume,
-                        circulatingSupply: liveCoinData.circulating_supply,
-                        totalSupply: liveCoinData.total_supply,
-                        maxSupply: liveCoinData.max_supply,
-                        allTimeHigh: liveCoinData.ath,
-                    };
-                 });
-            }
-        } catch (error) {
-            console.error("Error fetching or augmenting coin data:", error);
-            // Data remains as baseCoin, no need to do anything
-        }
-    };
-    fetchAndAugmentCoin();
-  }, [ticker]);
-
+  const { coins, loading } = useCoinData();
   const { selectedCurrency, formatCurrency } = useCurrency();
+  
+  const coin = useMemo(() => {
+    return coins.find((c) => c.ticker === ticker.toUpperCase());
+  }, [coins, ticker]);
+
 
   if (loading) {
     return <AssetPageSkeleton />;
@@ -113,7 +65,7 @@ export default function AssetPage({ params }: { params: Promise<{ ticker: string
               <div className="text-center">
                 <AlertTriangle className="mx-auto h-12 w-12 text-destructive" />
                 <h1 className="mt-4 text-2xl font-bold">Token Not Found</h1>
-                <p className="mt-2 text-muted-foreground">The token with ticker '{ticker}' could not be found.</p>
+                <p className="mt-2 text-muted-foreground">The token with ticker '{ticker}' could not be found in your wallet.</p>
                 <Link href="/dashboard" className="mt-6">
                     <Button>Back to Wallet</Button>
                 </Link>

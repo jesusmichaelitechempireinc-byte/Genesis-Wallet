@@ -5,20 +5,20 @@ import Header from "@/components/dashboard/Header";
 import TokenSwap from "@/components/dashboard/TokenSwap";
 import BottomNav from "@/components/dashboard/BottomNav";
 import { useSearchParams } from 'next/navigation';
-import { getWalletCoins, type Coin } from '@/lib/data';
+import { type Coin } from '@/lib/data';
 import { Loader2 } from 'lucide-react';
+import { useCoinData } from '@/hooks/use-coin-data';
 
 export default function SwapPage() {
   const searchParams = useSearchParams();
+  const { coins, loading } = useCoinData();
   const initialFromTicker = searchParams.get('from');
 
   const [initialFromCoin, setInitialFromCoin] = useState<Coin | null>(null);
   const [initialToCoin, setInitialToCoin] = useState<Coin | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const determineInitialCoins = async () => {
-      const coins = await getWalletCoins();
+    if (!loading && coins.length > 0) {
       const fromTicker = initialFromTicker || 'USDC';
       
       let fromCoin = coins.find(c => c.ticker === fromTicker) || coins.find(c => c.ticker === 'USDC') || coins[0];
@@ -26,11 +26,8 @@ export default function SwapPage() {
       
       setInitialFromCoin(fromCoin);
       setInitialToCoin(toCoin);
-      setLoading(false);
-    };
-
-    determineInitialCoins();
-  }, [initialFromTicker]);
+    }
+  }, [loading, coins, initialFromTicker]);
 
   return (
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">

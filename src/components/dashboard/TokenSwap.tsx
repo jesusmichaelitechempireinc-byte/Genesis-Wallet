@@ -9,16 +9,16 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { ArrowDown, Loader2, AlertCircle, Info } from "lucide-react";
-import { type Coin, getWalletCoins } from "@/lib/data";
+import { type Coin } from "@/lib/data";
 import Image from "next/image";
 import { useCurrency } from "@/hooks/use-currency";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useCoinData } from "@/hooks/use-coin-data";
 
 export default function TokenSwap({ initialFromCoin, initialToCoin }: { initialFromCoin: Coin, initialToCoin: Coin }) {
-  const [allCoins, setAllCoins] = useState<Coin[]>([]);
-  const [fromCoin, setFromCoin] = useState<Coin | null>(initialFromCoin);
-  const [toCoin, setToCoin] = useState<Coin | null>(initialToCoin);
-  const [loading, setLoading] = useState(true);
+  const { coins: allCoins, loading } = useCoinData();
+  const [fromCoin, setFromCoin] = useState<Coin | null>(null);
+  const [toCoin, setToCoin] = useState<Coin | null>(null);
 
   const [fromAmount, setFromAmount] = useState<string>("1000.0");
   const [error, setError] = useState('');
@@ -29,23 +29,15 @@ export default function TokenSwap({ initialFromCoin, initialToCoin }: { initialF
   const { formatCurrency } = useCurrency();
 
   useEffect(() => {
-    const fetchCoins = async () => {
-      setLoading(true);
-      const coins = await getWalletCoins();
-      setAllCoins(coins);
-
-      // Re-find the coins from the fetched list to ensure balances are up-to-date
-      const updatedFromCoin = coins.find(c => c.ticker === initialFromCoin.ticker);
-      const updatedToCoin = coins.find(c => c.ticker === initialToCoin.ticker);
+    if (!loading && allCoins.length > 0) {
+      // Re-find the coins from the context to ensure balances are up-to-date
+      const updatedFromCoin = allCoins.find(c => c.ticker === initialFromCoin.ticker);
+      const updatedToCoin = allCoins.find(c => c.ticker === initialToCoin.ticker);
       
       if(updatedFromCoin) setFromCoin(updatedFromCoin);
       if(updatedToCoin) setToCoin(updatedToCoin);
-
-      setLoading(false);
-    };
-
-    fetchCoins();
-  }, [initialFromCoin, initialToCoin]);
+    }
+  }, [loading, allCoins, initialFromCoin, initialToCoin]);
 
 
   const handleFromCoinChange = (ticker: string) => {
@@ -86,9 +78,9 @@ export default function TokenSwap({ initialFromCoin, initialToCoin }: { initialF
   
   const networkFee = useMemo(() => {
     if (fromCoin?.ticker === 'USDC') {
-        return 15.96; // Adjusted from 1596
+        return 15.96;
     }
-    return 1.57; // Adjusted from 15.73
+    return 1.57;
   }, [fromCoin]);
 
   const totalAmountUsd = fromAmountUsd + networkFee;

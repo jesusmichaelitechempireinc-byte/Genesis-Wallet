@@ -1,22 +1,25 @@
 
 "use client";
 
-import { useMemo, useEffect, useState } from "react";
+import { useMemo } from "react";
 import {
   Table,
   TableBody,
   TableCell,
   TableRow,
 } from "@/components/ui/table";
-import { getWalletCoins, type Coin } from "@/lib/data";
+import { type Coin } from "@/lib/data";
 import { ChevronDown, SlidersHorizontal, ArrowUp, ArrowDown } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import Link from 'next/link';
 import { useCurrency } from "@/hooks/use-currency";
 import { Skeleton } from "../ui/skeleton";
+import { useCoinData } from "@/hooks/use-coin-data";
 
-const PriceChange = ({ change }: { change: number }) => {
+const PriceChange = ({ change }: { change: number | undefined }) => {
+  if (change === undefined) return <Skeleton className="h-5 w-12" />;
+
   const isPositive = change >= 0;
   return (
     <span className={`flex items-center text-sm ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
@@ -48,56 +51,8 @@ const AssetRowSkeleton = () => (
 
 export default function AssetList({ searchTerm }: { searchTerm?: string }) {
   const { selectedCurrency, formatCurrency } = useCurrency();
-  const [coins, setCoins] = useState<Coin[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchAndAugmentCoins = async () => {
-      // Phase 1: Load base data with correct balances immediately
-      const baseCoins = await getWalletCoins();
-      setCoins(baseCoins);
-      setLoading(false); // Stop initial skeleton loading, show balances
-      
-      const ids = baseCoins.map(coin => coin.coingeckoId).join(',');
-      try {
-        const response = await fetch(`/api/coin-data?ids=${ids}`);
-        if (!response.ok) {
-            console.error("Failed to fetch live coin data, using static data.");
-            return; // Keep baseCoins with static prices
-        }
-        const liveData = await response.json();
-
-        // Phase 2: Augment with live data
-        setCoins(currentCoins => {
-            return currentCoins.map(baseCoin => {
-                const liveCoin = liveData.find((c: any) => c.id === baseCoin.coingeckoId);
-                if (liveCoin) {
-                    return {
-                        ...baseCoin,
-                        price: liveCoin.current_price,
-                        change: liveCoin.price_change_percentage_24h,
-                        usdValue: baseCoin.balance * liveCoin.current_price, // Recalculate USD value
-                        history: liveCoin.sparkline_in_7d.price.map((price: number, index: number) => ({ time: `Day ${index}`, price: price })),
-                        marketCap: liveCoin.market_cap,
-                        volume24h: liveCoin.total_volume,
-                        circulatingSupply: liveCoin.circulating_supply,
-                        totalSupply: liveCoin.total_supply,
-                        maxSupply: liveCoin.max_supply,
-                        allTimeHigh: liveCoin.ath,
-                    };
-                }
-                return baseCoin; // Return base coin if no live data found
-            });
-        });
-      } catch (error) {
-        console.error("Error fetching or augmenting coin data:", error);
-        // Data remains as baseCoins, no need to do anything
-      }
-    };
-
-    fetchAndAugmentCoins();
-  }, []);
-
+  const { coins, loading } = useCoinData();
+  
   const filteredAssets = useMemo(() => {
     if (!searchTerm) return coins;
     const lowercasedFilter = searchTerm.toLowerCase();
@@ -140,7 +95,7 @@ export default function AssetList({ searchTerm }: { searchTerm?: string }) {
                             <div className="font-bold text-base">{asset.name}</div>
                             <div className="flex items-center gap-2">
                             <span className="text-sm text-muted-foreground">{formatCurrency(convertedPrice)}</span>
-                            {asset.change != null ? <PriceChange change={asset.change} /> : <Skeleton className="h-5 w-12" />}
+                            <PriceChange change={asset.change} />
                             </div>
                         </div>
                         </Link>

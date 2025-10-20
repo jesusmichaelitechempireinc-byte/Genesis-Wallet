@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from "@/components/dashboard/Header";
 import BottomNav from "@/components/dashboard/BottomNav";
@@ -10,8 +10,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Copy, AlertTriangle } from "lucide-react";
 import Image from "next/image";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getWalletCoins, type Coin } from "@/lib/data";
+import { type Coin } from "@/lib/data";
 import { toast } from '@/hooks/use-toast';
+import { useCoinData } from '@/hooks/use-coin-data';
 
 const walletAddresses: Record<string, { address: string, network: string, qrCodeUrl: string }> = {
     'BTC': { address: 'bc1qjhcx29cr4dfwc70t9gqjk3eqhg2rq84qr58prg', network: 'Bitcoin', qrCodeUrl: '/qrcodes/Bitcoin%20.jpg' },
@@ -35,21 +36,18 @@ const walletAddresses: Record<string, { address: string, network: string, qrCode
 
 export default function ReceivePage() {
     const searchParams = useSearchParams();
-    const [coins, setCoins] = useState<Coin[]>([]);
+    const { coins } = useCoinData();
     const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
 
     useEffect(() => {
-        const fetchCoins = async () => {
-          const walletCoins = await getWalletCoins();
-          setCoins(walletCoins);
-          const ticker = searchParams.get('ticker');
-          if (ticker) {
-            const coin = walletCoins.find((c) => c.ticker === ticker);
-            setSelectedCoin(coin || null);
-          }
-        };
-        fetchCoins();
-    }, [searchParams]);
+        if (coins.length > 0) {
+            const ticker = searchParams.get('ticker');
+            if (ticker) {
+                const coin = coins.find((c) => c.ticker === ticker);
+                setSelectedCoin(coin || null);
+            }
+        }
+    }, [coins, searchParams]);
     
     const handleCoinChange = (ticker: string) => {
         const coin = coins.find((c) => c.ticker === ticker);
