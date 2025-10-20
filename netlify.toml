@@ -8,7 +8,7 @@
   # The directory that contains the deploy-ready assets. For Next.js, this is .next.
   publish = ".next"
 
-[plugins]
+[[plugins]]
   # This essential plugin automatically configures your Next.js site 
   # on Netlify, enabling features like server-side rendering, API routes, and more.
-  - package = "@netlify/plugin-nextjs"
+  package = "@netlify/plugin-nextjs"
