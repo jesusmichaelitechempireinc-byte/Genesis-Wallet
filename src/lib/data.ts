@@ -1,3 +1,4 @@
+
 import type { ComponentType } from "react";
 
 export interface Coin {
@@ -21,23 +22,169 @@ export interface Coin {
   description?: string;
 }
 
-const coinsBase: Omit<Coin, 'balance' | 'usdValue' | 'price' | 'change' | 'history' | 'marketCap' | 'volume24h' | 'circulatingSupply' | 'totalSupply' | 'maxSupply' | 'allTimeHigh' | 'description'>[] = [
-  { name: 'Bitcoin', ticker: 'BTC', coingeckoId: 'bitcoin', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675521/bitcoin-btc-logo_fchtil.png' },
-  { name: 'Ethereum', ticker: 'ETH', coingeckoId: 'ethereum', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675606/ethereum-eth-logo_gkt5dg.png' },
-  { name: 'USD Coin', ticker: 'USDC', coingeckoId: 'usd-coin', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760678111/usd-coin-usdc-logo_isqxlb.png' },
-  { name: 'Tether', ticker: 'USDT-ERC20', coingeckoId: 'tether', network: 'Ethereum (ERC20)', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688489/USDT-ERC20_zylqxi.png' },
-  { name: 'Solana', ticker: 'SOL', coingeckoId: 'solana', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675609/solana-sol-logo_bcifcy.png' },
-  { name: 'Tether', ticker: 'USDT-TRC20', coingeckoId: 'tether', network: 'Tron (TRC20)', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688695/USDT-TRC20_mautso.png' },
-  { name: 'Dogecoin', ticker: 'DOGE', coingeckoId: 'dogecoin', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675627/dogecoin-doge-logo_vhntvk.png' },
-  { name: 'Cardano', ticker: 'ADA', coingeckoId: 'cardano', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675738/cardano-ada-logo_pbavn1.png' },
-  { name: 'XRP', ticker: 'XRP', coingeckoId: 'ripple', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675751/xrp-xrp-logo_smpmq7.png' },
-  { name: 'Avalanche', ticker: 'AVAX', coingeckoId: 'avalanche-2', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675757/avalanche-avax-logo_yt45tu.png' },
-  { name: 'Sui', ticker: 'SUI', coingeckoId: 'sui', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675771/sui-sui-logo_blqmgl.png' },
-  { name: 'BNB', ticker: 'BNB', coingeckoId: 'binancecoin', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675782/bnb-bnb-logo_matwsx.png' },
-  { name: 'Tron', ticker: 'TRX', coingeckoId: 'tron', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675804/tron-trx-logo_amapma.png' },
-  { name: 'Toncoin', ticker: 'TON', coingeckoId: 'the-open-network', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675862/toncoin-ton-logo_yhokxq.png' },
-  { name: 'Fetch.ai', ticker: 'FET', coingeckoId: 'fetch-ai', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675816/artificial-superintelligence-alliance-fet-logo_rhrvie.png' },
-  { name: 'Pepe', ticker: 'PEPE', coingeckoId: 'pepe', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675900/pepe-pepe-logo_ey1qka.png' }
+const coinsBase: Omit<Coin, 'balance' | 'usdValue' | 'price' | 'change' | 'history' | 'marketCap' | 'volume24h' | 'circulatingSupply' | 'totalSupply' | 'maxSupply' | 'allTimeHigh'>[] = [
+  { 
+    name: 'Bitcoin', 
+    ticker: 'BTC', 
+    coingeckoId: 'bitcoin', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675521/bitcoin-btc-logo_fchtil.png',
+    description: `
+      <p><b>Bitcoin (BTC)</b> is a decentralized digital currency, without a central bank or single administrator, that can be sent from user to user on the peer-to-peer bitcoin network without the need for intermediaries. Transactions are verified by network nodes through cryptography and recorded in a public distributed ledger called a blockchain.</p>
+      <p>Created in 2009 by an unknown person or group of people using the name Satoshi Nakamoto, Bitcoin is the first and most well-known cryptocurrency. It pioneered the concept of a trustless, electronic payment system. Its scarcity, with a capped supply of 21 million coins, has led many to consider it a "digital gold" and a store of value.</p>
+    `
+  },
+  { 
+    name: 'Ethereum', 
+    ticker: 'ETH', 
+    coingeckoId: 'ethereum', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675606/ethereum-eth-logo_gkt5dg.png',
+    description: `
+      <p><b>Ethereum (ETH)</b> is a decentralized, open-source blockchain with smart contract functionality. Ether is the native cryptocurrency of the platform. Among cryptocurrencies, Ether is second only to Bitcoin in market capitalization.</p>
+      <p>Ethereum was conceived in 2013 by programmer Vitalik Buterin. It pioneered the concept of a decentralized application (dApp) platform, enabling developers to build and deploy smart contracts and decentralized applications. This has led to a thriving ecosystem of decentralized finance (DeFi), non-fungible tokens (NFTs), and more.</p>
+    `
+  },
+  { 
+    name: 'USD Coin', 
+    ticker: 'USDC', 
+    coingeckoId: 'usd-coin', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760678111/usd-coin-usdc-logo_isqxlb.png',
+    description: `
+      <p><b>USD Coin (USDC)</b> is a digital stablecoin that is pegged to the United States dollar. It is managed by a consortium called Centre, which was founded by Circle and includes members from the cryptocurrency exchange Coinbase and Bitcoin mining company Bitmain.</p>
+      <p>Each USDC is backed by one U.S. dollar or asset with equivalent fair value, which is held in accounts with regulated U.S. financial institutions. This provides price stability, making USDC a popular choice for traders seeking to hedge against the volatility of other cryptocurrencies and as a common medium of exchange in the DeFi ecosystem.</p>
+    `
+  },
+  { 
+    name: 'Tether', 
+    ticker: 'USDT-ERC20', 
+    coingeckoId: 'tether', 
+    network: 'Ethereum (ERC20)', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688489/USDT-ERC20_zylqxi.png',
+    description: `
+      <p><b>Tether (USDT)</b> is a stablecoin, a type of cryptocurrency that aims to keep its value stable, pegged to an external reference, in this case, the U.S. dollar. It is issued by the Hong Kong-based company Tether Limited.</p>
+      <p>USDT is one of the most widely used stablecoins in the cryptocurrency market. It allows traders to move in and out of positions in volatile cryptocurrencies without converting to fiat currency, providing liquidity and a hedge against market fluctuations. This version of USDT is an ERC-20 token, meaning it operates on the Ethereum blockchain.</p>
+    `
+  },
+  { 
+    name: 'Solana', 
+    ticker: 'SOL', 
+    coingeckoId: 'solana', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675609/solana-sol-logo_bcifcy.png',
+    description: `
+      <p><b>Solana (SOL)</b> is a high-performance blockchain supporting builders around the world creating crypto apps that scale today. It is known for its incredibly fast transaction speeds and low costs, achieved through a unique consensus mechanism called Proof of History (PoH) combined with Proof of Stake (PoS).</p>
+      <p>This efficiency has made Solana a popular platform for decentralized applications (dApps), especially in the realms of DeFi, NFTs, and gaming. Its native cryptocurrency, SOL, is used for transaction fees and staking.</p>
+    `
+  },
+  { 
+    name: 'Tether', 
+    ticker: 'USDT-TRC20', 
+    coingeckoId: 'tether', 
+    network: 'Tron (TRC20)', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688695/USDT-TRC20_mautso.png',
+    description: `
+      <p><b>Tether (USDT)</b> is a stablecoin pegged to the U.S. dollar. This specific version is a TRC-20 token, meaning it is issued on the TRON blockchain. Using the TRON network allows for faster transaction speeds and significantly lower fees compared to the Ethereum-based (ERC-20) version of USDT.</p>
+      <p>This makes TRC-20 USDT a popular choice for frequent, small-value transactions and for users looking to avoid the high gas fees often associated with the Ethereum network.</p>
+    `
+  },
+  { 
+    name: 'Dogecoin', 
+    ticker: 'DOGE', 
+    coingeckoId: 'dogecoin', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675627/dogecoin-doge-logo_vhntvk.png',
+    description: `
+      <p><b>Dogecoin (DOGE)</b> is a cryptocurrency created by software engineers Billy Markus and Jackson Palmer, who decided to create a payment system as a "joke," taking aim at the wild speculation in cryptocurrencies at the time. It is considered both the first "meme coin," and, more specifically, the first "dog coin."</p>
+      <p>Despite its satirical nature, Dogecoin developed a large online community and has been used for tipping content creators and for charitable donations. It is a decentralized, peer-to-peer digital currency that enables you to easily send money online.</p>
+    `
+  },
+  { 
+    name: 'Cardano', 
+    ticker: 'ADA', 
+    coingeckoId: 'cardano', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675738/cardano-ada-logo_pbavn1.png',
+    description: `
+      <p><b>Cardano (ADA)</b> is a proof-of-stake blockchain platform that says its goal is to allow “changemakers, innovators and visionaries” to bring about positive global change. The open-source project also aims to “redistribute power from unaccountable structures to the margins to individuals” — helping to create a society that is more secure, transparent and fair.</p>
+      <p>Cardano was founded by Ethereum co-founder Charles Hoskinson and is known for its research-driven approach, with a strong emphasis on academic rigor and peer-reviewed development. Its native token is ADA.</p>
+    `
+  },
+  { 
+    name: 'XRP', 
+    ticker: 'XRP', 
+    coingeckoId: 'ripple', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675751/xrp-xrp-logo_smpmq7.png',
+    description: `
+      <p><b>XRP</b> is the native digital asset on the XRP Ledger—an open-source, permissionless, and decentralized blockchain technology that can settle transactions in 3-5 seconds. It was created by Ripple to be a fast, low-cost, and scalable alternative to both other digital assets and existing monetary payment platforms like SWIFT.</p>
+      <p>XRP's main use case is to serve as a bridge currency between different fiat currencies and cryptocurrencies, facilitating faster and cheaper cross-border payments for financial institutions.</p>
+    `
+  },
+  { 
+    name: 'Avalanche', 
+    ticker: 'AVAX', 
+    coingeckoId: 'avalanche-2', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675757/avalanche-avax-logo_yt45tu.png',
+    description: `
+      <p><b>Avalanche (AVAX)</b> is a layer one blockchain that functions as a platform for decentralized applications and custom blockchain networks. It is one of Ethereum’s rivals, aiming to unseat Ethereum as the most popular blockchain for smart contracts. It aims to do so by having a higher transaction output of up to 6,500 transactions per second while not compromising scalability.</p>
+      <p>The Avalanche network consists of three individual blockchains: the X-Chain, C-Chain, and P-Chain. Each chain has a distinct purpose, which is radically different from the approach Bitcoin and Ethereum use, namely having all nodes validate all transactions.</p>
+    `
+  },
+  { 
+    name: 'Sui', 
+    ticker: 'SUI', 
+    coingeckoId: 'sui', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675771/sui-sui-logo_blqmgl.png',
+    description: `
+      <p><b>Sui (SUI)</b> is a Layer-1 blockchain and smart contract platform designed from the ground up to make digital asset ownership fast, private, secure, and accessible to everyone. Its object-centric model, based on the Move programming language, enables parallel execution, sub-second finality, and rich on-chain assets.</p>
+      <p>Developed by Mysten Labs, which was founded by former executives of Meta's advanced blockchain R&D organization, Sui aims to provide a step-function improvement in blockchain scalability and performance for a new generation of decentralized applications.</p>
+    `
+  },
+  { 
+    name: 'BNB', 
+    ticker: 'BNB', 
+    coingeckoId: 'binancecoin', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675782/bnb-bnb-logo_matwsx.png',
+    description: `
+      <p><b>BNB</b>, which stands for "Build and Build" (formerly Binance Coin), is the native cryptocurrency of the BNB Chain ecosystem. It was originally created as an ERC-20 token on the Ethereum blockchain to be used for discounted trading fees on the Binance exchange.</p>
+      <p>Since then, BNB has migrated to its own native blockchain, the BNB Chain, and its use cases have expanded significantly. It is used to pay for transaction fees on the network, participate in governance, and access a wide range of applications and services within the growing BNB Chain ecosystem, including DeFi, gaming, and more.</p>
+    `
+  },
+  { 
+    name: 'Tron', 
+    ticker: 'TRX', 
+    coingeckoId: 'tron', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675804/tron-trx-logo_amapma.png',
+    description: `
+      <p><b>Tron (TRX)</b> is a blockchain-based decentralized operating system founded by Justin Sun. The TRON protocol, one of the largest blockchain-based operating systems in the world, aims to offer high-throughput, high-scalability, and high-availability for all Decentralized Applications (DApps) in the TRON ecosystem.</p>
+      <p>TRON has become particularly popular for its low transaction fees and fast processing times, making it a major platform for hosting stablecoins like USDT and for dApps in the gaming and entertainment sectors. TRX is the native currency of the network.</p>
+    `
+  },
+  { 
+    name: 'Toncoin', 
+    ticker: 'TON', 
+    coingeckoId: 'the-open-network', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675862/toncoin-ton-logo_yhokxq.png',
+    description: `
+      <p><b>Toncoin (TON)</b> is the native cryptocurrency of The Open Network (TON), a decentralized and open internet platform. Originally designed by the encrypted messaging platform Telegram, the project was later handed over to the independent TON Foundation.</p>
+      <p>TON is designed for speed and scalability, aiming to process millions of transactions per second. Its tight integration with the Telegram app gives it potential access to a massive user base for payments, dApps, and other Web3 services directly within the messaging interface.</p>
+    `
+  },
+  { 
+    name: 'Fetch.ai', 
+    ticker: 'FET', 
+    coingeckoId: 'fetch-ai', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675816/artificial-superintelligence-alliance-fet-logo_rhrvie.png',
+    description: `
+      <p><b>Fetch.ai (FET)</b> is a decentralized machine learning platform for applications such as asset trading, gig-economy work and energy grid optimization. The project aims to create a new digital economy where "Autonomous Economic Agents" (AEAs) can perform proactive economic activities on behalf of their owners.</p>
+      <p>These agents can be used to find, negotiate, and interact with other agents to provide services and solve complex problems. The FET token is the native cryptocurrency of the Fetch.ai network, required for agents to perform tasks and access the network's machine learning utilities.</p>
+    `
+  },
+  { 
+    name: 'Pepe', 
+    ticker: 'PEPE', 
+    coingeckoId: 'pepe', 
+    iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675900/pepe-pepe-logo_ey1qka.png',
+    description: `
+      <p><b>Pepe (PEPE)</b> is a meme coin launched on the Ethereum blockchain. The cryptocurrency was created as a tribute to the Pepe the Frog internet meme, created by Matt Furie, which gained popularity in the early 2000s.</p>
+      <p>The project aims to capitalize on the popularity of meme coins, like Shiba Inu and Dogecoin, and has established itself as one of the top meme coins in the market. Pepe is a deflationary token that rewards long-term stakers and has a no-tax policy, aiming to maintain community engagement through its meme-centric culture.</p>
+    `
+  }
 ];
 
 const generateHistory = (basePrice: number) => {

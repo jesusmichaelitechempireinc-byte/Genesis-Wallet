@@ -77,7 +77,6 @@ export default function AssetList({ searchTerm }: { searchTerm?: string }) {
                     change: liveCoin.price_change_percentage_24h,
                     usdValue: baseCoin.balance * liveCoin.current_price, // Recalculate USD value
                     history: liveCoin.sparkline_in_7d.price.map((price: number, index: number) => ({ time: `Day ${index}`, price: price })),
-                    description: liveCoin.description,
                     marketCap: liveCoin.market_cap,
                     volume24h: liveCoin.total_volume,
                     circulatingSupply: liveCoin.circulating_supply,
@@ -143,7 +142,7 @@ export default function AssetList({ searchTerm }: { searchTerm?: string }) {
                             <div className="font-bold text-base">{asset.name}</div>
                             <div className="flex items-center gap-2">
                             <span className="text-sm text-muted-foreground">{formatCurrency(convertedPrice)}</span>
-                            <PriceChange change={asset.change} />
+                            {asset.change ? <PriceChange change={asset.change} /> : <div className="h-5 w-12" />}
                             </div>
                         </div>
                         </Link>

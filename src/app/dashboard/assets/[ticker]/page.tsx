@@ -78,7 +78,6 @@ export default function AssetPage({ params }: { params: Promise<{ ticker: string
                     change: liveCoinData.price_change_percentage_24h,
                     usdValue: baseCoin.balance * liveCoinData.current_price,
                     history: liveCoinData.sparkline_in_7d.price.map((price: number, index: number) => ({ time: `Day ${index}`, price: price })),
-                    description: liveCoinData.description,
                     marketCap: liveCoinData.market_cap,
                     volume24h: liveCoinData.total_volume,
                     circulatingSupply: liveCoinData.circulating_supply,

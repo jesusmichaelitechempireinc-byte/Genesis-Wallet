@@ -40,30 +40,8 @@ export async function GET(request: NextRequest) {
     }
 
     const marketData = await marketResponse.json();
-    
-    // Fetch detailed descriptions separately
-    const detailedDataPromises = marketData.map(async (coin: any) => {
-        const detailResponse = await fetch(`${COINGECKO_API_URL}/coins/${coin.id}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`, { headers });
-        if (!detailResponse.ok) {
-            console.warn(`Could not fetch details for ${coin.id}.`);
-            return { ...coin, description: { en: 'Description not available.' } };
-        }
-        const detailJson = await detailResponse.json();
-        return { 
-          ...coin, 
-          description: detailJson.description?.en || 'Description not available.',
-          market_cap: detailJson.market_data?.market_cap?.usd,
-          total_volume: detailJson.market_data?.total_volume?.usd,
-          circulating_supply: detailJson.market_data?.circulating_supply,
-          total_supply: detailJson.market_data?.total_supply,
-          max_supply: detailJson.market_data?.max_supply,
-          ath: detailJson.market_data?.ath?.usd,
-        };
-    });
 
-    const combinedData = await Promise.all(detailedDataPromises);
-
-    return NextResponse.json(combinedData);
+    return NextResponse.json(marketData);
   } catch (error: any) {
     console.error('Error fetching from CoinGecko:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
