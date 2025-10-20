@@ -5,7 +5,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { BrainCircuit, Loader2, MessageSquare, Plus, Send, Settings2, Trash2, MoreVertical, Edit, Check } from 'lucide-react';
+import { BrainCircuit, Loader2, MessageSquare, Plus, Send, Settings2, Trash2, MoreVertical, Edit, Check, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { GenesisAILogo } from '@/components/icons/GenesisAILogo';
 import { GenesisVaultLogo } from '@/components/icons';
 import Image from 'next/image';
@@ -52,6 +52,7 @@ export default function GenesisAIPage() {
   const [activeChatId, setActiveChatId] = useState<string | null>('1');
   const [inputText, setInputText] = useState('');
   const [isResponding, setIsResponding] = useState(false);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   
   const [renamingChatId, setRenamingChatId] = useState<string | null>(null);
   const [renamingTitle, setRenamingTitle] = useState('');
@@ -136,7 +137,7 @@ export default function GenesisAIPage() {
   return (
       <div className="flex h-screen w-full bg-background font-body text-foreground">
           {/* Sidebar */}
-          <aside className="w-80 border-r flex flex-col">
+          <aside className={cn("border-r flex flex-col transition-all duration-300", isSidebarVisible ? "w-80" : "w-0 opacity-0")}>
             <header className="flex h-20 items-center justify-between p-4 border-b">
                  <div className="flex items-center gap-3">
                      <GenesisVaultLogo />
@@ -207,13 +208,21 @@ export default function GenesisAIPage() {
           <div className="flex flex-1 flex-col relative">
             <header className="sticky top-0 z-10 flex h-20 items-center justify-between border-b bg-background/80 px-8 backdrop-blur-sm">
                 <div className="flex items-center gap-4">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setIsSidebarVisible(!isSidebarVisible)}
+                        className="rounded-full shadow-heavy-out-sm active:shadow-heavy-in-sm"
+                    >
+                        {isSidebarVisible ? <PanelLeftClose className="h-5 w-5" /> : <PanelLeftOpen className="h-5 w-5" />}
+                    </Button>
                     <h1 className="text-2xl font-semibold font-headline">{activeChat?.title || "Genesis AI"}</h1>
                 </div>
             </header>
 
             <main ref={mainContentRef} className="flex-1 overflow-y-auto p-8 pb-32">
                 {activeChat ? (
-                    <div className="space-y-8 max-w-4xl mx-auto">
+                    <div className="space-y-8 max-w-3xl mx-auto">
                         {activeChat.messages.map((message, index) => (
                             <div key={index} className={`flex items-start gap-4 ${message.role === 'user' ? 'justify-end' : ''}`}>
                                 {message.role === 'model' && (
