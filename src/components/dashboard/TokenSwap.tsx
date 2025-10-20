@@ -13,8 +13,10 @@ import { type Coin, getWalletCoins } from "@/lib/data";
 import Image from "next/image";
 import { useCurrency } from "@/hooks/use-currency";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: string }) {
+  const [walletImported] = useLocalStorage('wallet-imported', 'none');
   const [allCoins, setAllCoins] = useState<Coin[]>([]);
   const [fromCoin, setFromCoin] = useState<Coin | null>(null);
   const [toCoin, setToCoin] = useState<Coin | null>(null);
@@ -23,13 +25,13 @@ export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: s
   const [fromAmount, setFromAmount] = useState<string>("1000.0");
   const [error, setError] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [isConfirming, setIsConfirming] = useState(isConfirming);
+  const [isConfirming, setIsConfirming] = useState(false);
   const [gasError, setGasError] = useState(false);
 
   const { formatCurrency } = useCurrency();
 
   useEffect(() => {
-    const coins = getWalletCoins();
+    const coins = getWalletCoins(walletImported);
     setAllCoins(coins);
 
     let initialFrom = coins.find(c => c.ticker === (initialFromTicker || 'USDC')) || coins.find(c => c.ticker === 'USDC') || coins[0];
@@ -38,7 +40,7 @@ export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: s
     if(initialFrom) setFromCoin(initialFrom);
     if(initialTo) setToCoin(initialTo);
     setLoading(false);
-  }, [initialFromTicker]);
+  }, [initialFromTicker, walletImported]);
 
 
   const handleFromCoinChange = (ticker: string) => {
