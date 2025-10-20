@@ -7,7 +7,7 @@ import { getFundedCoins, getEmptyCoins, type Coin } from '@/lib/data';
 import { cookies } from 'next/headers';
 
 export default async function SwapPage({ searchParams }: { searchParams?: { from?: string } }) {
-  const initialFromTicker = searchParams?.from || null;
+  const initialFromTicker = searchParams?.from || 'USDC';
   const cookieStore = cookies();
   const walletImported = cookieStore.get('wallet-imported')?.value || 'empty';
   
@@ -18,20 +18,20 @@ export default async function SwapPage({ searchParams }: { searchParams?: { from
     coins = await getEmptyCoins();
   }
 
-  // Server-side logic to determine initial coins
-  let initialFromCoin = coins.find(c => c.ticker === 'USDC') || coins[0];
-  if (initialFromTicker) {
-    const foundCoin = coins.find(c => c.ticker === initialFromTicker);
-    if (foundCoin) {
-      initialFromCoin = foundCoin;
-    }
+  // --- Start of Corrected Logic ---
+  // Reliably find the initial "from" coin. Default to USDC if no ticker is provided or if the provided ticker is not found.
+  let initialFromCoin = coins.find(c => c.ticker === initialFromTicker);
+  if (!initialFromCoin) {
+    initialFromCoin = coins.find(c => c.ticker === 'USDC') || coins[0];
   }
 
-  let initialToCoin = coins.find(c => c.ticker === 'BTC') || coins[1];
-  // Ensure "to" coin is not the same as "from" coin
-  if (initialFromCoin && initialToCoin && initialFromCoin.ticker === initialToCoin.ticker) {
-    initialToCoin = coins.find(c => c.ticker !== initialFromCoin.ticker) || coins[1];
+  // Find the initial "to" coin, ensuring it's not the same as the "from" coin.
+  let initialToCoin = coins.find(c => c.ticker === 'BTC');
+  if (!initialToCoin || initialToCoin.ticker === initialFromCoin.ticker) {
+    // If BTC is not available or is the same as the fromCoin, find the first available different coin.
+    initialToCoin = coins.find(c => c.ticker !== initialFromCoin!.ticker) || coins[1];
   }
+  // --- End of Corrected Logic ---
 
   return (
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">
@@ -41,8 +41,8 @@ export default async function SwapPage({ searchParams }: { searchParams?: { from
               <div className="w-full max-w-md">
                   <TokenSwap 
                     allCoins={coins} 
-                    initialFromCoin={initialFromCoin}
-                    initialToCoin={initialToCoin}
+                    initialFromCoin={initialFromCoin!}
+                    initialToCoin={initialToCoin!}
                   />
               </div>
             </main>
