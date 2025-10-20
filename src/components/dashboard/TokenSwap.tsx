@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,30 +14,10 @@ import Image from "next/image";
 import { useCurrency } from "@/hooks/use-currency";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-export default function TokenSwap({ initialFromTicker, initialCoins }: { initialFromTicker: string | null, initialCoins: Coin[] }) {
-  const [fromCoin, setFromCoin] = useState<Coin | undefined>(undefined);
-  const [toCoin, setToCoin] = useState<Coin | undefined>(undefined);
+export default function TokenSwap({ allCoins, initialFromCoin, initialToCoin }: { allCoins: Coin[], initialFromCoin: Coin, initialToCoin: Coin }) {
+  const [fromCoin, setFromCoin] = useState<Coin>(initialFromCoin);
+  const [toCoin, setToCoin] = useState<Coin>(initialToCoin);
   
-  useEffect(() => {
-    if (initialCoins.length > 0) {
-      let initialFrom = initialCoins.find(c => c.ticker === 'USDC') || initialCoins[0];
-      if (initialFromTicker) {
-        const foundCoin = initialCoins.find(c => c.ticker === initialFromTicker);
-        if (foundCoin) {
-          initialFrom = foundCoin;
-        }
-      }
-      setFromCoin(initialFrom);
-
-      let initialTo = initialCoins.find(c => c.ticker === 'BTC') || initialCoins[1];
-      if (initialFrom && initialTo && initialFrom.ticker === initialTo.ticker) {
-        initialTo = initialCoins.find(c => c.ticker !== initialFrom.ticker) || initialCoins[1];
-      }
-      setToCoin(initialTo);
-    }
-  }, [initialCoins, initialFromTicker]);
-
-
   const [fromAmount, setFromAmount] = useState<string>("1000.0");
   const [error, setError] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -47,16 +27,32 @@ export default function TokenSwap({ initialFromTicker, initialCoins }: { initial
   const { formatCurrency } = useCurrency();
 
   const handleFromCoinChange = (ticker: string) => {
-    const coin = initialCoins.find((c) => c.ticker === ticker);
-    if (coin) setFromCoin(coin);
+    const coin = allCoins.find((c) => c.ticker === ticker);
+    if (coin) {
+      if(coin.ticker === toCoin.ticker){
+        setToCoin(fromCoin);
+      }
+      setFromCoin(coin);
+    }
     setError('');
     setGasError(false);
   };
 
   const handleToCoinChange = (ticker: string) => {
-    const coin = initialCoins.find((c) => c.ticker === ticker);
-    if (coin) setToCoin(coin);
+    const coin = allCoins.find((c) => c.ticker === ticker);
+    if (coin) {
+      if(coin.ticker === fromCoin.ticker){
+        setFromCoin(toCoin);
+      }
+      setToCoin(coin);
+    }
   };
+
+  const handleSwitchCoins = () => {
+    const tempFrom = fromCoin;
+    setFromCoin(toCoin);
+    setToCoin(tempFrom);
+  }
 
   const fromPriceUsd = useMemo(() => (fromCoin?.price || 0), [fromCoin]);
   const toPriceUsd = useMemo(() => (toCoin?.price || 0), [toCoin]);
@@ -77,10 +73,6 @@ export default function TokenSwap({ initialFromTicker, initialCoins }: { initial
 
   const handleReviewSwap = () => {
     if (!fromCoin) return;
-    if (fromCoin.balance <= 0) {
-        setError(`You have no ${fromCoin.ticker} to swap.`);
-        return;
-    }
     if (parseFloat(fromAmount) > fromCoin.balance) {
         setError('Amount exceeds your balance.');
         return;
@@ -103,7 +95,7 @@ export default function TokenSwap({ initialFromTicker, initialCoins }: { initial
     }, 2500);
   };
   
-  const isSwapDisabled = !fromCoin || fromCoin.balance <= 0 || !fromAmount || parseFloat(fromAmount) <= 0;
+  const isSwapDisabled = !fromCoin || fromCoin.balance <= 0 || !fromAmount || parseFloat(fromAmount) <= 0 || parseFloat(fromAmount) > fromCoin.balance;
 
   if (!fromCoin || !toCoin) {
     return <div className="flex items-center justify-center h-full w-full"><Loader2 className="animate-spin"/></div>
@@ -138,8 +130,8 @@ export default function TokenSwap({ initialFromTicker, initialCoins }: { initial
                     </SelectValue>
                     </SelectTrigger>
                     <SelectContent className="shadow-heavy-out-sm">
-                    {initialCoins.map((c) => (
-                        <SelectItem key={c.ticker} value={c.ticker} disabled={c.ticker === toCoin.ticker}>
+                    {allCoins.map((c) => (
+                        <SelectItem key={c.ticker} value={c.ticker}>
                         <div className="flex items-center gap-2">
                             {c.iconUrl ? <Image src={c.iconUrl} alt={c.name} width={20} height={20} /> : c.icon && <c.icon className="h-5 w-5" />}
                             {c.ticker}
@@ -155,7 +147,7 @@ export default function TokenSwap({ initialFromTicker, initialCoins }: { initial
             </div>
             
             <div className="flex justify-center -my-2 z-10">
-                <Button variant="ghost" size="icon" className="rounded-full shadow-heavy-out-sm bg-background hover:bg-background active:shadow-heavy-in-sm text-primary hover:text-primary transition-all duration-300">
+                <Button variant="ghost" size="icon" className="rounded-full shadow-heavy-out-sm bg-background hover:bg-background active:shadow-heavy-in-sm text-primary hover:text-primary transition-all duration-300" onClick={handleSwitchCoins}>
                 <ArrowDown className="h-5 w-5" />
                 </Button>
             </div>
@@ -179,8 +171,8 @@ export default function TokenSwap({ initialFromTicker, initialCoins }: { initial
                     </SelectValue>
                     </SelectTrigger>
                     <SelectContent className="shadow-heavy-out-sm">
-                    {initialCoins.map((c) => (
-                        <SelectItem key={c.ticker} value={c.ticker} disabled={c.ticker === fromCoin.ticker}>
+                    {allCoins.map((c) => (
+                        <SelectItem key={c.ticker} value={c.ticker}>
                         <div className="flex items-center gap-2">
                             {c.iconUrl ? <Image src={c.iconUrl} alt={c.name} width={20} height={20} /> : c.icon && <c.icon className="h-5 w-5" />}
                             {c.ticker}
