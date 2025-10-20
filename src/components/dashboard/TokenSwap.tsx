@@ -7,16 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { ArrowDown, Loader2, AlertCircle, Info } from "lucide-react";
-import { Coin, getWalletCoins } from "@/lib/data";
+import { type Coin, getWalletCoins } from "@/lib/data";
 import Image from "next/image";
 import { useCurrency } from "@/hooks/use-currency";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useLocalStorage } from "@/hooks/use-local-storage";
 
 export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: string }) {
-  const [walletImported] = useLocalStorage('wallet-imported', 'none');
   const [allCoins, setAllCoins] = useState<Coin[]>([]);
   
   const [fromCoin, setFromCoin] = useState<Coin | null>(null);
@@ -31,15 +29,16 @@ export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: s
   const { formatCurrency } = useCurrency();
 
   useEffect(() => {
-    const coins = getWalletCoins(walletImported);
+    const walletState = typeof window !== 'undefined' ? window.localStorage.getItem('wallet-imported') : 'empty';
+    const coins = getWalletCoins(walletState);
     setAllCoins(coins);
 
-    let initialFrom = coins.find(c => c.ticker === (initialFromTicker || 'USDC')) || coins[0];
+    let initialFrom = coins.find(c => c.ticker === (initialFromTicker || 'USDC')) || coins.find(c => c.ticker === 'USDC') || coins[0];
     let initialTo = coins.find(c => c.ticker === 'BTC' && c.ticker !== initialFrom.ticker) || coins.find(c => c.ticker !== initialFrom.ticker) || coins[1];
     
     setFromCoin(initialFrom);
     setToCoin(initialTo);
-  }, [walletImported, initialFromTicker]);
+  }, [initialFromTicker]);
 
 
   const handleFromCoinChange = (ticker: string) => {
@@ -256,7 +255,8 @@ export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: s
                                         <TooltipContent>
                                             <p>Fee paid to the network validators.</p>
                                         </TooltipContent>
-                                    </TooltipProvider>
+                                    </Tooltip>
+                                </TooltipProvider>
                             </div>
                             <div className="font-bold font-mono text-right">
                                 <p>{formatCurrency(networkFee)}</p>
