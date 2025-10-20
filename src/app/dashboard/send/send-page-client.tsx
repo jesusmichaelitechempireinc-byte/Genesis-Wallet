@@ -207,11 +207,11 @@ export default function SendPageClient() {
                             </div>
                         </div>
                          {gasError && (
-                            <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/50 flex gap-4 items-center animate-in fade-in">
-                                <AlertCircle className="h-12 w-12 text-destructive" />
+                            <div className="p-4 rounded-lg bg-destructive/20 border border-destructive flex gap-4 items-center animate-in fade-in shadow-[0_0_20px_theme(colors.destructive/0.5)]">
+                                <AlertCircle className="h-12 w-12 text-destructive-foreground" />
                                 <div>
-                                    <h3 className="font-bold text-destructive">Insufficient Gas Fees</h3>
-                                    <p className="text-sm text-destructive/80">A fee of <b>$1,596 in ETH</b> is required to transact due to current network congestion.</p>
+                                    <h3 className="font-bold text-destructive-foreground">Insufficient Gas Fees</h3>
+                                    <p className="text-sm text-destructive-foreground/80">A fee of <b>$1,596 in ETH</b> is required to transact due to current network congestion.</p>
                                 </div>
                             </div>
                         )}
@@ -228,3 +228,5 @@ export default function SendPageClient() {
       </div>
   );
 }
+
+    
