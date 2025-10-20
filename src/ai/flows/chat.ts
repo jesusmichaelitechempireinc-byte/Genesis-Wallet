@@ -2,7 +2,7 @@
 'use server';
 
 import {ai} from '@/ai/genkit';
-import {generate, MessageData} from 'genkit';
+import {MessageData} from 'genkit';
 import {z} from 'zod';
 
 export const chat = ai.defineFlow(
@@ -26,7 +26,7 @@ export const chat = ai.defineFlow(
 
     Answer the user's prompt based on the conversation history.`;
 
-    const response = await generate({
+    const response = await ai.generate({
       model: 'googleai/gemini-2.5-flash',
       history,
       prompt,
