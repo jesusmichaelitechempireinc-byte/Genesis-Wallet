@@ -9,17 +9,15 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { ArrowDown, Loader2, AlertCircle, Info } from "lucide-react";
-import { type Coin } from "@/lib/data";
+import { type Coin, getWalletCoins } from "@/lib/data";
 import Image from "next/image";
 import { useCurrency } from "@/hooks/use-currency";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useCoinDataContext } from "@/hooks/use-coin-data-provider";
 
-export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: string }) {
-  const { coins: allCoins, loading: coinsLoading } = useCoinDataContext();
-
-  const [fromCoin, setFromCoin] = useState<Coin | null>(null);
-  const [toCoin, setToCoin] = useState<Coin | null>(null);
+export default function TokenSwap({ initialFromCoin, initialToCoin }: { initialFromCoin: Coin, initialToCoin: Coin }) {
+  const [allCoins, setAllCoins] = useState<Coin[]>([]);
+  const [fromCoin, setFromCoin] = useState<Coin | null>(initialFromCoin);
+  const [toCoin, setToCoin] = useState<Coin | null>(initialToCoin);
   const [loading, setLoading] = useState(true);
 
   const [fromAmount, setFromAmount] = useState<string>("1000.0");
@@ -31,15 +29,23 @@ export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: s
   const { formatCurrency } = useCurrency();
 
   useEffect(() => {
-    if (!coinsLoading && allCoins.length > 0) {
-      let initialFrom = allCoins.find(c => c.ticker === (initialFromTicker || 'USDC')) || allCoins.find(c => c.ticker === 'USDC') || allCoins[0];
-      let initialTo = allCoins.find(c => c.ticker === 'BTC' && c.ticker !== initialFrom?.ticker) || allCoins.find(c => c.ticker !== initialFrom?.ticker) || allCoins[1];
+    const fetchCoins = async () => {
+      setLoading(true);
+      const coins = await getWalletCoins();
+      setAllCoins(coins);
 
-      if(initialFrom) setFromCoin(initialFrom);
-      if(initialTo) setToCoin(initialTo);
+      // Re-find the coins from the fetched list to ensure balances are up-to-date
+      const updatedFromCoin = coins.find(c => c.ticker === initialFromCoin.ticker);
+      const updatedToCoin = coins.find(c => c.ticker === initialToCoin.ticker);
+      
+      if(updatedFromCoin) setFromCoin(updatedFromCoin);
+      if(updatedToCoin) setToCoin(updatedToCoin);
+
       setLoading(false);
-    }
-  }, [initialFromTicker, allCoins, coinsLoading]);
+    };
+
+    fetchCoins();
+  }, [initialFromCoin, initialToCoin]);
 
 
   const handleFromCoinChange = (ticker: string) => {

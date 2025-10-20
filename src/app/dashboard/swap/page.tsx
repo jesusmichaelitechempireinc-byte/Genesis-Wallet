@@ -1,11 +1,36 @@
 
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import Header from "@/components/dashboard/Header";
 import TokenSwap from "@/components/dashboard/TokenSwap";
 import BottomNav from "@/components/dashboard/BottomNav";
+import { useSearchParams } from 'next/navigation';
+import { getWalletCoins, type Coin } from '@/lib/data';
+import { Loader2 } from 'lucide-react';
 
-export default function SwapPage({ searchParams }: { searchParams?: { from?: string } }) {
-  const initialFromTicker = searchParams?.from;
+export default function SwapPage() {
+  const searchParams = useSearchParams();
+  const initialFromTicker = searchParams.get('from');
+
+  const [initialFromCoin, setInitialFromCoin] = useState<Coin | null>(null);
+  const [initialToCoin, setInitialToCoin] = useState<Coin | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const determineInitialCoins = async () => {
+      const coins = await getWalletCoins();
+      const fromTicker = initialFromTicker || 'USDC';
+      
+      let fromCoin = coins.find(c => c.ticker === fromTicker) || coins.find(c => c.ticker === 'USDC') || coins[0];
+      let toCoin = coins.find(c => c.ticker === 'BTC' && c.ticker !== fromCoin?.ticker) || coins.find(c => c.ticker !== fromCoin?.ticker) || coins[1];
+      
+      setInitialFromCoin(fromCoin);
+      setInitialToCoin(toCoin);
+      setLoading(false);
+    };
+
+    determineInitialCoins();
+  }, [initialFromTicker]);
 
   return (
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">
@@ -13,9 +38,17 @@ export default function SwapPage({ searchParams }: { searchParams?: { from?: str
             <Header />
             <main className="flex py-8 items-center justify-center pb-32">
               <div className="w-full max-w-md">
-                  <TokenSwap 
-                    initialFromTicker={initialFromTicker}
-                  />
+                  {loading || !initialFromCoin || !initialToCoin ? (
+                    <div className="flex flex-col items-center justify-center h-[500px]">
+                      <Loader2 className="h-10 w-10 animate-spin text-primary" />
+                      <p className="mt-4 text-muted-foreground">Loading swap details...</p>
+                    </div>
+                  ) : (
+                    <TokenSwap 
+                      initialFromCoin={initialFromCoin}
+                      initialToCoin={initialToCoin}
+                    />
+                  )}
               </div>
             </main>
             <BottomNav />

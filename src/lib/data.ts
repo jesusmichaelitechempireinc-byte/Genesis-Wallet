@@ -4,7 +4,6 @@ import type { ComponentType } from "react";
 export interface Coin {
   name: string;
   ticker: string;
-  coingeckoId: string;
   network?: string;
   icon?: ComponentType<{ className?: string }>;
   iconUrl?: string;
@@ -13,33 +12,103 @@ export interface Coin {
   price: number;
   change: number;
   history: { time: string, price: number }[];
-  marketCap: number;
-  volume24h: number;
-  circulatingSupply: number;
-  totalSupply: number;
-  maxSupply?: number;
-  allTimeHigh: number;
-  description: string;
 }
 
-export const initialCoins: Omit<Coin, 'price' | 'change' | 'history' | 'marketCap' | 'volume24h' | 'circulatingSupply' | 'totalSupply' | 'maxSupply' | 'allTimeHigh' | 'description'>[] = [
-  { name: 'Bitcoin', ticker: 'BTC', coingeckoId: 'bitcoin', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675521/bitcoin-btc-logo_fchtil.png' },
-  { name: 'Ethereum', ticker: 'ETH', coingeckoId: 'ethereum', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675606/ethereum-eth-logo_gkt5dg.png' },
-  { name: 'USD Coin', ticker: 'USDC', coingeckoId: 'usd-coin', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760678111/usd-coin-usdc-logo_isqxlb.png' },
-  { name: 'Tether', ticker: 'USDT-ERC20', coingeckoId: 'tether', network: 'Ethereum (ERC20)', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688489/USDT-ERC20_zylqxi.png' },
-  { name: 'Solana', ticker: 'SOL', coingeckoId: 'solana', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675609/solana-sol-logo_bcifcy.png' },
-  { name: 'Tether', ticker: 'USDT-TRC20', coingeckoId: 'tether', network: 'Tron (TRC20)', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688695/USDT-TRC20_mautso.png' },
-  { name: 'Dogecoin', ticker: 'DOGE', coingeckoId: 'dogecoin', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675627/dogecoin-doge-logo_vhntvk.png' },
-  { name: 'Cardano', ticker: 'ADA', coingeckoId: 'cardano', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675738/cardano-ada-logo_pbavn1.png' },
-  { name: 'XRP', ticker: 'XRP', coingeckoId: 'ripple', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675751/xrp-xrp-logo_smpmq7.png' },
-  { name: 'Avalanche', ticker: 'AVAX', coingeckoId: 'avalanche-2', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675757/avalanche-avax-logo_yt45tu.png' },
-  { name: 'Sui', ticker: 'SUI', coingeckoId: 'sui', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675771/sui-sui-logo_blqmgl.png' },
-  { name: 'BNB', ticker: 'BNB', coingeckoId: 'binancecoin', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675782/bnb-bnb-logo_matwsx.png' },
-  { name: 'Tron', ticker: 'TRX', coingeckoId: 'tron', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675804/tron-trx-logo_amapma.png' },
-  { name: 'Toncoin', ticker: 'TON', coingeckoId: 'the-open-network', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675862/toncoin-ton-logo_yhokxq.png' },
-  { name: 'Fetch.ai', ticker: 'FET', coingeckoId: 'fetch-ai', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675816/artificial-superintelligence-alliance-fet-logo_rhrvie.png' },
-  { name: 'Pepe', ticker: 'PEPE', coingeckoId: 'pepe', balance: 0, usdValue: 0, iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675900/pepe-pepe-logo_ey1qka.png' }
+const coinsBase: Omit<Coin, 'balance' | 'usdValue' | 'price' | 'change' | 'history'>[] = [
+  { name: 'Bitcoin', ticker: 'BTC', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675521/bitcoin-btc-logo_fchtil.png' },
+  { name: 'Ethereum', ticker: 'ETH', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675606/ethereum-eth-logo_gkt5dg.png' },
+  { name: 'USD Coin', ticker: 'USDC', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760678111/usd-coin-usdc-logo_isqxlb.png' },
+  { name: 'Tether', ticker: 'USDT-ERC20', network: 'Ethereum (ERC20)', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688489/USDT-ERC20_zylqxi.png' },
+  { name: 'Solana', ticker: 'SOL', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675609/solana-sol-logo_bcifcy.png' },
+  { name: 'Tether', ticker: 'USDT-TRC20', network: 'Tron (TRC20)', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760688695/USDT-TRC20_mautso.png' },
+  { name: 'Dogecoin', ticker: 'DOGE', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675627/dogecoin-doge-logo_vhntvk.png' },
+  { name: 'Cardano', ticker: 'ADA', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675738/cardano-ada-logo_pbavn1.png' },
+  { name: 'XRP', ticker: 'XRP', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675751/xrp-xrp-logo_smpmq7.png' },
+  { name: 'Avalanche', ticker: 'AVAX', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675757/avalanche-avax-logo_yt45tu.png' },
+  { name: 'Sui', ticker: 'SUI', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675771/sui-sui-logo_blqmgl.png' },
+  { name: 'BNB', ticker: 'BNB', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675782/bnb-bnb-logo_matwsx.png' },
+  { name: 'Tron', ticker: 'TRX', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675804/tron-trx-logo_amapma.png' },
+  { name: 'Toncoin', ticker: 'TON', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675862/toncoin-ton-logo_yhokxq.png' },
+  { name: 'Fetch.ai', ticker: 'FET', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675816/artificial-superintelligence-alliance-fet-logo_rhrvie.png' },
+  { name: 'Pepe', ticker: 'PEPE', iconUrl: 'https://res.cloudinary.com/dk5jr2hlw/image/upload/v1760675900/pepe-pepe-logo_ey1qka.png' }
 ];
+
+const generateHistory = (basePrice: number) => {
+    const history = [];
+    let price = basePrice * (1 + (Math.random() - 0.5) * 0.2);
+    for(let i=0; i<30; i++) {
+        price *= (1 + (Math.random() - 0.5) * 0.1);
+        history.push({ time: `Day ${i+1}`, price });
+    }
+    return history;
+}
+
+const livePrices: Record<string, { price: number; change: number }> = {
+    'BTC': { price: 68765.43, change: 1.25 },
+    'ETH': { price: 3480.12, change: -0.55 },
+    'USDC': { price: 1.00, change: 0.01 },
+    'USDT-ERC20': { price: 0.99, change: -0.02 },
+    'SOL': { price: 171.23, change: 2.33 },
+    'USDT-TRC20': { price: 1.00, change: 0.00 },
+    'DOGE': { price: 0.16, change: 0.89 },
+    'ADA': { price: 0.45, change: -1.10 },
+    'XRP': { price: 0.52, change: 0.35 },
+    'AVAX': { price: 36.45, change: -2.45 },
+    'SUI': { price: 1.12, change: 5.12 },
+    'BNB': { price: 601.88, change: 0.15 },
+    'TRX': { price: 0.12, change: 1.78 },
+    'TON': { price: 7.50, change: 3.21 },
+    'FET': { price: 1.62, change: -4.20 },
+    'PEPE': { price: 0.000012, change: 12.5 },
+};
+
+
+const getEmptyCoins = (): Coin[] => coinsBase.map(coin => {
+    const liveData = livePrices[coin.ticker] || { price: 0, change: 0 };
+    return {
+        ...coin,
+        balance: 0,
+        usdValue: 0,
+        price: liveData.price,
+        change: liveData.change,
+        history: generateHistory(liveData.price),
+    }
+});
+
+const getFundedCoins = (): Coin[] => coinsBase.map(coin => {
+    const liveData = livePrices[coin.ticker] || { price: 0, change: 0 };
+    if (coin.ticker === 'USDC') {
+        const balance = 108490;
+        return {
+            ...coin,
+            balance: balance,
+            usdValue: balance * liveData.price,
+            price: liveData.price,
+            change: liveData.change,
+            history: generateHistory(liveData.price),
+        };
+    }
+    return {
+        ...coin,
+        balance: 0,
+        usdValue: 0,
+        price: liveData.price,
+        change: liveData.change,
+        history: generateHistory(liveData.price),
+    };
+});
+
+// This is the main function to be used by components
+export const getWalletCoins = async (): Promise<Coin[]> => {
+    if (typeof window !== 'undefined') {
+        const walletImported = window.localStorage.getItem('wallet-imported');
+        if (walletImported && JSON.parse(walletImported) === 'funded') {
+            return Promise.resolve(getFundedCoins());
+        }
+    }
+    return Promise.resolve(getEmptyCoins());
+};
+
 
 export interface Transaction {
     id: string;
@@ -60,8 +129,7 @@ export const getTransactions = async (allCoins: Coin[]): Promise<Transaction[]> 
     const findCoin = (ticker: string): Coin => {
       const coin = allCoins.find(c => c.ticker === ticker);
       if (!coin) {
-        // Fallback for safety, though this should ideally not happen
-        return allCoins[0];
+        return allCoins[0] as Coin;
       }
       return coin;
     }
