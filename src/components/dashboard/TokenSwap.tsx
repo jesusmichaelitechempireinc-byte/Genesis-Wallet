@@ -15,28 +15,27 @@ import { useCurrency } from "@/hooks/use-currency";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function TokenSwap({ initialFromTicker, initialCoins }: { initialFromTicker: string | null, initialCoins: Coin[] }) {
-  const coins = initialCoins;
   const [fromCoin, setFromCoin] = useState<Coin | undefined>(undefined);
   const [toCoin, setToCoin] = useState<Coin | undefined>(undefined);
   
   useEffect(() => {
-      if (coins.length > 0) {
-        let initialFrom = coins.find(c => c.ticker === 'USDC') || coins[0];
-        if (initialFromTicker) {
-            const foundCoin = coins.find(c => c.ticker === initialFromTicker);
-            if (foundCoin) {
-              initialFrom = foundCoin;
-            }
+    if (initialCoins.length > 0) {
+      let initialFrom = initialCoins.find(c => c.ticker === 'USDC') || initialCoins[0];
+      if (initialFromTicker) {
+        const foundCoin = initialCoins.find(c => c.ticker === initialFromTicker);
+        if (foundCoin) {
+          initialFrom = foundCoin;
         }
-        setFromCoin(initialFrom);
-
-        let initialTo = coins.find(c => c.ticker === 'BTC') || coins[1];
-        if (initialFrom && initialTo && initialFrom.ticker === initialTo.ticker) {
-            initialTo = coins.find(c => c.ticker !== initialFrom.ticker) || coins[1];
-        }
-        setToCoin(initialTo);
       }
-  }, [coins, initialFromTicker]);
+      setFromCoin(initialFrom);
+
+      let initialTo = initialCoins.find(c => c.ticker === 'BTC') || initialCoins[1];
+      if (initialFrom && initialTo && initialFrom.ticker === initialTo.ticker) {
+        initialTo = initialCoins.find(c => c.ticker !== initialFrom.ticker) || initialCoins[1];
+      }
+      setToCoin(initialTo);
+    }
+  }, [initialCoins, initialFromTicker]);
 
 
   const [fromAmount, setFromAmount] = useState<string>("1000.0");
@@ -48,14 +47,14 @@ export default function TokenSwap({ initialFromTicker, initialCoins }: { initial
   const { formatCurrency } = useCurrency();
 
   const handleFromCoinChange = (ticker: string) => {
-    const coin = coins.find((c) => c.ticker === ticker);
+    const coin = initialCoins.find((c) => c.ticker === ticker);
     if (coin) setFromCoin(coin);
     setError('');
     setGasError(false);
   };
 
   const handleToCoinChange = (ticker: string) => {
-    const coin = coins.find((c) => c.ticker === ticker);
+    const coin = initialCoins.find((c) => c.ticker === ticker);
     if (coin) setToCoin(coin);
   };
 
@@ -139,7 +138,7 @@ export default function TokenSwap({ initialFromTicker, initialCoins }: { initial
                     </SelectValue>
                     </SelectTrigger>
                     <SelectContent className="shadow-heavy-out-sm">
-                    {coins.map((c) => (
+                    {initialCoins.map((c) => (
                         <SelectItem key={c.ticker} value={c.ticker} disabled={c.ticker === toCoin.ticker}>
                         <div className="flex items-center gap-2">
                             {c.iconUrl ? <Image src={c.iconUrl} alt={c.name} width={20} height={20} /> : c.icon && <c.icon className="h-5 w-5" />}
@@ -151,7 +150,7 @@ export default function TokenSwap({ initialFromTicker, initialCoins }: { initial
                 </Select>
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
-                Balance: {fromCoin.balance.toFixed(4)}
+                Balance: {fromCoin.balance.toLocaleString()}
                 </div>
             </div>
             
@@ -180,7 +179,7 @@ export default function TokenSwap({ initialFromTicker, initialCoins }: { initial
                     </SelectValue>
                     </SelectTrigger>
                     <SelectContent className="shadow-heavy-out-sm">
-                    {coins.map((c) => (
+                    {initialCoins.map((c) => (
                         <SelectItem key={c.ticker} value={c.ticker} disabled={c.ticker === fromCoin.ticker}>
                         <div className="flex items-center gap-2">
                             {c.iconUrl ? <Image src={c.iconUrl} alt={c.name} width={20} height={20} /> : c.icon && <c.icon className="h-5 w-5" />}
@@ -192,7 +191,7 @@ export default function TokenSwap({ initialFromTicker, initialCoins }: { initial
                 </Select>
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
-                Balance: {toCoin.balance.toFixed(4)}
+                Balance: {toCoin.balance.toLocaleString()}
                 </div>
             </div>
             </div>
