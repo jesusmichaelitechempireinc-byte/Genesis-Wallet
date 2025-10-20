@@ -2,9 +2,8 @@
 'use server';
 
 import {ai} from '@/ai/genkit';
-import {generate} from 'genkit/ai';
+import {generate, MessageData} from 'genkit';
 import {z} from 'zod';
-import {MessageData} from 'genkit/ai';
 
 export const chat = ai.defineFlow(
   {
