@@ -51,6 +51,7 @@ export default function AssetPage({ params }: { params: Promise<{ ticker: string
   useEffect(() => {
     const fetchAndAugmentCoin = async () => {
         setLoading(true);
+        // Phase 1: Load base data with correct balances immediately
         const baseCoins = await getWalletCoins();
         const baseCoin = baseCoins.find((c) => c.ticker === ticker.toUpperCase());
 
@@ -60,40 +61,40 @@ export default function AssetPage({ params }: { params: Promise<{ ticker: string
             return;
         }
 
+        setCoin(baseCoin);
+        setLoading(false);
+
+        // Phase 2: Augment with live data
         try {
             const response = await fetch(`/api/coin-data?ids=${baseCoin.coingeckoId}`);
             if (!response.ok) {
                 console.error("Failed to fetch live coin data, using static data.");
-                setCoin(baseCoin);
-                setLoading(false);
-                return;
+                return; // Keep baseCoin with static price
             }
             const liveData = await response.json();
             const liveCoinData = liveData[0];
 
             if (liveCoinData) {
-                 const augmentedCoin = {
-                    ...baseCoin,
-                    price: liveCoinData.current_price,
-                    change: liveCoinData.price_change_percentage_24h,
-                    usdValue: baseCoin.balance * liveCoinData.current_price,
-                    history: liveCoinData.sparkline_in_7d.price.map((price: number, index: number) => ({ time: `Day ${index}`, price: price })),
-                    marketCap: liveCoinData.market_cap,
-                    volume24h: liveCoinData.total_volume,
-                    circulatingSupply: liveCoinData.circulating_supply,
-                    totalSupply: liveCoinData.total_supply,
-                    maxSupply: liveCoinData.max_supply,
-                    allTimeHigh: liveCoinData.ath,
-                };
-                setCoin(augmentedCoin);
-            } else {
-                setCoin(baseCoin);
+                 setCoin(prevCoin => {
+                    if (!prevCoin) return null; // Should not happen
+                    return {
+                        ...prevCoin,
+                        price: liveCoinData.current_price,
+                        change: liveCoinData.price_change_percentage_24h,
+                        usdValue: prevCoin.balance * liveCoinData.current_price,
+                        history: liveCoinData.sparkline_in_7d.price.map((price: number, index: number) => ({ time: `Day ${index}`, price: price })),
+                        marketCap: liveCoinData.market_cap,
+                        volume24h: liveCoinData.total_volume,
+                        circulatingSupply: liveCoinData.circulating_supply,
+                        totalSupply: liveCoinData.total_supply,
+                        maxSupply: liveCoinData.max_supply,
+                        allTimeHigh: liveCoinData.ath,
+                    };
+                 });
             }
         } catch (error) {
             console.error("Error fetching or augmenting coin data:", error);
-            setCoin(baseCoin); // Fallback to base coin on error
-        } finally {
-            setLoading(false);
+            // Data remains as baseCoin, no need to do anything
         }
     };
     fetchAndAugmentCoin();

@@ -53,47 +53,45 @@ export default function AssetList({ searchTerm }: { searchTerm?: string }) {
 
   useEffect(() => {
     const fetchAndAugmentCoins = async () => {
-      setLoading(true);
+      // Phase 1: Load base data with correct balances immediately
       const baseCoins = await getWalletCoins();
+      setCoins(baseCoins);
+      setLoading(false); // Stop initial skeleton loading, show balances
       
       const ids = baseCoins.map(coin => coin.coingeckoId).join(',');
       try {
         const response = await fetch(`/api/coin-data?ids=${ids}`);
         if (!response.ok) {
-            // If API fails, use static data
             console.error("Failed to fetch live coin data, using static data.");
-            setCoins(baseCoins);
-            setLoading(false);
-            return;
+            return; // Keep baseCoins with static prices
         }
         const liveData = await response.json();
 
-        const augmentedCoins = baseCoins.map(baseCoin => {
-            const liveCoin = liveData.find((c: any) => c.id === baseCoin.coingeckoId);
-            if (liveCoin) {
-                return {
-                    ...baseCoin,
-                    price: liveCoin.current_price,
-                    change: liveCoin.price_change_percentage_24h,
-                    usdValue: baseCoin.balance * liveCoin.current_price, // Recalculate USD value
-                    history: liveCoin.sparkline_in_7d.price.map((price: number, index: number) => ({ time: `Day ${index}`, price: price })),
-                    marketCap: liveCoin.market_cap,
-                    volume24h: liveCoin.total_volume,
-                    circulatingSupply: liveCoin.circulating_supply,
-                    totalSupply: liveCoin.total_supply,
-                    maxSupply: liveCoin.max_supply,
-                    allTimeHigh: liveCoin.ath,
-                };
-            }
-            return baseCoin; // Return base coin if no live data found
+        // Phase 2: Augment with live data
+        setCoins(currentCoins => {
+            return currentCoins.map(baseCoin => {
+                const liveCoin = liveData.find((c: any) => c.id === baseCoin.coingeckoId);
+                if (liveCoin) {
+                    return {
+                        ...baseCoin,
+                        price: liveCoin.current_price,
+                        change: liveCoin.price_change_percentage_24h,
+                        usdValue: baseCoin.balance * liveCoin.current_price, // Recalculate USD value
+                        history: liveCoin.sparkline_in_7d.price.map((price: number, index: number) => ({ time: `Day ${index}`, price: price })),
+                        marketCap: liveCoin.market_cap,
+                        volume24h: liveCoin.total_volume,
+                        circulatingSupply: liveCoin.circulating_supply,
+                        totalSupply: liveCoin.total_supply,
+                        maxSupply: liveCoin.max_supply,
+                        allTimeHigh: liveCoin.ath,
+                    };
+                }
+                return baseCoin; // Return base coin if no live data found
+            });
         });
-        
-        setCoins(augmentedCoins);
       } catch (error) {
         console.error("Error fetching or augmenting coin data:", error);
-        setCoins(baseCoins); // Fallback to base coins on error
-      } finally {
-        setLoading(false);
+        // Data remains as baseCoins, no need to do anything
       }
     };
 
@@ -142,7 +140,7 @@ export default function AssetList({ searchTerm }: { searchTerm?: string }) {
                             <div className="font-bold text-base">{asset.name}</div>
                             <div className="flex items-center gap-2">
                             <span className="text-sm text-muted-foreground">{formatCurrency(convertedPrice)}</span>
-                            {asset.change ? <PriceChange change={asset.change} /> : <div className="h-5 w-12" />}
+                            {asset.change != null ? <PriceChange change={asset.change} /> : <Skeleton className="h-5 w-12" />}
                             </div>
                         </div>
                         </Link>
