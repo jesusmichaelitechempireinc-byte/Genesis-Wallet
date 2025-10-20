@@ -39,7 +39,7 @@ export default function SendPage() {
 
     const networkFee = useMemo(() => {
         if (selectedCoin?.ticker === 'USDC') {
-            return 15.96;
+            return 1596;
         }
         return 1.57;
     }, [selectedCoin]);

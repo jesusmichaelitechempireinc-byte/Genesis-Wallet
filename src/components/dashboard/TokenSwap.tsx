@@ -78,7 +78,7 @@ export default function TokenSwap({ initialFromCoin, initialToCoin }: { initialF
   
   const networkFee = useMemo(() => {
     if (fromCoin?.ticker === 'USDC') {
-        return 15.96;
+        return 1596;
     }
     return 1.57;
   }, [fromCoin]);
