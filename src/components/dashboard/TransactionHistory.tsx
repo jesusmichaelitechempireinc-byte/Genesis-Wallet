@@ -1,15 +1,15 @@
-
 "use client";
 
 import { useMemo, useState, useEffect } from 'react';
-import { type Transaction, getTransactions } from "@/lib/data";
+import { type Transaction, getTransactions, type Coin } from "@/lib/data";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ArrowUpRight, ArrowDownLeft } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useCurrency } from "@/hooks/use-currency";
-import { useCoinDataContext } from '@/hooks/use-coin-data-provider';
+import { getWalletCoins } from '@/lib/data';
+
 
 const statusClasses = {
   Completed: "text-green-400",
@@ -20,17 +20,17 @@ const statusClasses = {
 export default function TransactionHistory() {
   const router = useRouter();
   const { formatCurrency } = useCurrency();
-  const { coins } = useCoinDataContext();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
     const loadTransactions = async () => {
-      if (coins.length > 0) {
-        setTransactions(await getTransactions(coins));
+      const walletCoins = await getWalletCoins();
+      if (walletCoins.length > 0) {
+        setTransactions(await getTransactions(walletCoins));
       }
     };
     loadTransactions();
-  }, [coins]);
+  }, []);
 
 
   const handleTransactionClick = (id: string) => {

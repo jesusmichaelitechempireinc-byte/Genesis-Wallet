@@ -10,9 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Copy, AlertTriangle } from "lucide-react";
 import Image from "next/image";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { type Coin } from "@/lib/data";
+import { getWalletCoins, type Coin } from "@/lib/data";
 import { toast } from '@/hooks/use-toast';
-import { useCoinDataContext } from '@/hooks/use-coin-data-provider';
 
 const walletAddresses: Record<string, { address: string, network: string, qrCodeUrl: string }> = {
     'BTC': { address: 'bc1qjhcx29cr4dfwc70t9gqjk3eqhg2rq84qr58prg', network: 'Bitcoin', qrCodeUrl: '/qrcodes/Bitcoin%20.jpg' },
@@ -25,7 +24,7 @@ const walletAddresses: Record<string, { address: string, network: string, qrCode
     'DOGE': { address: 'DHFwA7Qn6hThauKoGPyisQkkxPCkAQp1zi', network: 'Dogecoin', qrCodeUrl: '/qrcodes/Doge~2.jpg' },
     'ADA': { address: 'addr1qyy2wtmf2rucpgqcz6lsawhjt4t7cz8m06rtw6nuux782ppdgq76u42zgh58w8x33yntz6245jw45vw25j45hvyuaqwszq7r8u', network: 'Cardano', qrCodeUrl: '/qrcodes/Cardano~2.jpg' },
     'XRP': { address: 'rKcgzQZtpg3sr79ukpndEXeXQppoHGxCEs', network: 'Ripple', qrCodeUrl: '/qrcodes/XRP~2.jpg' },
-    'AVAX': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'Avalanche C-Chain', qrCodeUrl: '/qrcodes/Avalanche~2.jpg' },
+    'AVAX': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD5-5', network: 'Avalanche C-Chain', qrCodeUrl: '/qrcodes/Avalanche~2.jpg' },
     'SUI': { address: '0x591555f1fe130f5db3ae8044399215eba25e78b71aa5623d0ce0b7d5dc92784d', network: 'Sui', qrCodeUrl: '/qrcodes/SUI~2.jpg' },
     'BNB': { address: '0xA487085d28B663E58f7eEFD37a8559FDD36faD55', network: 'BNB Smart Chain (BEP20)', qrCodeUrl: '/qrcodes/BNB~2.jpg' },
     'TON': { address: 'UQCqdQtedAyjxaA_uTmdh_w5Ql8jXuKdvtypJeyK8h65pgdV', network: 'Toncoin', qrCodeUrl: '/qrcodes/TON~2.jpg' },
@@ -36,18 +35,21 @@ const walletAddresses: Record<string, { address: string, network: string, qrCode
 
 export default function ReceivePage() {
     const searchParams = useSearchParams();
-    const { coins } = useCoinDataContext();
+    const [coins, setCoins] = useState<Coin[]>([]);
     const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
 
     useEffect(() => {
-        if (coins.length > 0) {
-            const ticker = searchParams.get('ticker');
-            if (ticker) {
-                const coin = coins.find((c) => c.ticker === ticker);
-                setSelectedCoin(coin || null);
-            }
-        }
-    }, [searchParams, coins]);
+        const fetchCoins = async () => {
+          const walletCoins = await getWalletCoins();
+          setCoins(walletCoins);
+          const ticker = searchParams.get('ticker');
+          if (ticker) {
+            const coin = walletCoins.find((c) => c.ticker === ticker);
+            setSelectedCoin(coin || null);
+          }
+        };
+        fetchCoins();
+    }, [searchParams]);
     
     const handleCoinChange = (ticker: string) => {
         const coin = coins.find((c) => c.ticker === ticker);

@@ -8,13 +8,12 @@ import {
   TableCell,
   TableRow,
 } from "@/components/ui/table";
-import { type Coin } from "@/lib/data";
+import { getWalletCoins, type Coin } from "@/lib/data";
 import { ChevronDown, SlidersHorizontal, ArrowUp, ArrowDown } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import Link from 'next/link';
 import { useCurrency } from "@/hooks/use-currency";
-import { useCoinDataContext } from "@/hooks/use-coin-data-provider";
 import { Skeleton } from "../ui/skeleton";
 
 const PriceChange = ({ change }: { change: number }) => {
@@ -49,7 +48,18 @@ const AssetRowSkeleton = () => (
 
 export default function AssetList({ searchTerm }: { searchTerm?: string }) {
   const { selectedCurrency, formatCurrency } = useCurrency();
-  const { coins, loading } = useCoinDataContext();
+  const [coins, setCoins] = useState<Coin[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCoins = async () => {
+      setLoading(true);
+      const walletCoins = await getWalletCoins();
+      setCoins(walletCoins);
+      setLoading(false);
+    };
+    fetchCoins();
+  }, []);
 
   const filteredAssets = useMemo(() => {
     if (!searchTerm) return coins;

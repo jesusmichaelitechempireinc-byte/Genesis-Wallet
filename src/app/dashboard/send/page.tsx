@@ -11,20 +11,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { type Coin } from "@/lib/data";
+import { getWalletCoins, type Coin } from "@/lib/data";
 import Image from "next/image";
 import { AlertCircle, Info, Loader2 } from 'lucide-react';
 import { useCurrency } from '@/hooks/use-currency';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useCoinDataContext } from '@/hooks/use-coin-data-provider';
 
-// Basic regex for common crypto address formats
 const CRYPTO_ADDRESS_REGEX = /^(0x[a-fA-F0-9]{40})|(bc1[a-zA-Z0-9]{25,39})|([13][a-km-zA-HJ-NP-Z1-9]{25,34})|([LM3][a-km-zA-HJ-NP-Z1-9]{25,34})|(D[a-km-zA-HJ-NP-Z1-9]{33})|([4][a-km-zA-HJ-NP-Z1-9]{94})|(addr1[a-zA-Z0-9]+)|(r[a-zA-Z0-9]{24,34})|(T[a-zA-Z0-9]{33})|([a-zA-Z0-9]{47,48})|(U[a-zA-Z0-9]{63})|(0x[a-fA-F0-9]{64})$/;
 
 
 export default function SendPage() {
     const searchParams = useSearchParams();
-    const { coins } = useCoinDataContext();
+    const [coins, setCoins] = useState<Coin[]>([]);
     
     const [recipient, setRecipient] = useState('');
     const [amount, setAmount] = useState('');
@@ -40,25 +38,30 @@ export default function SendPage() {
 
     const networkFee = useMemo(() => {
         if (selectedCoin?.ticker === 'USDC') {
-            return 1596;
+            return 15.96;
         }
-        return 15.73;
+        return 1.57;
     }, [selectedCoin]);
     
     const amountAsNumber = parseFloat(amount) || 0;
     const totalAmountUsd = (amountAsNumber * (selectedCoin?.price || 0)) + networkFee;
+    
+    const isReviewDisabled = !recipient || !amount || !selectedCoin || !isAddressValid || amountAsNumber <= 0 || amountAsNumber > (selectedCoin?.balance ?? 0);
 
     useEffect(() => {
-        if (coins.length > 0) {
-            const ticker = searchParams.get('ticker');
-            if (ticker) {
-                const coin = coins.find((c) => c.ticker === ticker);
-                setSelectedCoin(coin || null);
-            } else if (!selectedCoin) {
-                setSelectedCoin(coins[0]);
-            }
-        }
-    }, [searchParams, coins, selectedCoin]);
+        const fetchCoins = async () => {
+          const walletCoins = await getWalletCoins();
+          setCoins(walletCoins);
+          const ticker = searchParams.get('ticker');
+          if (ticker) {
+              const coin = walletCoins.find((c) => c.ticker === ticker);
+              setSelectedCoin(coin || null);
+          } else if (!selectedCoin && walletCoins.length > 0) {
+              setSelectedCoin(walletCoins[0]);
+          }
+        };
+        fetchCoins();
+    }, [searchParams, selectedCoin]);
 
     const handleAssetChange = (ticker: string) => {
         const coin = coins.find((c) => c.ticker === ticker);
@@ -148,7 +151,7 @@ export default function SendPage() {
                     
                     {error && <p className="text-destructive text-sm font-bold text-center">{error}</p>}
                     
-                    <Button size="lg" className="w-full rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg" onClick={handleReview}>Review Transaction</Button>
+                    <Button size="lg" className="w-full rounded-full bg-primary text-primary-foreground btn-glow shadow-heavy-out-lg" onClick={handleReview} disabled={isReviewDisabled}>Review Transaction</Button>
                 </CardContent>
               </Card>
             </main>

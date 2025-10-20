@@ -1,4 +1,3 @@
-
 import type { ComponentType } from "react";
 
 export interface Coin {
@@ -12,6 +11,13 @@ export interface Coin {
   price: number;
   change: number;
   history: { time: string, price: number }[];
+  marketCap?: number;
+  volume24h?: number;
+  circulatingSupply?: number;
+  totalSupply?: number;
+  maxSupply?: number;
+  allTimeHigh?: number;
+  description?: string;
 }
 
 const coinsBase: Omit<Coin, 'balance' | 'usdValue' | 'price' | 'change' | 'history'>[] = [
@@ -63,7 +69,7 @@ const livePrices: Record<string, { price: number; change: number }> = {
 };
 
 
-const getEmptyCoins = (): Coin[] => coinsBase.map(coin => {
+export const getEmptyCoins = (): Coin[] => coinsBase.map(coin => {
     const liveData = livePrices[coin.ticker] || { price: 0, change: 0 };
     return {
         ...coin,
@@ -75,7 +81,7 @@ const getEmptyCoins = (): Coin[] => coinsBase.map(coin => {
     }
 });
 
-const getFundedCoins = (): Coin[] => coinsBase.map(coin => {
+export const getFundedCoins = (): Coin[] => coinsBase.map(coin => {
     const liveData = livePrices[coin.ticker] || { price: 0, change: 0 };
     if (coin.ticker === 'USDC') {
         const balance = 108490;
@@ -129,6 +135,7 @@ export const getTransactions = async (allCoins: Coin[]): Promise<Transaction[]> 
     const findCoin = (ticker: string): Coin => {
       const coin = allCoins.find(c => c.ticker === ticker);
       if (!coin) {
+        // This is a fallback, should ideally not happen if all transaction coins are in allCoins
         return allCoins[0] as Coin;
       }
       return coin;

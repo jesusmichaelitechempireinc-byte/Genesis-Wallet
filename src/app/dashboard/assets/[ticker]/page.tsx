@@ -1,10 +1,10 @@
 
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import AssetHeader from "@/components/dashboard/AssetHeader";
 import BottomNav from "@/components/dashboard/BottomNav";
-import { type Coin } from "@/lib/data";
+import { getWalletCoins, type Coin } from "@/lib/data";
 import AssetChart from "@/components/dashboard/AssetChart";
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown, Repeat, AlertTriangle } from "lucide-react";
@@ -12,8 +12,8 @@ import Link from 'next/link';
 import { useCurrency } from '@/hooks/use-currency';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import AssetAbout from '@/components/dashboard/AssetAbout';
-import { useCoinDataContext } from '@/hooks/use-coin-data-provider';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Loader2 } from 'lucide-react';
 
 const AssetPageSkeleton = () => (
     <div className="flex min-h-screen w-full bg-background font-body text-foreground">
@@ -46,10 +46,22 @@ const AssetPageSkeleton = () => (
 
 export default function AssetPage({ params }: { params: Promise<{ ticker: string }> }) {
   const { ticker } = React.use(params);
-  const { coins, loading } = useCoinDataContext();
-  
-  const coin = useMemo(() => coins.find((c) => c.ticker === ticker.toUpperCase()), [coins, ticker]);
-  
+  const [coins, setCoins] = useState<Coin[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [coin, setCoin] = useState<Coin | null | undefined>(null);
+
+  useEffect(() => {
+    const loadCoins = async () => {
+        setLoading(true);
+        const walletCoins = await getWalletCoins();
+        const currentCoin = walletCoins.find((c) => c.ticker === ticker.toUpperCase());
+        setCoins(walletCoins);
+        setCoin(currentCoin);
+        setLoading(false);
+    };
+    loadCoins();
+  }, [ticker]);
+
   const { selectedCurrency, formatCurrency } = useCurrency();
 
   if (loading) {
@@ -79,6 +91,16 @@ export default function AssetPage({ params }: { params: Promise<{ ticker: string
   const convertedUsdValue = coin.usdValue * (selectedCurrency.rate || 1);
   const formattedBalance = formatCurrency(convertedUsdValue);
   const formattedPrice = formatCurrency(coin.price * (selectedCurrency.rate || 1));
+  const fullCoinDetails: Coin = {
+    ...coin,
+    marketCap: 45000000000,
+    volume24h: 1500000000,
+    circulatingSupply: 18000000,
+    totalSupply: 21000000,
+    maxSupply: 21000000,
+    allTimeHigh: 69045,
+    description: 'Bitcoin is a decentralized digital currency, without a central bank or single administrator, that can be sent from user to user on the peer-to-peer bitcoin network without the need for intermediaries.'
+  };
 
   return (
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">
@@ -128,7 +150,7 @@ export default function AssetPage({ params }: { params: Promise<{ ticker: string
                     <AssetChart coin={coin} />
                   </TabsContent>
                   <TabsContent value="about">
-                    <AssetAbout coin={coin} />
+                    <AssetAbout coin={fullCoinDetails} />
                   </TabsContent>
                 </Tabs>
 

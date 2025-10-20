@@ -1,13 +1,20 @@
-
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useCurrency } from "@/hooks/use-currency";
-import { useCoinDataContext } from '@/hooks/use-coin-data-provider';
+import { getWalletCoins, type Coin } from '@/lib/data';
 
 export default function TotalBalance() {
   const { selectedCurrency, formatCurrency } = useCurrency();
-  const { coins } = useCoinDataContext();
+  const [coins, setCoins] = useState<Coin[]>([]);
+  
+  useEffect(() => {
+    const fetchCoins = async () => {
+        const walletCoins = await getWalletCoins();
+        setCoins(walletCoins);
+    };
+    fetchCoins();
+  }, []);
 
   const totalBalance = useMemo(() => {
     return coins.reduce((acc, coin) => acc + coin.usdValue, 0);

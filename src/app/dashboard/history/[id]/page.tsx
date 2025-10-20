@@ -1,9 +1,8 @@
-
 'use client';
 
 import React, { useMemo, useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { getTransactions, type Transaction, type Coin } from '@/lib/data';
+import { getTransactions, type Transaction, type Coin, getWalletCoins } from '@/lib/data';
 import BottomNav from '@/components/dashboard/BottomNav';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,24 +11,23 @@ import Image from 'next/image';
 import { useCurrency } from '@/hooks/use-currency';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import { useCoinDataContext } from '@/hooks/use-coin-data-provider';
 
 export default function TransactionDetailPage() {
   const router = useRouter();
   const params = useParams();
   const { id } = params;
   const { formatCurrency } = useCurrency();
-  const { coins } = useCoinDataContext();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
     const loadTransactions = async () => {
-      if (coins.length > 0) {
-        setTransactions(await getTransactions(coins));
+      const walletCoins = await getWalletCoins();
+      if (walletCoins.length > 0) {
+        setTransactions(await getTransactions(walletCoins));
       }
     };
     loadTransactions();
-  }, [coins]);
+  }, []);
 
   const transaction = useMemo(() => transactions.find((tx) => tx.id === id), [transactions, id]);
 
