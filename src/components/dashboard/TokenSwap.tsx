@@ -16,28 +16,28 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 
 export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: string }) {
   const [allCoins, setAllCoins] = useState<Coin[]>([]);
-  
   const [fromCoin, setFromCoin] = useState<Coin | null>(null);
   const [toCoin, setToCoin] = useState<Coin | null>(null);
-  
+  const [loading, setLoading] = useState(true);
+
   const [fromAmount, setFromAmount] = useState<string>("1000.0");
   const [error, setError] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [isConfirming, setIsConfirming] = useState(false);
+  const [isConfirming, setIsConfirming] = useState(isConfirming);
   const [gasError, setGasError] = useState(false);
 
   const { formatCurrency } = useCurrency();
 
   useEffect(() => {
-    const walletState = typeof window !== 'undefined' ? window.localStorage.getItem('wallet-imported') : 'empty';
-    const coins = getWalletCoins(walletState);
+    const coins = getWalletCoins();
     setAllCoins(coins);
 
     let initialFrom = coins.find(c => c.ticker === (initialFromTicker || 'USDC')) || coins.find(c => c.ticker === 'USDC') || coins[0];
-    let initialTo = coins.find(c => c.ticker === 'BTC' && c.ticker !== initialFrom.ticker) || coins.find(c => c.ticker !== initialFrom.ticker) || coins[1];
-    
-    setFromCoin(initialFrom);
-    setToCoin(initialTo);
+    let initialTo = coins.find(c => c.ticker === 'BTC' && c.ticker !== initialFrom?.ticker) || coins.find(c => c.ticker !== initialFrom?.ticker) || coins[1];
+
+    if(initialFrom) setFromCoin(initialFrom);
+    if(initialTo) setToCoin(initialTo);
+    setLoading(false);
   }, [initialFromTicker]);
 
 
@@ -113,8 +113,21 @@ export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: s
     }, 2500);
   };
   
-  if (!fromCoin || !toCoin) {
-    return <div className="flex items-center justify-center h-full w-full"><Loader2 className="animate-spin"/></div>
+  if (loading || !fromCoin || !toCoin) {
+    return (
+      <div className="flex items-center justify-center h-full w-full">
+        <Card className="shadow-heavy-out-lg border-none h-full w-full">
+          <CardHeader>
+              <CardTitle className="font-headline text-3xl">Token Swap</CardTitle>
+              <CardDescription>Instantly swap between assets.</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col h-[calc(100%-88px)] items-center justify-center">
+             <Loader2 className="animate-spin h-10 w-10 text-primary"/>
+             <p className="text-muted-foreground mt-4">Loading balances...</p>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   return (
@@ -292,3 +305,5 @@ export default function TokenSwap({ initialFromTicker }: { initialFromTicker?: s
       </>
   );
 }
+
+    
