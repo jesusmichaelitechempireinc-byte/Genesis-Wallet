@@ -13,7 +13,6 @@ import { useCurrency } from '@/hooks/use-currency';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import AssetAbout from '@/components/dashboard/AssetAbout';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Loader2 } from 'lucide-react';
 
 const AssetPageSkeleton = () => (
     <div className="flex min-h-screen w-full bg-background font-body text-foreground">
@@ -46,20 +45,59 @@ const AssetPageSkeleton = () => (
 
 export default function AssetPage({ params }: { params: Promise<{ ticker: string }> }) {
   const { ticker } = React.use(params);
-  const [coins, setCoins] = useState<Coin[]>([]);
-  const [loading, setLoading] = useState(true);
   const [coin, setCoin] = useState<Coin | null | undefined>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadCoins = async () => {
+    const fetchAndAugmentCoin = async () => {
         setLoading(true);
-        const walletCoins = await getWalletCoins();
-        const currentCoin = walletCoins.find((c) => c.ticker === ticker.toUpperCase());
-        setCoins(walletCoins);
-        setCoin(currentCoin);
-        setLoading(false);
+        const baseCoins = await getWalletCoins();
+        const baseCoin = baseCoins.find((c) => c.ticker === ticker.toUpperCase());
+
+        if (!baseCoin) {
+            setCoin(null);
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/coin-data?ids=${baseCoin.coingeckoId}`);
+            if (!response.ok) {
+                console.error("Failed to fetch live coin data, using static data.");
+                setCoin(baseCoin);
+                setLoading(false);
+                return;
+            }
+            const liveData = await response.json();
+            const liveCoinData = liveData[0];
+
+            if (liveCoinData) {
+                 const augmentedCoin = {
+                    ...baseCoin,
+                    price: liveCoinData.current_price,
+                    change: liveCoinData.price_change_percentage_24h,
+                    usdValue: baseCoin.balance * liveCoinData.current_price,
+                    history: liveCoinData.sparkline_in_7d.price.map((price: number, index: number) => ({ time: `Day ${index}`, price: price })),
+                    description: liveCoinData.description,
+                    marketCap: liveCoinData.market_cap,
+                    volume24h: liveCoinData.total_volume,
+                    circulatingSupply: liveCoinData.circulating_supply,
+                    totalSupply: liveCoinData.total_supply,
+                    maxSupply: liveCoinData.max_supply,
+                    allTimeHigh: liveCoinData.ath,
+                };
+                setCoin(augmentedCoin);
+            } else {
+                setCoin(baseCoin);
+            }
+        } catch (error) {
+            console.error("Error fetching or augmenting coin data:", error);
+            setCoin(baseCoin); // Fallback to base coin on error
+        } finally {
+            setLoading(false);
+        }
     };
-    loadCoins();
+    fetchAndAugmentCoin();
   }, [ticker]);
 
   const { selectedCurrency, formatCurrency } = useCurrency();
@@ -71,7 +109,6 @@ export default function AssetPage({ params }: { params: Promise<{ ticker: string
   if (!coin) {
     return (
         <div className="flex min-h-screen w-full bg-background font-body text-foreground">
-          
             <main className="flex-1 p-4 md:p-6 lg:p-8 flex items-center justify-center pb-32">
               <div className="text-center">
                 <AlertTriangle className="mx-auto h-12 w-12 text-destructive" />
@@ -83,24 +120,12 @@ export default function AssetPage({ params }: { params: Promise<{ ticker: string
               </div>
             </main>
             <BottomNav />
-          
         </div>
     );
   }
 
   const convertedUsdValue = coin.usdValue * (selectedCurrency.rate || 1);
   const formattedBalance = formatCurrency(convertedUsdValue);
-  const formattedPrice = formatCurrency(coin.price * (selectedCurrency.rate || 1));
-  const fullCoinDetails: Coin = {
-    ...coin,
-    marketCap: 45000000000,
-    volume24h: 1500000000,
-    circulatingSupply: 18000000,
-    totalSupply: 21000000,
-    maxSupply: 21000000,
-    allTimeHigh: 69045,
-    description: 'Bitcoin is a decentralized digital currency, without a central bank or single administrator, that can be sent from user to user on the peer-to-peer bitcoin network without the need for intermediaries.'
-  };
 
   return (
       <div className="flex min-h-screen w-full bg-background font-body text-foreground">
@@ -150,7 +175,7 @@ export default function AssetPage({ params }: { params: Promise<{ ticker: string
                     <AssetChart coin={coin} />
                   </TabsContent>
                   <TabsContent value="about">
-                    <AssetAbout coin={fullCoinDetails} />
+                    <AssetAbout coin={coin} />
                   </TabsContent>
                 </Tabs>
 

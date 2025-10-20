@@ -28,27 +28,37 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const response = await fetch(
+    const marketResponse = await fetch(
       `${COINGECKO_API_URL}/coins/markets?vs_currency=usd&ids=${ids}&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=24h`,
       { headers }
     );
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('CoinGecko API Error:', errorData);
-      return NextResponse.json({ error: `Failed to fetch data from CoinGecko: ${errorData.error || response.statusText}` }, { status: response.status });
+    if (!marketResponse.ok) {
+      const errorData = await marketResponse.json();
+      console.error('CoinGecko API Error (Markets):', errorData);
+      return NextResponse.json({ error: `Failed to fetch market data from CoinGecko: ${errorData.error || marketResponse.statusText}` }, { status: marketResponse.status });
     }
 
-    const data = await response.json();
+    const marketData = await marketResponse.json();
     
     // Fetch detailed descriptions separately
-    const detailedDataPromises = data.map(async (coin: any) => {
+    const detailedDataPromises = marketData.map(async (coin: any) => {
         const detailResponse = await fetch(`${COINGECKO_API_URL}/coins/${coin.id}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`, { headers });
         if (!detailResponse.ok) {
+            console.warn(`Could not fetch details for ${coin.id}.`);
             return { ...coin, description: { en: 'Description not available.' } };
         }
         const detailJson = await detailResponse.json();
-        return { ...coin, description: detailJson.description || { en: 'Description not available.' } };
+        return { 
+          ...coin, 
+          description: detailJson.description?.en || 'Description not available.',
+          market_cap: detailJson.market_data?.market_cap?.usd,
+          total_volume: detailJson.market_data?.total_volume?.usd,
+          circulating_supply: detailJson.market_data?.circulating_supply,
+          total_supply: detailJson.market_data?.total_supply,
+          max_supply: detailJson.market_data?.max_supply,
+          ath: detailJson.market_data?.ath?.usd,
+        };
     });
 
     const combinedData = await Promise.all(detailedDataPromises);
