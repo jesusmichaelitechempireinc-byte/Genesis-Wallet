@@ -19,7 +19,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { chat as chatFlow } from '@/ai/flows/chat';
-import type { MessageData } from 'genkit/ai';
+import type { MessageData } from 'genkit';
 
 
 interface Message {
@@ -221,7 +221,7 @@ export default function GenesisAIPage() {
                                         <GenesisAILogo className="h-8 w-8" />
                                     </div>
                                 )}
-                                <div className={`max-w-xl p-5 rounded-2xl ${message.role === 'user' ? 'bg-primary text-primary-foreground shadow-heavy-out-lg rounded-br-none' : 'bg-background shadow-heavy-in-lg rounded-bl-none'}`}>
+                                <div className={`max-w-3xl p-5 rounded-2xl ${message.role === 'user' ? 'bg-primary text-primary-foreground shadow-heavy-out-lg rounded-br-none' : 'bg-background shadow-heavy-in-lg rounded-bl-none'}`}>
                                     <p className="text-base whitespace-pre-wrap">{message.text}</p>
                                 </div>
                                 {message.role === 'user' && (
@@ -237,7 +237,7 @@ export default function GenesisAIPage() {
                                 <div className="p-2 rounded-full shadow-heavy-out bg-background">
                                     <GenesisAILogo className="h-8 w-8 animate-pulse" />
                                 </div>
-                                <div className="max-w-xl p-5 rounded-2xl bg-background shadow-heavy-in-lg rounded-bl-none">
+                                <div className="max-w-3xl p-5 rounded-2xl bg-background shadow-heavy-in-lg rounded-bl-none">
                                     <div className="flex items-center gap-2">
                                        <Loader2 className="h-5 w-5 animate-spin" />
                                        <p className="text-base text-muted-foreground">Genesis is thinking...</p>
